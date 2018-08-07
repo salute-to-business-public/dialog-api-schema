@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+package dialog;
+
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "miscellaneous.proto";
+import "media_and_files.proto";
+import "users.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Changing account's name
+message RequestEditName {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string name = 1 [(dlg).log="hidden"];
+}
+
+// Changing account's nickname
+message RequestEditNickName {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    google.protobuf.StringValue nickname = 1 [(dlg).log="visible"];
+}
+
+// Checking availability of nickname
+message RequestCheckNickName {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string nickname = 1 [(dlg).log="visible"];
+}
+
+// Changing about information
+message RequestEditAbout {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    google.protobuf.StringValue about = 1 [(dlg).log="hidden"];
+}
+
+// Changing account's avatar
+message RequestEditAvatar {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    FileLocation file_location = 1 [(dlg).log="compact"];
+}
+
+message ResponseEditAvatar {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    Avatar avatar = 1;
+    int32 seq = 2;
+    bytes state = 3;
+}
+
+// Removing account's avatar
+message RequestRemoveAvatar {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+}
+
+// Updating user's time zone
+message RequestEditMyTimeZone {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string tz = 1 [(dlg).log="visible"];
+}
+
+// Changing preffered languages
+message RequestEditMyPreferredLanguages {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated string preferred_languages = 1 [(dlg).log="visible"];
+}
+
+// Changing user's sex
+message RequestEditSex {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    Sex sex = 1 [(dlg).log="hidden"];
+}
+
+// Chaning user custom profile based on scheme
+message RequestEditCustomProfile {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string custom_profile = 1 [(dlg).log="visible"];
+}
+
+// Changing user's status
+message RequestChangeUserStatus {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UserStatus status = 1 [(dlg).log="visible"];
+}
+
+service Profile {
+    rpc EditName (RequestEditName) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/EditName"
+            body: "*"
+        };
+    }
+    rpc EditNickName (RequestEditNickName) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/EditNickName"
+            body: "*"
+        };
+    }
+    rpc CheckNickName (RequestCheckNickName) returns (ResponseBool) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/CheckNickName"
+            body: "*"
+        };
+    }
+    rpc EditAbout (RequestEditAbout) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/EditAbout"
+            body: "*"
+        };
+    }
+    rpc EditAvatar (RequestEditAvatar) returns (ResponseEditAvatar) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/EditAvatar"
+            body: "*"
+        };
+    }
+    rpc RemoveAvatar (RequestRemoveAvatar) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/RemoveAvatar"
+            body: "*"
+        };
+    }
+    rpc EditMyTimeZone (RequestEditMyTimeZone) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/EditMyTimeZone"
+            body: "*"
+        };
+    }
+    rpc EditMyPreferredLanguages (RequestEditMyPreferredLanguages) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/EditMyPreferredLanguages"
+            body: "*"
+        };
+    }
+    rpc EditSex (RequestEditSex) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/EditSex"
+            body: "*"
+        };
+    }
+    rpc EditCustomProfile (RequestEditCustomProfile) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/EditCustomProfile"
+            body: "*"
+        };
+    }
+    rpc ChangeUserStatus (RequestChangeUserStatus) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Profile/ChangeUserStatus"
+            body: "*"
+        };
+    }
+}

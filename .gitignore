@@ -1,0 +1,9 @@
+swagger/
+node_modules/
+target/
+project/target/
+scalafmt/
+js/
+http_gateway/
+python/
+.idea

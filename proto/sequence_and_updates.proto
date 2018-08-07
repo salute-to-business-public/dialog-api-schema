@@ -1,0 +1,365 @@
+syntax = "proto3";
+
+package dialog;
+
+// Each device has it's own update sequence. At the begining application request initial sequence state by
+// calling GetState. On each application restart or NewSessionCreated application calls GetDifference for receiving
+// updates in update sequence.
+// GetState and GetDifference automatically subscribes session to receiving updates in session.
+// Each update has seq and state. Seq is sequental index of updated and used for detecting of holes in update sequence
+// (because of server failure or session die) on client side.
+// All updates needed to be processed in partucular order according to seq values.
+// In some updates there can be references to users that are not available at client yet. In this case application need
+// to ignore such update and init getting difference.
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "miscellaneous.proto";
+import "authentication.proto";
+import "groups.proto";
+import "stickers.proto";
+import "typing_and_online.proto";
+import "event_bus.proto";
+import "web_rtc.proto";
+import "config_sync.proto";
+import "counters.proto";
+import "contacts.proto";
+import "privacy.proto";
+import "peers.proto";
+import "messaging.proto";
+import "users.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Sequence update
+message UpdateSeqUpdate {
+    int32 seq = 1 [(dlg).log="visible"];
+    bytes state = 2 [(dlg).log="compact"];
+    int32 update_header = 3 [(dlg).log="visible"];
+
+    oneof update {
+      UpdateForceReloadState updateForceReloadState = 4;
+      UpdateUserAvatarChanged updateUserAvatarChanged = 5;
+      UpdateUserNameChanged updateUserNameChanged = 6;
+      UpdateUserLocalNameChanged updateUserLocalNameChanged = 7;
+      UpdateUserContactsChanged updateUserContactsChanged = 8;
+      UpdateUserNickChanged updateUserNickChanged = 9;
+      UpdateUserAboutChanged updateUserAboutChanged = 10;
+      UpdateUserPreferredLanguagesChanged updateUserPreferredLanguagesChanged = 11;
+      UpdateUserTimeZoneChanged updateUserTimeZoneChanged = 12;
+      UpdateUserBotCommandsChanged updateUserBotCommandsChanged = 13;
+      UpdateUserExtChanged updateUserExtChanged = 14;
+      UpdateUserFullExtChanged updateUserFullExtChanged = 15;
+      UpdateUserSexChanged updateUserSexChanged = 16;
+      UpdateUserCustomProfileChanged updateUserCustomProfileChanged = 17;
+      UpdateUserStatusChanged updateUserStatusChanged = 18;
+      UpdateContactRegistered updateContactRegistered = 19;
+      UpdateContactsAdded updateContactsAdded = 20;
+      UpdateContactsAddTaskSuspended updateContactsAddTaskSuspended = 21;
+      UpdateContactsRemoved updateContactsRemoved = 22;
+      UpdateUserBlocked updateUserBlocked = 23;
+      UpdateUserUnblocked updateUserUnblocked = 24;
+      UpdateInteractiveMediaEvent updateInteractiveMediaEvent = 25;
+      UpdateMessage updateMessage = 26;
+      UpdateMessageContentChanged updateMessageContentChanged = 27;
+      UpdateMessageSent updateMessageSent = 28;
+      UpdateMessageReceived updateMessageReceived = 29;
+      UpdateMessageRead updateMessageRead = 30;
+      UpdateMessageReadByMe updateMessageReadByMe = 31;
+      UpdateMessageDelete updateMessageDelete = 32;
+      UpdateChatClear updateChatClear = 33;
+      UpdateChatDelete updateChatDelete = 34;
+      UpdateChatArchive updateChatArchive = 35;
+      UpdateChatGroupsChanged updateChatGroupsChanged = 36;
+      UpdateReactionsUpdate updateReactionsUpdate = 37;
+      UpdateDialogFavouriteChanged updateDialogFavouriteChanged = 38;
+      UpdatePinnedMessagesChanged updatePinnedMessagesChanged = 39;
+      UpdateGroupTitleChanged updateGroupTitleChanged = 40;
+      UpdateGroupAvatarChanged updateGroupAvatarChanged = 41;
+      UpdateGroupTopicChanged updateGroupTopicChanged = 42;
+      UpdateGroupAboutChanged updateGroupAboutChanged = 43;
+      UpdateGroupOwnerChanged updateGroupOwnerChanged = 44;
+      UpdateGroupHistoryShared updateGroupHistoryShared = 45;
+      UpdateGroupCanSendMessagesChanged updateGroupCanSendMessagesChanged = 46;
+      UpdateGroupCanViewMembersChanged updateGroupCanViewMembersChanged = 47;
+      UpdateGroupCanInviteMembersChanged updateGroupCanInviteMembersChanged = 48;
+      UpdateGroupMemberChanged updateGroupMemberChanged = 49;
+      UpdateGroupMembersBecameAsync updateGroupMembersBecameAsync = 50;
+      UpdateGroupMembersUpdated updateGroupMembersUpdated = 51;
+      UpdateGroupMemberDiff updateGroupMemberDiff = 52;
+      UpdateGroupMembersCountChanged updateGroupMembersCountChanged = 53;
+      UpdateGroupMemberAdminChanged updateGroupMemberAdminChanged = 54;
+      UpdateGroupMemberPermissionsChanged updateGroupMemberPermissionsChanged = 55;
+      UpdateGroupInviteObsolete updateGroupInviteObsolete = 56;
+      UpdateGroupUserInvitedObsolete updateGroupUserInvitedObsolete = 57;
+      UpdateGroupUserLeaveObsolete updateGroupUserLeaveObsolete = 58;
+      UpdateGroupUserKickObsolete updateGroupUserKickObsolete = 59;
+      UpdateGroupMembersUpdateObsolete updateGroupMembersUpdateObsolete = 60;
+      UpdateGroupTitleChangedObsolete updateGroupTitleChangedObsolete = 61;
+      UpdateGroupTopicChangedObsolete updateGroupTopicChangedObsolete = 62;
+      UpdateGroupAboutChangedObsolete updateGroupAboutChangedObsolete = 63;
+      UpdateGroupAvatarChangedObsolete updateGroupAvatarChangedObsolete = 64;
+      UpdateGroupShortnameChanged updateGroupShortnameChanged = 65;
+      UpdateStickerCollectionsChanged updateStickerCollectionsChanged = 66;
+      UpdateStickerPackRemoved updateStickerPackRemoved = 67;
+      UpdateStickerPackAdded updateStickerPackAdded = 68;
+      UpdatePauseNotifications updatePauseNotifications = 69;
+      UpdateRestoreNotifications updateRestoreNotifications = 70;
+      UpdateTyping updateTyping = 71;
+      UpdateTypingStop updateTypingStop = 72;
+      UpdateUserOnline updateUserOnline = 73;
+      UpdateUserOffline updateUserOffline = 74;
+      UpdateUserLastSeen updateUserLastSeen = 75;
+      UpdateGroupOnline updateGroupOnline = 76;
+      UpdateEventBusDeviceConnected updateEventBusDeviceConnected = 77;
+      UpdateEventBusDeviceDisconnected updateEventBusDeviceDisconnected = 78;
+      UpdateEventBusMessage updateEventBusMessage = 79;
+      UpdateEventBusDisposed updateEventBusDisposed = 80;
+      UpdateIncomingCallDeprecated updateIncomingCallDeprecated = 81;
+      UpdateIncomingCall updateIncomingCall = 82;
+      UpdateCallHandled updateCallHandled = 83;
+      UpdateCallDisposed updateCallDisposed = 84;
+      UpdateParameterChanged updateParameterChanged = 85;
+      UpdateRawUpdate updateRawUpdate = 86;
+      UpdateEmptyUpdate updateEmptyUpdate = 87;
+      UpdateCountersChanged updateCountersChanged = 88;
+      UpdateConfig updateConfig = 89;
+    }
+}
+
+// Fat sequence update with additional data
+message UpdateFatSeqUpdate {
+    int32 seq = 1 [(dlg).log="visible"];
+    bytes state = 2 [(dlg).log="compact"];
+    int32 update_header = 3 [(dlg).log="visible"];
+    bytes update = 4 [(dlg).log="compact"];
+    /// related users
+    repeated User users = 5 [(dlg).log="compact"];
+    /// related groups
+    repeated Group groups = 6 [(dlg).log="compact"];
+}
+
+// Out of sequence update (for typing and online statuses)
+message UpdateWeakUpdate {
+    int64 date = 1 [(dlg).log="visible"];
+    int32 update_header = 2 [(dlg).log="visible"];
+    bytes update = 3 [(dlg).log="compact"];
+}
+
+// Fat Weak Update
+message UpdateWeakFatUpdate {
+    int64 date = 1 [(dlg).log="visible"];
+    int32 update_header = 2 [(dlg).log="visible"];
+    bytes update = 3 [(dlg).log="visible"];
+    repeated User users = 4 [(dlg).log="visible"];
+    repeated Group groups = 5 [(dlg).log="visible"];
+}
+
+// Notification about requiring performing manual GetDifference
+message UpdateSeqUpdateTooLong {
+}
+
+// Update container
+message UpdateContainer {
+    int32 update_header = 1 [(dlg).log="visible"];
+    bytes update = 2 [(dlg).log="compact"];
+}
+
+// Combined update
+message UpdateCombinedUpdate {
+    /// start of related sequence intervals
+    int32 seq_start = 1 [(dlg).log="visible"];
+    /// end of related sequence intervals
+    int32 seq_end = 2 [(dlg).log="visible"];
+    bytes state = 3 [(dlg).log="visible"];
+    /// related users
+    repeated User users = 4 [(dlg).log="compact"];
+    /// related groups
+    repeated Group groups = 5 [(dlg).log="compact"];
+    repeated UpdateContainer updates = 6 [(dlg).log="visible"];
+    /// related messages
+    repeated HistoryMessage messages = 7 [(dlg).log="visible"];
+}
+
+// Get main sequence state
+message RequestGetState {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated UpdateOptimization optimizations = 1 [(dlg).log="visible"];
+}
+
+// Getting difference of sequence
+message RequestGetDifference {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int32 seq = 1 [(dlg).log="visible"];
+    bytes state = 2 [(dlg).log="compact"];
+    repeated UpdateOptimization optimizations = 3 [(dlg).log="visible"];
+    google.protobuf.Int64Value config_hash = 4 [(dlg).log="visible"];
+}
+
+/// Updates happens after requested seq number + related peers and entities
+message ResponseGetDifference {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    int32 seq = 1; /// seq of the last loaded update
+    bytes state = 2;
+    repeated User users = 3;
+    repeated Group groups = 6;
+    repeated UpdateContainer updates = 4;
+    repeated HistoryMessage messages = 7;
+    bool need_more = 5; /// false if all updates returned
+    repeated UserOutPeer users_refs = 8;
+    repeated GroupOutPeer groups_refs = 9;
+    Config config = 10; /// user's config
+    google.protobuf.Int64Value config_hash = 11;
+}
+
+// Getting difference of dialogs
+message RequestGetDialogsDifference {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    /// max of the last action dates among all user's dialogs
+    int64 clock = 1 [(dlg).log="visible"];
+}
+
+/// Dialogs + peers and entities
+message ResponseGetDialogsDifference {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated Dialog dialogs = 1;
+    repeated GroupOutPeer group_peers = 2;
+    repeated UserOutPeer user_peers = 3;
+}
+
+// Represents subset of group members
+message GroupMembersSubset {
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    repeated int32 member_ids = 2 [(dlg).log="visible"];
+}
+
+// Loading referenced entities
+message RequestGetReferencedEntitites {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    /// users needed
+    repeated UserOutPeer users = 1 [(dlg).log="compact"];
+    /// messages needed
+    repeated UUIDValue mids = 3 [(dlg).log="visible"];
+    /**
+     * Group + subset of members to return.
+     * For loading members of big groups by chunks.
+     */
+    repeated GroupMembersSubset group_members = 4 [(dlg).log="visible"];
+    /// groups needed
+    repeated GroupOutPeer groups = 5 [(dlg).log="visible"];
+}
+
+message ResponseGetReferencedEntitites {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated User users = 1;
+    repeated Group groups = 2;
+    repeated HistoryMessage messages = 3;
+}
+
+// Custom Raw Update
+message UpdateRawUpdate {
+    google.protobuf.StringValue type = 1 [(dlg).log="visible"];
+    bytes bytes = 2 [(dlg).log="visible"];
+}
+
+// Empty update
+message UpdateEmptyUpdate {
+}
+
+// Subscribing for users online
+message RequestSubscribeToOnline {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated UserOutPeer users = 1 [(dlg).log="compact"];
+}
+
+// Removing subscription for users online
+message RequestSubscribeFromOnline {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated UserOutPeer users = 1 [(dlg).log="compact"];
+}
+
+// Subscribing for groups online
+message RequestSubscribeToGroupOnline {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated GroupOutPeer groups = 1 [(dlg).log="compact"];
+}
+
+// Removing subscription for groups online
+message RequestSubscribeFromGroupOnline {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated GroupOutPeer groups = 1 [(dlg).log="compact"];
+}
+
+/// Container which contains UpdateSeqUpdate
+message SeqUpdateBox {
+  int32 seq = 1;
+  bytes state = 2;
+  google.protobuf.BytesValue update = 3; /// serialized UpdateSeqUpdate
+}
+
+service SequenceAndUpdates {
+    /// Get last seq number
+    rpc GetState (RequestGetState) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/SequenceAndUpdates/GetState"
+            body: "*"
+        };
+    }
+    /// Get all update that happens after given seq number
+    rpc GetDifference (RequestGetDifference) returns (ResponseGetDifference) {
+        option (google.api.http) = {
+            post: "/v1/grpc/SequenceAndUpdates/GetDifference"
+            body: "*"
+        };
+    }
+    /// Load all dialogs that changed after given date
+    rpc GetDialogsDifference (RequestGetDialogsDifference) returns (ResponseGetDialogsDifference) {
+        option (google.api.http) = {
+            post: "/v1/grpc/SequenceAndUpdates/GetDialogsDifference"
+            body: "*"
+        };
+    }
+    /// Load some required entities
+    rpc GetReferencedEntitites (RequestGetReferencedEntitites) returns (ResponseGetReferencedEntitites) {
+        option (google.api.http) = {
+            post: "/v1/grpc/SequenceAndUpdates/GetReferencedEntitites"
+            body: "*"
+        };
+    }
+    rpc SubscribeToOnline (RequestSubscribeToOnline) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/SequenceAndUpdates/SubscribeToOnline"
+            body: "*"
+        };
+    }
+    rpc SubscribeFromOnline (RequestSubscribeFromOnline) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/SequenceAndUpdates/SubscribeFromOnline"
+            body: "*"
+        };
+    }
+    rpc SubscribeToGroupOnline (RequestSubscribeToGroupOnline) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/SequenceAndUpdates/SubscribeToGroupOnline"
+            body: "*"
+        };
+    }
+    rpc SubscribeFromGroupOnline (RequestSubscribeFromGroupOnline) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/SequenceAndUpdates/SubscribeFromGroupOnline"
+            body: "*"
+        };
+    }
+    /// Get stream of the user's updates
+    rpc SeqUpdates (google.protobuf.Empty) returns (stream SeqUpdateBox) {
+        option (google.api.http) = {
+            post: "/v1/grpc/SequenceAndUpdates/SeqUpdates"
+            body: "*"
+        };
+    }
+}

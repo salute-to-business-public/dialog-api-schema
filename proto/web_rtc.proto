@@ -1,0 +1,451 @@
+syntax = "proto3";
+
+package dialog;
+
+// WebRTC package that enables support to audio and video calls
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "miscellaneous.proto";
+import "peers.proto";
+import "device_info.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Update about incoming call (Sent every 10 seconds)
+message UpdateIncomingCallDeprecated {
+    int64 call_id = 1 [(dlg).log="visible"];
+    google.protobuf.Int32Value attempt_index = 2 [(dlg).log="visible"];
+}
+
+// A new update about incoming call
+message UpdateIncomingCall {
+    int64 call_id = 1 [(dlg).log="visible"];
+    string event_bus_id = 2 [(dlg).log="visible"];
+    Peer peer = 3;
+    /// Call visual name
+    google.protobuf.StringValue display_name = 4 [(dlg).log="hidden"];
+    google.protobuf.Int32Value attempt_index = 5 [(dlg).log="visible"];
+    OutPeer out_peer = 6 [(dlg).log="visible"];
+    bool video = 7 [(dlg).log="visible"];
+}
+
+// Update about incoming call handled
+message UpdateCallHandled {
+    int64 call_id = 1 [(dlg).log="visible"];
+    google.protobuf.Int32Value attempt_index = 2 [(dlg).log="visible"];
+}
+
+enum CallDisposedReason {
+    CALLDISPOSEDREASON_UNKNOWN = 0;
+    CALLDISPOSEDREASON_REJECTED = 1;
+    CALLDISPOSEDREASON_BUSY = 2;
+    CALLDISPOSEDREASON_ENDED = 3;
+    CALLDISPOSEDREASON_ANSWER_TIMEOUT = 4;
+}
+
+// Update about the call ending (all participants have left)
+message UpdateCallDisposed {
+    int64 call_id = 1 [(dlg).log="visible"];
+    google.protobuf.Int32Value attempt_index = 2 [(dlg).log="visible"];
+    CallDisposedReason reason = 3;
+}
+
+// Getting Call Information
+message RequestGetCallInfo {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 call_id = 1 [(dlg).log="visible"];
+}
+
+message ResponseGetCallInfo {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    Peer peer = 1;
+    repeated GroupOutPeer groups = 2;
+    repeated UserOutPeer users = 3;
+    string event_bus_id = 4;
+    google.protobuf.StringValue display_name = 5;
+}
+
+// This struct represents a call from the history
+message CallLogEntry {
+    int64 id = 1 [(dlg).log="visible"]; /// call id
+    int64 call_date = 2 [(dlg).log="visible"];
+    OutPeer initiator = 3 [(dlg).log="visible"];
+    OutPeer recipient = 4 [(dlg).log="visible"];
+    google.protobuf.Int64Value duration = 5 [(dlg).log="visible"];
+    /// was the call answered by anybody
+    google.protobuf.BoolValue answered = 6 [(dlg).log="visible"];
+    google.protobuf.BoolValue finished = 7;
+    /// optional display name for this call
+    google.protobuf.StringValue display_name = 8 [(dlg).log="hidden"];
+    google.protobuf.BoolValue rejected = 9;
+}
+
+// Call this function to load call history
+message RequestLoadCalls {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    /// Cursor
+    google.protobuf.BytesValue next_offset = 1 [(dlg).log="visible"];
+    int32 limit = 2 [(dlg).log="visible"];
+}
+
+/// Calls + related peers
+message ResponseLoadCalls {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated CallLogEntry calls = 1;
+    repeated UserOutPeer users = 2;
+    repeated GroupOutPeer groups = 3;
+    google.protobuf.BytesValue next_offset = 4;
+}
+
+// Do Call. Right after a call client need to start sending CallInProgress
+message RequestDoCall {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    OutPeer peer = 1 [(dlg).log="visible"];
+    int64 timeout = 2;
+}
+
+message ResponseDoCall {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    int64 call_id = 1;
+    string event_bus_id = 2;
+    int64 device_id = 3;
+}
+
+// Joining Call
+message RequestJoinCall {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 call_id = 1 [(dlg).log="visible"];
+}
+
+enum RejectCallReason {
+    REJECTCALLREASON_UNKNOWN = 0;
+    REJECTCALLREASON_DECLINE = 1;
+    REJECTCALLREASON_BUSY = 2;
+}
+
+// Rejecting Call
+message RequestRejectCall {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 call_id = 1 [(dlg).log="visible"];
+    RejectCallReason reason = 2;
+}
+
+message RequestDeleteCall {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 call_id = 1 [(dlg).log="visible"];
+}
+
+// Changes the call display name
+message RequestChangeCallDisplayName {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 call_id = 1 [(dlg).log="visible"];
+    google.protobuf.StringValue display_name = 2 [(dlg).log="hidden"];
+}
+
+// ICE Server description
+message ICEServer {
+    /// Url to server
+    string url = 1 [(dlg).log="visible"];
+    /// Optional username
+    google.protobuf.StringValue username = 2 [(dlg).log="danger"];
+    /// Optional credential
+    google.protobuf.StringValue credential = 3 [(dlg).log="danger"];
+}
+
+// Structure representing an ICE candidate
+message ICECandidate {
+    int32 sdp_m_line_index = 1;
+    string sdp_mid = 2;
+    string sdp = 3;
+}
+
+message WebRTCSignaling {
+    oneof body {
+        AdvertiseSelf advertiseSelf = 1;
+        AdvertiseMaster advertiseMaster = 2;
+        AdvertisePeer advertisePeer = 3;
+        Candidate candidate = 4;
+        GotICECandidate gotICECandidate = 5;
+        RemovedICECandidates removedICECandidates = 6;
+        Offer offer = 7;
+        Answer answer = 8;
+        NeedOffer needOffer = 9;
+        NegotinationSuccessful negotinationSuccessful = 10;
+        EnableConnection enableConnection = 11;
+        OnRenegotiationNeeded onRenegotiationNeeded = 12;
+        CloseSession closeSession = 13;
+        NeedDisconnect needDisconnect = 14;
+        DTMF dTMF = 15;
+        CallStats callStats = 16;
+        CallNameChanged callNameChanged = 17;
+    }
+}
+
+// Advertizing self to a master mode
+message AdvertiseSelf {
+    /// Optional peer Settings
+    PeerSettings peer_settings = 1 [(dlg).log="visible"];
+}
+
+// Sent by master
+message AdvertiseMaster {
+    /// a list of ICE servers
+    repeated ICEServer server = 1 [(dlg).log="visible"];
+    /// a verison of the call signaling
+    google.protobuf.Int32Value call_api_version = 2 [(dlg).log="visible"];
+    google.protobuf.StringValue call_name = 3;
+}
+
+// Peer advertisement
+message AdvertisePeer {
+    /// device id of the peer
+    int64 device_id = 1 [(dlg).log="visible"];
+    /// settings for the peer
+    PeerSettings peer_settings = 2 [(dlg).log="visible"];
+    /// ice servers for the peer
+    repeated ICEServer ice_servers = 3 [(dlg).log="visible"];
+}
+
+// Candidate signal
+message Candidate {
+    /// Session Id of candidate
+    int64 session_id = 1 [(dlg).log="visible"];
+    /// Index of candidate
+    int32 index = 2 [(dlg).log="visible"];
+    /// Id of candidate
+    string id = 3 [(dlg).log="visible"];
+    /// SDP of candidate
+    string sdp = 4 [(dlg).log="visible"];
+}
+
+// WebRTC IceCandidate add signal.
+// Used to let the other party know about new ICE candidate, usually from onIceCandidate callback of WebRTC
+message GotICECandidate {
+    int64 session_id = 1;
+    ICECandidate candidate = 2;
+}
+
+// WebRTC IceCandidate remove signal
+// Used to let the other party know about ICE candidate list change, usually from onIceCandidatesRemoved callback
+message RemovedICECandidates {
+    int64 session_id = 1;
+    repeated ICECandidate candidate = 2;
+}
+
+// Offer signal
+message Offer {
+    /// Session Id of offer
+    int64 session_id = 1 [(dlg).log="visible"];
+    /// Offer SDP
+    string sdp = 2 [(dlg).log="visible"];
+    /// Deprecated Own Peer settings
+    PeerSettings peer_settings = 3 [(dlg).log="visible"];
+}
+
+// Answer signal
+message Answer {
+    /// Session Id of answer
+    int64 session_id = 1 [(dlg).log="visible"];
+    /// Answer SDP
+    string sdp = 2 [(dlg).log="visible"];
+}
+
+// Notification from master that offer is required
+message NeedOffer {
+    /// Destination Device Id
+    int64 device = 1 [(dlg).log="visible"];
+    /// Session Id
+    int64 session_id = 2 [(dlg).log="visible"];
+    /// Deprecated peer settings
+    PeerSettings peer_settings = 3 [(dlg).log="visible"];
+}
+
+// Notification about on negotiation is successful
+message NegotinationSuccessful {
+    /// Device Id
+    int64 device = 1 [(dlg).log="visible"];
+    /// Session Id
+    int64 session_id = 2 [(dlg).log="visible"];
+}
+
+// Notification about enabling connection to peer
+message EnableConnection {
+    /// Device Id
+    int64 device = 1 [(dlg).log="visible"];
+    /// Session Id
+    int64 session_id = 2 [(dlg).log="visible"];
+}
+
+// Need renegotiate session. For example when streams are changed.
+message OnRenegotiationNeeded {
+    /// Device Id
+    int64 device = 1 [(dlg).log="visible"];
+    /// Session Id
+    int64 session_id = 2 [(dlg).log="visible"];
+}
+
+// Close this session and be ready to
+message CloseSession {
+    /// Device Id
+    int64 device = 1 [(dlg).log="visible"];
+    /// Session Id for renegotiation
+    int64 session_id = 2 [(dlg).log="visible"];
+}
+
+// Notification about requirement about required disconnection from peer
+message NeedDisconnect {
+    int64 device = 1 [(dlg).log="hidden"]; /// Device Id
+}
+
+enum DTMFCode {
+    DTMFCODE_UNKNOWN = 0;
+    DTMFCODE_ZERO = 1;
+    DTMFCODE_ONE = 2;
+    DTMFCODE_TWO = 3;
+    DTMFCODE_THREE = 4;
+    DTMFCODE_FOUR = 5;
+    DTMFCODE_FIVE = 6;
+    DTMFCODE_SIX = 7;
+    DTMFCODE_SEVEN = 8;
+    DTMFCODE_EIGHT = 9;
+    DTMFCODE_NINE = 10;
+    DTMFCODE_ASTERISK = 11;
+    DTMFCODE_POUND = 12;
+    DTMFCODE_A = 13;
+    DTMFCODE_B = 14;
+    DTMFCODE_C = 15;
+    DTMFCODE_D = 16;
+}
+
+// Emulates DTMF key press
+message DTMF {
+    DTMFCode code = 1 [(dlg).log="visible"];
+    int64 duration = 2 [(dlg).log="visible"]; /// the duration (in milliseconds)
+}
+
+enum CallStatsType {
+    CALLSTATSTYPE_UNKNOWN = 0;
+    CALLSTATSTYPE_TURN_SERVER_ROUND_TRIP_TIME = 1;
+    CALLSTATSTYPE_ICE_CONNECTION_FAILED = 2;
+    CALLSTATSTYPE_ICE_CONNECTION_CONNECTED = 3;
+    CALLSTATSTYPE_ICE_CONNECTION_DID_NOT_CONNECT = 4;
+    CALLSTATSTYPE_ICE_CONNECTION_CONNECTED_TIME = 5;
+    CALLSTATSTYPE_PEER_CONNECTION_CREATE_ANSWER_FAILED = 6;
+    CALLSTATSTYPE_PEER_CONNECTION_CREATE_OFFER_FAILED = 7;
+    CALLSTATSTYPE_PEER_CONNECTION_SET_REMOTE_DESCRIPTION_FAILED = 8;
+    CALLSTATSTYPE_PEER_CONNECTION_SET_LOCAL_DESCRIPTION_FAILED = 9;
+}
+
+// Used to send call statistics to the server
+message CallStats {
+    /// the type of the event
+    CallStatsType type = 1 [(dlg).log="visible"];
+    /// the value of the event
+    string value = 2 [(dlg).log="visible"];
+}
+
+// Used to notify participants about call name changes
+message CallNameChanged {
+    google.protobuf.StringValue call_name = 1;
+}
+
+// Active Calls. Used in broadcasting states of current calls.
+message ActiveCall {
+    int64 call_id = 1 [(dlg).log="visible"];
+    Peer peer = 2 [(dlg).log="visible"]; /// Call's peer
+    /// Call Members
+    repeated CallMember call_members = 3 [(dlg).log="visible"];
+}
+
+enum CallMemberState {
+    CALLMEMBERSTATE_UNKNOWN = 0;
+    CALLMEMBERSTATE_RINGING = 1;
+    CALLMEMBERSTATE_RINGING_REACHED = 4;
+    CALLMEMBERSTATE_CONNECTING = 2;
+    CALLMEMBERSTATE_CONNECTED = 3;
+    CALLMEMBERSTATE_ENDED = 5;
+}
+
+// Call Member state holder
+message CallMemberStateHolder {
+    /// State Value
+    CallMemberState state = 1 [(dlg).log="visible"];
+    /// Fallback flag for future compatibility of state
+    google.protobuf.BoolValue fallback_is_ringing = 2 [(dlg).log="visible"];
+    /// Fallback flag for future compatibility of state
+    google.protobuf.BoolValue fallback_is_connected = 3 [(dlg).log="visible"];
+    /// Fallback flag for future compatibility of state
+    google.protobuf.BoolValue fallback_is_connecting = 4 [(dlg).log="visible"];
+    /// Fallback flag for future compatibility of state
+    google.protobuf.BoolValue fallback_is_ringing_reached = 5 [(dlg).log="visible"];
+    /// Fallback flag for future compatibility of state
+    google.protobuf.BoolValue fallback_is_ended = 6 [(dlg).log="visible"];
+}
+
+// Call Member
+message CallMember {
+    int32 user_id = 1 [(dlg).log="visible"]; /// Member User Id
+    CallMemberStateHolder state = 3 [(dlg).log="visible"]; /// State of member
+}
+
+// Peer Settings
+message PeerSettings {
+    /// If peer can preconnect before answer
+    google.protobuf.BoolValue can_pre_connect = 4 [(dlg).log="visible"];
+    /// The peer already has an offer. The server should request offer from this peer.
+    google.protobuf.BoolValue sends_offer = 5 [(dlg).log="visible"];
+    /// Peer prefers to receive an offer/answer with ICE candidates collected
+    google.protobuf.BoolValue wait_for_candidates = 6 [(dlg).log="visible"];
+    /// Description of this peer. Version, browser, OS, type, etc.
+    ClientInfo client_info = 7 [(dlg).log="visible"];
+}
+
+service WebRTC {
+    rpc GetCallInfo (RequestGetCallInfo) returns (ResponseGetCallInfo) {
+        option (google.api.http) = {
+            post: "/v1/grpc/WebRTC/GetCallInfo"
+            body: "*"
+        };
+    }
+    rpc LoadCalls (RequestLoadCalls) returns (ResponseLoadCalls) {
+        option (google.api.http) = {
+            post: "/v1/grpc/WebRTC/LoadCalls"
+            body: "*"
+        };
+    }
+    rpc DoCall (RequestDoCall) returns (ResponseDoCall) {
+        option (google.api.http) = {
+            post: "/v1/grpc/WebRTC/DoCall"
+            body: "*"
+        };
+    }
+    rpc JoinCall (RequestJoinCall) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/WebRTC/JoinCall"
+            body: "*"
+        };
+    }
+    rpc RejectCall (RequestRejectCall) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/WebRTC/RejectCall"
+            body: "*"
+        };
+    }
+    rpc ChangeCallDisplayName (RequestChangeCallDisplayName) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/WebRTC/ChangeCallDisplayName"
+            body: "*"
+        };
+    }
+    rpc DeleteCall (RequestDeleteCall) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/WebRTC/DeleteCall"
+            body: "*"
+        };
+    }
+}

@@ -1,0 +1,223 @@
+syntax = "proto3";
+
+package dialog;
+
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Location of file on server
+message FileLocation {
+    int64 file_id = 1 [(dlg).log="visible"]; /// Unique Id of file
+    int64 access_hash = 2 [(dlg).log="danger"]; /// Access hash of file
+}
+
+// Image location
+message ImageLocation {
+    FileLocation file_location = 1 [(dlg).log="visible"]; /// Location of file
+    int32 width = 2 [(dlg).log="visible"]; /// Width of avatar image
+    int32 height = 3 [(dlg).log="visible"]; /// Height of avatar image
+    int32 file_size = 4 [(dlg).log="visible"]; /// Size of file
+}
+
+// Audio location
+message AudioLocation {
+    FileLocation file_location = 1 [(dlg).log="visible"]; /// File location
+    int32 duration = 2 [(dlg).log="visible"]; /// audio duration in seconds
+    string mime_type = 3 [(dlg).log="visible"]; /// mime type
+    int32 file_size = 4 [(dlg).log="visible"]; /// file size
+}
+
+// Avatar Image
+message AvatarImage {
+    FileLocation file_location = 1 [(dlg).log="visible"]; /// Location of file
+    int32 width = 2 [(dlg).log="visible"]; /// Width of avatar image
+    int32 height = 3 [(dlg).log="visible"]; /// Height of avatar image
+    int32 file_size = 4 [(dlg).log="visible"]; /// Size of file
+}
+
+// Avatar of User or Group
+message Avatar {
+    /// Optional small image of avatar box in 100x100
+    AvatarImage small_image = 1 [(dlg).log="compact"];
+    /// Optional large image of avatar box in 200x200
+    AvatarImage large_image = 2 [(dlg).log="compact"];
+    /// Optional full screen image of avatar
+    AvatarImage full_image = 3 [(dlg).log="compact"];
+}
+
+// Fast thumb of media messages. Less than 90x90 and compressed by JPEG with low quality
+message FastThumb {
+    int32 w = 1 [(dlg).log="visible"]; /// Width of thumb
+    int32 h = 2 [(dlg).log="visible"]; /// Height of thump
+    bytes thumb = 3 [(dlg).log="compact"]; /// compressed image data
+}
+
+enum Colors {
+    COLORS_UNKNOWN = 0;
+    COLORS_RED = 1;
+    COLORS_YELLOW = 2;
+    COLORS_GREEN = 3;
+}
+
+message Color {
+    oneof body {
+        RgbColor rgb = 1;
+        PredefinedColor predefined = 2;
+    }
+}
+
+// RGB Color
+message RgbColor {
+    int32 rgb = 1 [(dlg).log="visible"]; /// RGB color value
+}
+
+// Predefined color
+message PredefinedColor {
+    Colors color = 1 [(dlg).log="hidden"]; /// Predefined color value
+}
+
+// HTTP Header record
+message HTTPHeader {
+    string key = 1 [(dlg).log="visible"]; /// HTTP Header name
+    string value = 2 [(dlg).log="visible"]; /// HTTP Header value
+}
+
+// File url description
+message FileUrlDescription {
+    int64 file_id = 1 [(dlg).log="visible"]; /// File id of url
+    string url = 2 [(dlg).log="visible"]; /// Url for downloading
+    int32 timeout = 3 [(dlg).log="visible"]; /// Timeout of url
+    /// Unsigned URL (used to honor web caches)
+    google.protobuf.StringValue unsigned_url = 4 [(dlg).log="hidden"];
+    /// Headers that is required to download files with unsigned url
+    repeated HTTPHeader unsigned_url_headers = 5 [(dlg).log="hidden"];
+}
+
+// Requesting file URL for downloading
+message RequestGetFileUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    FileLocation file = 1 [(dlg).log="visible"];
+}
+
+message ResponseGetFileUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    string url = 1;
+    int32 timeout = 2;
+    google.protobuf.StringValue unsigned_url = 3;
+    repeated HTTPHeader unsigned_url_headers = 4;
+}
+
+// Requesting multiple fle URL for downloading
+message RequestGetFileUrls {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated FileLocation files = 1 [(dlg).log="hidden"];
+}
+
+message ResponseGetFileUrls {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated FileUrlDescription file_urls = 1;
+}
+
+// Get File URL Builder that allows to build file urls from client side
+message RequestGetFileUrlBuilder {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated string supported_signature_algorithms = 1 [(dlg).log="hidden"];
+}
+
+message ResponseGetFileUrlBuilder {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    string base_url = 1;
+    string algo = 2;
+    string seed = 5;
+    bytes signature_secret = 3;
+    int32 timeout = 4;
+}
+
+// Requesting pload url
+message RequestGetFileUploadUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int32 expected_size = 1 [(dlg).log="visible"];
+}
+
+message ResponseGetFileUploadUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    string url = 1;
+    bytes upload_key = 2;
+}
+
+// Comminting uploaded file to storage
+message RequestCommitFileUpload {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    bytes upload_key = 1;
+    string file_name = 2;
+}
+
+message ResponseCommitFileUpload {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    FileLocation uploaded_file_location = 1;
+}
+
+// Upload file part
+message RequestGetFileUploadPartUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int32 part_number = 1;
+    int32 part_size = 2;
+    bytes upload_key = 3 [(dlg).log="compact"];
+}
+
+message ResponseGetFileUploadPartUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    string url = 1;
+}
+
+service MediaAndFiles {
+    /// Get link to file for downloading
+    rpc GetFileUrl (RequestGetFileUrl) returns (ResponseGetFileUrl) {
+        option (google.api.http) = {
+            post: "/v1/grpc/MediaAndFiles/GetFileUrl"
+            body: "*"
+        };
+    }
+    /// Get link to files for downloading
+    rpc GetFileUrls (RequestGetFileUrls) returns (ResponseGetFileUrls) {
+        option (google.api.http) = {
+            post: "/v1/grpc/MediaAndFiles/GetFileUrls"
+            body: "*"
+        };
+    }
+    /// Create builder for file url
+    rpc GetFileUrlBuilder (RequestGetFileUrlBuilder) returns (ResponseGetFileUrlBuilder) {
+        option (google.api.http) = {
+            post: "/v1/grpc/MediaAndFiles/GetFileUrlBuilder"
+            body: "*"
+        };
+    }
+    /// Get url for uploading
+    rpc GetFileUploadUrl (RequestGetFileUploadUrl) returns (ResponseGetFileUploadUrl) {
+        option (google.api.http) = {
+            post: "/v1/grpc/MediaAndFiles/GetFileUploadUrl"
+            body: "*"
+        };
+    }
+    /// Finish uploading a file
+    rpc CommitFileUpload (RequestCommitFileUpload) returns (ResponseCommitFileUpload) {
+        option (google.api.http) = {
+            post: "/v1/grpc/MediaAndFiles/CommitFileUpload"
+            body: "*"
+        };
+    }
+    /// Get url for uploading chunk of file
+    rpc GetFileUploadPartUrl (RequestGetFileUploadPartUrl) returns (ResponseGetFileUploadPartUrl) {
+        option (google.api.http) = {
+            post: "/v1/grpc/MediaAndFiles/GetFileUploadPartUrl"
+            body: "*"
+        };
+    }
+}

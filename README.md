@@ -1,0 +1,2 @@
+dialog api schema
+=================

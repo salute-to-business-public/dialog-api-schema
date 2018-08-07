@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package dialog;
+
+import "google/api/annotations.proto";
+import "peers.proto";
+import "definitions.proto";
+import "miscellaneous.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Joining Event Bus
+message RequestJoinEventBus {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string id = 1 [(dlg).log="visible"]; /// Bus id
+    int64 timeout = 2 [(dlg).log="visible"]; /// Join TTL
+}
+
+message ResponseJoinEventBus {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    int64 device_id = 1; /// Generated device id for this event bus
+}
+
+// Keep Alive Event Bus
+message RequestKeepAliveEventBus {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string id = 1 [(dlg).log="visible"]; /// Bus id
+    int64 timeout = 2 [(dlg).log="visible"]; /// Keep TTL
+}
+
+// Event Bus Destination
+message RequestPostToEventBus {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string id = 1 [(dlg).log="visible"]; /// Bus id
+    /// Destination device ids
+    repeated int64 destinations = 2 [(dlg).log="visible"];
+    /// Message to send
+    bytes message = 3 [(dlg).log="hidden"];
+}
+
+// Update about pubsub device connected
+message UpdateEventBusDeviceConnected {
+    string id = 1 [(dlg).log="visible"]; /// Bus id
+    int32 user_id = 2 [(dlg).log="visible"]; /// Connected user id
+    int64 device_id = 3 [(dlg).log="visible"]; /// Connected device id
+    Peer peer = 4 [(dlg).log="visible"]; /// Connected peer
+}
+
+// Update about device disconnected
+message UpdateEventBusDeviceDisconnected {
+    string id = 1 [(dlg).log="visible"]; /// Bus id
+    int32 user_id = 2 [(dlg).log="visible"];
+    int64 device_id = 3 [(dlg).log="visible"];
+    Peer peer = 4 [(dlg).log="visible"];
+}
+
+// Event Bus Message
+message UpdateEventBusMessage {
+    string id = 1 [(dlg).log="visible"]; /// Bus id
+    int32 sender_id = 2 [(dlg).log="visible"];
+    int64 sender_device_id = 3 [(dlg).log="visible"];
+    bytes message = 4 [(dlg).log="hidden"];
+}
+
+// Event Bus dispose
+message UpdateEventBusDisposed {
+    string id = 1 [(dlg).log="visible"];
+}
+
+service EventBus {
+    rpc JoinEventBus (RequestJoinEventBus) returns (ResponseJoinEventBus) {
+        option (google.api.http) = {
+            post: "/v1/grpc/EventBus/JoinEventBus"
+            body: "*"
+        };
+    }
+    rpc KeepAliveEventBus (RequestKeepAliveEventBus) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/EventBus/KeepAliveEventBus"
+            body: "*"
+        };
+    }
+    rpc PostToEventBus (RequestPostToEventBus) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/EventBus/PostToEventBus"
+            body: "*"
+        };
+    }
+}

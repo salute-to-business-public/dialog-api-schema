@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package dialog;
+
+// Parameter Syncronization across devices. Can be used for simple sync
+// across devices without rewriting server side code.
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "miscellaneous.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Syncing Parameter
+message Parameter {
+    string key = 1 [(dlg).log="visible"]; /// Key of parameter
+    string value = 2 [(dlg).log="hidden"]; /// Value of parameter
+}
+
+// Getting Parameters
+message RequestGetParameters {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+}
+
+message ResponseGetParameters {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated Parameter parameters = 1;
+}
+
+// Change parameter value
+message RequestEditParameter {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string key = 1 [(dlg).log="visible"];
+    google.protobuf.StringValue value = 2 [(dlg).log="hidden"];
+}
+
+// Update about parameter change
+message UpdateParameterChanged {
+    string key = 1 [(dlg).log="visible"];
+    google.protobuf.StringValue value = 2 [(dlg).log="hidden"];
+}
+
+service ConfigSync {
+    rpc GetParameters (RequestGetParameters) returns (ResponseGetParameters) {
+        option (google.api.http) = {
+            post: "/v1/grpc/ConfigSync/GetParameters"
+            body: "*"
+        };
+    }
+    rpc EditParameter (RequestEditParameter) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/ConfigSync/EditParameter"
+            body: "*"
+        };
+    }
+}

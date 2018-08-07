@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package dialog;
+
+// Submiting various information about device for providing better experience.
+// For example, getting timezone or preffered languages
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "miscellaneous.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Notifying about device information
+message RequestNotifyAboutDeviceInfo {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    /** First language from this array will be used for some notifications from server **/
+    repeated string preferred_languages = 1 [(dlg).log="visible"];
+    /** Your timezone **/
+    google.protobuf.StringValue time_zone = 2 [(dlg).log="visible"];
+}
+
+enum PlatformType {
+    PLATFORMTYPE_UNKNOWN = 0;
+    PLATFORMTYPE_ANDROID = 1;
+    PLATFORMTYPE_IOS = 2;
+    PLATFORMTYPE_WEB = 3;
+    PLATFORMTYPE_CLC = 4;
+    PLATFORMTYPE_TESTS = 42;
+}
+
+// Generic client info, containing information about platform type, version, sdk etc
+message ClientInfo {
+    /// The platform enum. Can be either Android, Web or iOS
+    PlatformType platform = 1 [(dlg).log="visible"];
+    /// For android: vendor and model; For iOS: model; For Web: platform and user agent
+    string device_name = 2 [(dlg).log="visible"];
+    /// Optional application name
+    string app_name = 3 [(dlg).log="visible"];
+    /// Application version
+    google.protobuf.StringValue app_version = 4 [(dlg).log="visible"];
+    /// Optional SDK version
+    google.protobuf.StringValue sdk_version = 5 [(dlg).log="visible"];
+    /// Optional ISO-639 language code and ISO-3166 country code: ru-RU
+    repeated string preferred_languages = 6 [(dlg).log="visible"];
+    /// Optional TimeZone id
+    google.protobuf.StringValue time_zone = 7 [(dlg).log="visible"];
+}
+
+service DeviceInfo {
+    /// Set info about current device
+    rpc NotifyAboutDeviceInfo (RequestNotifyAboutDeviceInfo) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/DeviceInfo/NotifyAboutDeviceInfo"
+            body: "*"
+        };
+    }
+}

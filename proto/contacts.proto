@@ -1,0 +1,192 @@
+syntax = "proto3";
+
+package dialog;
+
+// Before working with contact list is is useful to import contacts from phone first by calling
+// method ImportContacts.
+//
+// All phone numbers MUST be preprocessed before import by some library (like libphonenumber)
+// and build international phone number depending on current users phone and/or locale.
+//
+// For loading contact list from server use GetContacts.
+// If during this call there are some updates about contact list change
+// it is recommended to call it again. Also applications need to sync contacts on application start.
+//
+// For searching for users without adding to contacts list use method FindContacts.
+//
+// For adding/deleting contacts AddContact and DeleteContact.
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "miscellaneous.proto";
+import "peers.proto";
+import "users.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Phone for import
+message PhoneToImport {
+    /// phone number for import in international format
+    int64 phone_number = 1 [(dlg).log="visible"];
+    /// optional name for contact
+    google.protobuf.StringValue name = 2 [(dlg).log="visible"];
+}
+
+// Email for import
+message EmailToImport {
+    /// email for importing
+    string email = 1 [(dlg).log="visible"];
+    /// optional name for contact
+    google.protobuf.StringValue name = 2 [(dlg).log="visible"];
+}
+
+// Importing phones and emails for building contact list
+// Maximum amount of items for import per method call equals to 100.
+message RequestImportContacts {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated PhoneToImport phones = 1 [(dlg).log="compact"];
+    repeated EmailToImport emails = 2 [(dlg).log="compact"];
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UpdateOptimization optimizations = 3 [(dlg).log="visible"];
+}
+
+message ResponseImportContacts {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    /// Registered contacts
+    repeated User users = 1;
+    int32 seq = 2; /// Deprecated
+    /// Server state related to current client, used by server only
+    bytes state = 3;
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UserOutPeer user_peers = 4;
+}
+
+// Importing phones and emails for building contact list
+// Import evaluated lazily, response does not contain any info
+// Maximum amount of items for import per method call equals to 100.
+message RequestDeferredImportContacts {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated PhoneToImport phones = 1 [(dlg).log="compact"];
+    repeated EmailToImport emails = 2 [(dlg).log="compact"];
+}
+
+message ResponseDeferredImportContacts {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    string task_id = 1;
+}
+
+// Getting current contact list
+// SHA256 hash of list of a comma-separated list of contact UIDs in ascending
+// order may be passed in contactsHash parameter.
+// If the contact list was not changed, isNotChanged will be true.
+message RequestGetContacts {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string contacts_hash = 1 [(dlg).log="visible"];
+    repeated UpdateOptimization optimizations = 2 [(dlg).log="visible"];
+}
+
+message ResponseGetContacts {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated User users = 1;
+    bool is_not_changed = 2;
+    repeated UserOutPeer user_peers = 3;
+}
+
+// Removing contact from contact list
+message RequestRemoveContact {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int32 uid = 1 [(dlg).log="visible"];
+    int64 access_hash = 2 [(dlg).log="danger"];
+}
+
+// Adding contact to contact list
+message RequestAddContact {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int32 uid = 1 [(dlg).log="visible"];
+    int64 access_hash = 2 [(dlg).log="danger"];
+}
+
+// Searching contacts by user's query
+message RequestSearchContacts {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string request = 1 [(dlg).log="visible"];
+    repeated UpdateOptimization optimizations = 2;
+}
+
+message ResponseSearchContacts {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated User users = 1;
+    repeated UserOutPeer user_peers = 2;
+}
+
+// Update about contact registration
+message UpdateContactRegistered {
+    int32 uid = 1 [(dlg).log="visible"]; /// User id of a registered contact
+    bool is_silent = 2 [(dlg).log="visible"]; /// deprecated
+    int64 date = 3 [(dlg).log="visible"]; /// deprecated
+    UUIDValue mid = 5 [(dlg).log="visible"]; /// deprecated
+}
+
+// Update about contacts added
+message UpdateContactsAdded {
+    /// User ids of the registered contacts
+    repeated int32 uids = 1 [(dlg).log="compact"];
+    /// Id of the task that finished
+    google.protobuf.StringValue task_id = 4 [(dlg).log="compact"];
+}
+
+// Update about suspending task - normally it should be ignored
+message UpdateContactsAddTaskSuspended {
+    string task_id = 1 [(dlg).log="compact"];
+}
+
+// Update about contacts removed
+message UpdateContactsRemoved {
+    repeated int32 uids = 1 [(dlg).log="compact"];
+}
+
+service Contacts {
+    /// Import contacts and wait while query is not finished
+    rpc ImportContacts (RequestImportContacts) returns (ResponseImportContacts) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Contacts/ImportContacts"
+            body: "*"
+        };
+    }
+    /// Same as above, but without waiting response
+    rpc DeferredImportContacts (RequestDeferredImportContacts) returns (ResponseDeferredImportContacts) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Contacts/DeferredImportContacts"
+            body: "*"
+        };
+    }
+    rpc GetContacts (RequestGetContacts) returns (ResponseGetContacts) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Contacts/GetContacts"
+            body: "*"
+        };
+    }
+    rpc RemoveContact (RequestRemoveContact) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Contacts/RemoveContact"
+            body: "*"
+        };
+    }
+    rpc AddContact (RequestAddContact) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Contacts/AddContact"
+            body: "*"
+        };
+    }
+    /// Search contacts by query string
+    rpc SearchContacts (RequestSearchContacts) returns (ResponseSearchContacts) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Contacts/SearchContacts"
+            body: "*"
+        };
+    }
+}

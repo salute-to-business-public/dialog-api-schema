@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package dialog;
+
+// Package contains methods for providing integration
+
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "peers.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Group token response
+message ResponseIntegrationToken {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    string token = 1 [(dlg).log="danger"];
+    string url = 2 [(dlg).log="danger"];
+}
+
+// Getting current group token
+message RequestGetIntegrationToken {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    OutPeer group_peer = 1 [(dlg).log="visible"];
+}
+
+// Revoke group token
+message RequestRevokeIntegrationToken {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    OutPeer group_peer = 1 [(dlg).log="visible"];
+}
+
+service Integrations {
+    /// Get token for posting to group
+    rpc GetIntegrationToken (RequestGetIntegrationToken) returns (ResponseIntegrationToken) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Integrations/GetIntegrationToken"
+            body: "*"
+        };
+    }
+    /// Revoke token
+    rpc RevokeIntegrationToken (RequestRevokeIntegrationToken) returns (ResponseIntegrationToken) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Integrations/RevokeIntegrationToken"
+            body: "*"
+        };
+    }
+}

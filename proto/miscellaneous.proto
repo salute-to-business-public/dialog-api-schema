@@ -1,0 +1,184 @@
+syntax = "proto3";
+
+package dialog;
+
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "peers.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Empty response
+message ResponseVoid {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+}
+
+// Sequence response. Methods that return this value must process response in particular order
+message ResponseSeq {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    int32 seq = 1 [(dlg).log="visible"];
+    bytes state = 2 [(dlg).log="visible"];
+    int64 date = 3 [(dlg).log="visible"];
+}
+
+// Sequence response with date. Methods that return this value must process response in particular order
+message ResponseSeqDate {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    int32 seq = 1 [(dlg).log="visible"];
+    bytes state = 2 [(dlg).log="visible"];
+    int64 date = 3 [(dlg).log="visible"];
+    UUIDValue mid = 4 [(dlg).log="visible"];
+}
+
+// Response with seq, date and messageId
+message ResponseSeqDateMid {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    int32 seq = 1 [(dlg).log="visible"];
+    bytes state = 2 [(dlg).log="visible"];
+    int64 date = 3 [(dlg).log="visible"];
+    UUIDValue mid = 4 [(dlg).log="visible"];
+}
+
+// Boolean response
+message ResponseBool {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    bool value = 1 [(dlg).log="visible"];
+}
+
+// Configuration of system
+// maxGroupSize Current maximum group size
+// discover Discover configuration
+// shareEndpoint Share endpoint
+// callsConfig Calls configuration
+// groupInviteConfig Group invite configuration
+// serverMetaInfo Server meta information (version, etc.)
+// customProfileSchema Custom profile JSON Schema
+// servicePeers Service peers supported interpreted by the client
+message Config {
+    int32 max_group_size = 1 [(dlg).log="visible"];
+    Discover discover = 2 [(dlg).log="visible"];
+    google.protobuf.StringValue share_endpoint = 4 [(dlg).log="visible"];
+    CallsConfig calls_config = 5 [(dlg).log="visible"];
+    InvitesConfig group_invite_config = 6 [(dlg).log="visible"];
+    ServerMetaInfo server_meta_info = 7 [(dlg).log="visible"];
+    string custom_profile_schema = 8 [(dlg).log="visible"];
+    ServicePeers service_peers = 9 [(dlg).log="visible"];
+    repeated Any extensions = 3;
+}
+
+// Service peers
+message ServicePeers {
+    OutPeer security = 1;
+    OutPeer support = 2;
+    OutPeer stash = 3;
+}
+
+// Some info about the servr
+// releaseDate Server release date in milliseconds
+// apiVersion Server api version
+message ServerMetaInfo {
+    int64 release_date = 1 [(dlg).log="visible"];
+    google.protobuf.Int64Value api_version = 2 [(dlg).log="visible"];
+}
+
+enum RtcpMuxPolicy {
+    RTCPMUXPOLICY_UNKNOWN = 0;
+    RTCPMUXPOLICY_NEGOTIATE = 1;
+    RTCPMUXPOLICY_REQUIRE = 2;
+}
+
+// Calls configuration
+// callsEnabled If true then client should enable calls
+// videoCallsEnabled If true then client should enable video calls
+// groupCallsEnabled If true then client should enable group calls
+// groupCallsMaxMembers Determines how many members may participate in call
+// rtcpMuxPolicy The RTCP mux policy to use when gathering ICE candidates
+// emojiSecurityEnabled If true then client should send and render emoji security
+// screenSharingEnabled If true then client should enable screen sharing
+message CallsConfig {
+    google.protobuf.BoolValue calls_enabled = 1 [(dlg).log="visible"];
+    google.protobuf.BoolValue video_calls_enabled = 2 [(dlg).log="visible"];
+    google.protobuf.BoolValue group_calls_enabled = 3 [(dlg).log="visible"];
+    google.protobuf.Int32Value group_calls_max_members = 4 [(dlg).log="visible"];
+    RtcpMuxPolicy rtcp_mux_policy = 5 [(dlg).log="visible"];
+    google.protobuf.BoolValue emoji_security_enabled = 6 [(dlg).log="visible"];
+    google.protobuf.BoolValue screen_sharing_enabled = 7 [(dlg).log="visible"];
+}
+
+// Group invites configuration
+// baseUrl Base URL part
+// groupInviteUrlPrefix Prefix for private group invite detection
+// resolveUrlPrefix Prefix for public groups and users link detection
+// shareInviteUrl Independent URL for external app sharing
+message InvitesConfig {
+    google.protobuf.StringValue base_url = 1 [(dlg).log="visible"];
+    google.protobuf.StringValue group_invite_url_prefix = 2 [(dlg).log="visible"];
+    google.protobuf.StringValue resolve_url_prefix = 3 [(dlg).log="visible"];
+    google.protobuf.StringValue share_invite_url = 4 [(dlg).log="visible"];
+}
+
+// Discover description
+// peers peers
+message Discover {
+    repeated OutPeer peers = 1 [(dlg).log="visible"];
+}
+
+// Extention
+// id Extension id
+// data Extension data
+message Extension {
+    int32 id = 1 [(dlg).log="visible"];
+    bytes data = 2 [(dlg).log="visible"];
+}
+
+// Any
+// typeUrl type url
+// data data
+message Any {
+    string type_url = 1 [(dlg).log="visible"];
+    bytes data = 2 [(dlg).log="hidden"];
+}
+
+// Update about config change
+message UpdateConfig {
+    Config config = 1 [(dlg).log="visible"];
+    google.protobuf.Int64Value config_hash = 2 [(dlg).log="visible"];
+}
+
+enum UpdateOptimization {
+    UPDATEOPTIMIZATION_UNKNOWN = 0;
+    UPDATEOPTIMIZATION_NONE = 1;
+    UPDATEOPTIMIZATION_STRIP_ENTITIES = 2;
+    UPDATEOPTIMIZATION_ENABLE_COMBINED = 3;
+    UPDATEOPTIMIZATION_FASTER_MESSAGES = 4;
+    UPDATEOPTIMIZATION_STRIP_COUNTERS = 5;
+    UPDATEOPTIMIZATION_COMPACT_USERS = 6;
+    UPDATEOPTIMIZATION_GROUPS_V2 = 7;
+    UPDATEOPTIMIZATION_STRIP_ENTITIES_V2 = 8;
+}
+
+message RecursiveMapValue {
+    message Value {
+        oneof value {
+            google.protobuf.DoubleValue d = 2;
+            google.protobuf.Int32Value i32 = 3;
+            google.protobuf.Int64Value i64 = 4;
+            google.protobuf.StringValue str = 5;
+            RecursiveMapValue rec = 6;
+            Array array_rec = 7;
+        }
+    }
+    message Array {
+        repeated Value values = 1 [(dlg).log="visible"];
+    }
+    message Item {
+        string key = 1 [(dlg).log="visible"];
+        Value value = 2 [(dlg).log="visible"];
+    }
+    repeated Item items = 1 [(dlg).log="visible"];
+}

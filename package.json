@@ -1,0 +1,32 @@
+{
+  "name": "@dlghq/dialog-api",
+  "version": "0.3.0",
+  "description": "dialog messenger api",
+  "main": "js/index.js",
+  "files": [
+    "js",
+    "proto",
+    "include"
+  ],
+  "scripts": {
+    "prepare": "node scripts/build.js",
+    "postversion": "npm publish",
+    "postpublish": "git push --follow-tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dialogs/api-schema.git"
+  },
+  "author": "Nikita Gusakov <nkt@dlg.im>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/dialogs/api-schema/issues"
+  },
+  "homepage": "https://dialogs.github.io/api-schema",
+  "dependencies": {
+    "protobufjs": "6.8.6"
+  },
+  "devDependencies": {
+    "mkdirp": "0.5.1"
+  }
+}

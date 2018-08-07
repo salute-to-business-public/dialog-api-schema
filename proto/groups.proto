@@ -1,0 +1,649 @@
+syntax = "proto3";
+
+package dialog;
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "miscellaneous.proto";
+import "peers.proto";
+import "media_and_files.proto";
+import "users.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Member information
+message Member {
+    int32 uid = 1 [(dlg).log="visible"]; /// User id
+    int32 inviter_uid = 2 [(dlg).log="visible"]; /// User inviter id
+    int64 date = 3 [(dlg).log="visible"]; /// Adding date
+    google.protobuf.BoolValue is_admin = 4 [(dlg).log="visible"]; /// Deprecated
+    /// List of member permissions
+    repeated GroupAdminPermission permissions = 5 [(dlg).log="visible"];
+}
+
+enum GroupType {
+    GROUPTYPE_UNKNOWN = 0;
+    GROUPTYPE_GROUP = 1;
+    GROUPTYPE_CHANNEL = 2;
+}
+
+// Group information
+message Group {
+    int32 id = 1 [(dlg).log="visible"]; /// group id
+    int64 access_hash = 2 [(dlg).log="danger"]; /// Access hash of group
+    string title = 3 [(dlg).log="hidden"]; /// Title of group
+    Avatar avatar = 4 [(dlg).log="compact"]; /// Avatar of group
+    /// Number of members
+    google.protobuf.Int32Value members_amount = 24 [(dlg).log="visible"];
+    /// Is current user a member of a group. Default is true.
+    google.protobuf.BoolValue is_member = 6 [(dlg).log="visible"];
+    /// Is group hidden (not showing it in recent list). Default is false.
+    google.protobuf.BoolValue is_hidden = 20 [(dlg).log="visible"];
+    /// Group Type. Used only for displaying information. Default is GROUP.
+    GroupType group_type = 25 [(dlg).log="visible"];
+    /// Can user send messages. Default is equals isMember for Group and false for channels.
+    google.protobuf.BoolValue can_send_message = 26 [(dlg).log="visible"];
+    google.protobuf.BoolValue is_admin = 16 [(dlg).log="visible"]; /// Deprecated
+    int32 creator_uid = 8 [(dlg).log="visible"]; /// Group creator
+    repeated Member members = 9 [(dlg).log="compact"]; /// Members of group
+    int64 create_date = 10 [(dlg).log="visible"]; /// Date of creation
+    /// Theme of group
+    google.protobuf.StringValue theme = 17 [(dlg).log="hidden"];
+    /// About of group
+    google.protobuf.StringValue about = 18 [(dlg).log="hidden"];
+    /// Group short name
+    google.protobuf.StringValue shortname = 19 [(dlg).log="visible"];
+}
+
+// Goup Full information - Deprecated
+message GroupFull {
+    int32 id = 1 [(dlg).log="visible"]; /// Group Id
+    int64 create_date = 6 [(dlg).log="visible"]; /// Date created
+    int32 owner_uid = 5 [(dlg).log="visible"]; /// Group owner
+    /// Group members. Can be empty when isAsyncMembers enabled.
+    repeated Member members = 12 [(dlg).log="visible"];
+    /// Group Theme
+    google.protobuf.StringValue theme = 2 [(dlg).log="hidden"];
+    /// Group about
+    google.protobuf.StringValue about = 3 [(dlg).log="hidden"];
+    /// Is Members need to be loaded asynchronous.
+    google.protobuf.BoolValue is_async_members = 11 [(dlg).log="visible"];
+    /// Can current user view members of the group. Default is true.
+    google.protobuf.BoolValue can_view_members = 8 [(dlg).log="visible"];
+    /// Can current user invite new people. Default is true.
+    google.protobuf.BoolValue can_invite_people = 9 [(dlg).log="visible"];
+    /// Is history shared among all users.
+    google.protobuf.BoolValue is_shared_history = 10 [(dlg).log="visible"];
+}
+
+// Loading Full Groups - Deprecated
+message RequestLoadFullGroups {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated GroupOutPeer groups = 1 [(dlg).log="compact"];
+}
+
+/// Deprecated
+message ResponseLoadFullGroups {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated GroupFull groups = 1;
+}
+
+// Loading group members
+message RequestLoadMembers {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group = 1 [(dlg).log="visible"];
+    int32 limit = 2 [(dlg).log="visible"];
+    google.protobuf.BytesValue next = 3 [(dlg).log="visible"]; /// cursor
+}
+
+message ResponseLoadMembers {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated UserOutPeer members = 1;
+    google.protobuf.BytesValue next = 2;
+}
+
+// Update about title changed
+message UpdateGroupTitleChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    string title = 2 [(dlg).log="hidden"];
+}
+
+// Update about avatar changed
+message UpdateGroupAvatarChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    Avatar avatar = 2 [(dlg).log="visible"];
+}
+
+// Update about topic changed
+message UpdateGroupTopicChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    google.protobuf.StringValue topic = 2 [(dlg).log="hidden"];
+}
+
+// Update about about changed
+message UpdateGroupAboutChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    google.protobuf.StringValue about = 2 [(dlg).log="hidden"];
+}
+
+// Update about owner changed
+message UpdateGroupOwnerChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    int32 user_id = 2 [(dlg).log="visible"]; /// new owner
+}
+
+// Update about history shared
+message UpdateGroupHistoryShared {
+    int32 group_id = 1 [(dlg).log="visible"];
+}
+
+// Update about can send messages changed
+message UpdateGroupCanSendMessagesChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    bool can_send_messages = 2 [(dlg).log="visible"];
+}
+
+// Update about can view members changed
+message UpdateGroupCanViewMembersChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    bool can_view_members = 2 [(dlg).log="visible"];
+}
+
+// Update about can invite members changed
+message UpdateGroupCanInviteMembersChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    bool can_invite_members = 2 [(dlg).log="visible"];
+}
+
+// Update about membership changed
+message UpdateGroupMemberChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    bool is_member = 2 [(dlg).log="visible"];
+}
+
+// Update about members became async
+message UpdateGroupMembersBecameAsync {
+    int32 group_id = 1 [(dlg).log="visible"];
+}
+
+// Update about members updated
+message UpdateGroupMembersUpdated {
+    int32 group_id = 1 [(dlg).log="visible"];
+    repeated Member members = 2 [(dlg).log="visible"];
+}
+
+// Update about members changed
+message UpdateGroupMemberDiff {
+    repeated int32 removed_users = 1 [(dlg).log="visible"];
+    repeated Member added_members = 2 [(dlg).log="visible"];
+    int32 members_count = 3 [(dlg).log="visible"];
+}
+
+// Update about members count changed
+message UpdateGroupMembersCountChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    int32 members_count = 2 [(dlg).log="visible"];
+}
+
+// Update about member admin changed
+message UpdateGroupMemberAdminChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    int32 user_id = 2 [(dlg).log="visible"];
+    bool is_admin = 3 [(dlg).log="visible"];
+}
+
+// Creating group chat
+message RequestCreateGroup {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 rid = 1 [(dlg).log="visible"]; /// Id for query deduplication
+    string title = 2 [(dlg).log="hidden"];
+    repeated UserOutPeer users = 3 [(dlg).log="visible"]; /// members
+    GroupType group_type = 6 [(dlg).log="visible"]; /// group or channel
+    /// optional shortname of a group, group will be public if set
+    google.protobuf.StringValue username = 8 [(dlg).log="visible"];
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UpdateOptimization optimizations = 7 [(dlg).log="visible"];
+}
+
+message ResponseCreateGroup {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    int32 seq = 1; /// deprecated
+    bytes state = 2;
+    Group group = 3; /// created group
+    repeated User users = 4; /// empty if dropped by optimizations
+    repeated UserOutPeer user_peers = 5; /// empty if dropped by optimizations
+}
+
+// Changing group title
+message RequestEditGroupTitle {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    int64 rid = 4 [(dlg).log="visible"]; /// Id for query deduplication
+    string title = 3 [(dlg).log="hidden"];
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UpdateOptimization optimizations = 5 [(dlg).log="visible"];
+}
+
+// Sets group short name
+message RequestSetGroupShortname {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer peer = 1 [(dlg).log="visible"];
+    /// if shortname was empty, then group will become public
+    string shortname = 2 [(dlg).log="visible"];
+}
+
+// Changing group avatar
+message RequestEditGroupAvatar {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    int64 rid = 4 [(dlg).log="visible"]; /// Id for query deduplication
+    FileLocation file_location = 3 [(dlg).log="compact"];
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UpdateOptimization optimizations = 5 [(dlg).log="visible"];
+}
+
+message ResponseEditGroupAvatar {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    Avatar avatar = 1;
+    int32 seq = 2; /// deprecated
+    bytes state = 3;
+    int64 date = 4;
+    UUIDValue mid = 5;
+}
+
+// Removing group avatar
+message RequestRemoveGroupAvatar {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    int64 rid = 4 [(dlg).log="visible"]; /// Id for query deduplication
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UpdateOptimization optimizations = 5 [(dlg).log="visible"];
+}
+
+// Edit group topic
+message RequestEditGroupTopic {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    int64 rid = 2 [(dlg).log="visible"]; /// Id for query deduplication
+    google.protobuf.StringValue topic = 3 [(dlg).log="hidden"];
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UpdateOptimization optimizations = 4 [(dlg).log="visible"];
+}
+
+// Edit Group About
+message RequestEditGroupAbout {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    int64 rid = 2 [(dlg).log="visible"]; /// Id for query deduplication
+    google.protobuf.StringValue about = 3 [(dlg).log="hidden"];
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UpdateOptimization optimizations = 5 [(dlg).log="visible"];
+}
+
+// Inviting user to group
+message RequestInviteUser {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    int64 rid = 4 [(dlg).log="visible"]; /// Id for query deduplication
+    UserOutPeer user = 3 [(dlg).log="visible"];
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UpdateOptimization optimizations = 5 [(dlg).log="visible"];
+}
+
+// Leaving group
+message RequestLeaveGroup {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    int64 rid = 2 [(dlg).log="visible"]; /// Id for query deduplication
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UpdateOptimization optimizations = 3 [(dlg).log="visible"];
+}
+
+// Kicking user from group
+message RequestKickUser {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    int64 rid = 4 [(dlg).log="visible"]; /// Id for query deduplication
+    UserOutPeer user = 3 [(dlg).log="visible"];
+    /// Optimizations drops some info from response to decrease traffic and latency
+    repeated UpdateOptimization optimizations = 5 [(dlg).log="visible"];
+}
+
+/// Possible permissions on a group
+enum GroupAdminPermission {
+    GROUPADMINPERMISSION_UNKNOWN = 0;
+    GROUPADMINPERMISSION_EDITSHORTNAME = 1;
+    GROUPADMINPERMISSION_INVITE = 2;
+    GROUPADMINPERMISSION_KICK = 3;
+    GROUPADMINPERMISSION_UPDATEINFO = 4;
+    GROUPADMINPERMISSION_SETPERMISSIONS = 5;
+    GROUPADMINPERMISSION_EDITMESSAGE = 6;
+    GROUPADMINPERMISSION_DELETEMESSAGE = 7;
+    GROUPADMINPERMISSION_GETINTEGRATIONTOKEN = 8;
+    GROUPADMINPERMISSION_SENDMESSAGE = 9;
+    GROUPADMINPERMISSION_PINMESSAGE = 10;
+}
+
+// Make user admin
+message RequestMakeUserAdmin {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    UserOutPeer user_peer = 2 [(dlg).log="visible"];
+    repeated GroupAdminPermission permissions = 3 [(dlg).log="visible"];
+}
+
+// A struct mapping a group member to their permissions
+// userId the id of the group member
+// permissions a list of permissions that user has
+message GroupMemberPermission {
+    int32 user_id = 1 [(dlg).log="visible"];
+    repeated GroupAdminPermission permissions = 2 [(dlg).log="hidden"];
+}
+
+// Fetches the group administration permissions for each of the users from the list
+message RequestGetGroupMemberPermissions {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int32 group_id = 1 [(dlg).log="visible"];
+    repeated int32 user_ids = 2 [(dlg).log="visible"];
+}
+
+message ResponseGetGroupMemberPermissions {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated GroupMemberPermission permissions = 1;
+}
+
+// Update about the user's permissions
+message UpdateGroupMemberPermissionsChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    int32 user_id = 2 [(dlg).log="visible"];
+    repeated GroupAdminPermission permissions = 3 [(dlg).log="visible"];
+}
+
+// Transfer ownership of group
+message RequestTransferOwnership {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    int32 new_owner = 2 [(dlg).log="visible"];
+}
+
+// Response for invite url methods
+message ResponseInviteUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    string url = 1;
+}
+
+// Building invite url
+message RequestGetGroupInviteUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+}
+
+// Get group invite url base
+message RequestGetGroupInviteUrlBase {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+}
+
+message ResponseGetGroupInviteUrlBase {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    string url = 1;
+}
+
+// Revoking invite urls
+message RequestRevokeInviteUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+}
+
+// Join group method
+message RequestJoinGroup {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string token = 1 [(dlg).log="visible"];
+    repeated UpdateOptimization optimizations = 2 [(dlg).log="hidden"];
+}
+
+message ResponseJoinGroup {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    Group group = 1;
+    repeated User users = 5; /// empty if dropped by optimizations
+    repeated UserOutPeer user_peers = 7; /// empty if dropped by optimizations
+    UUIDValue mid = 8; /// deprecated
+    int32 seq = 2; /// deprecated
+    bytes state = 3;
+    int64 date = 4;
+}
+
+// Join group by peer
+message RequestJoinGroupByPeer {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer peer = 1 [(dlg).log="visible"];
+}
+
+// [OBSOLETE] Make user admin
+message RequestMakeUserAdminObsolete {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group_peer = 1 [(dlg).log="visible"];
+    UserOutPeer user_peer = 2 [(dlg).log="visible"];
+}
+
+message ResponseMakeUserAdminObsolete {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated Member members = 1;
+    int32 seq = 2; /// deprecated
+    bytes state = 3;
+}
+
+// Update about inviting current user to group
+message UpdateGroupInviteObsolete {
+    int32 group_id = 1 [(dlg).log="visible"];
+    int64 rid = 9 [(dlg).log="visible"]; /// deprecated
+    UUIDValue mid = 10; /// deprecated
+    int32 invite_uid = 5 [(dlg).log="visible"];
+    int64 date = 8 [(dlg).log="visible"];
+}
+
+// Update about inviting user to group
+message UpdateGroupUserInvitedObsolete {
+    int32 group_id = 1 [(dlg).log="visible"];
+    int64 rid = 5 [(dlg).log="visible"]; // / Id for deduplication
+    UUIDValue mid = 6 [(dlg).log="visible"]; /// deprecated
+    int32 uid = 2 [(dlg).log="visible"];
+    int32 inviter_uid = 3 [(dlg).log="visible"];
+    int64 date = 4 [(dlg).log="visible"];
+}
+
+// Update about leaving user
+message UpdateGroupUserLeaveObsolete {
+    int32 group_id = 1 [(dlg).log="visible"];
+    UUIDValue mid = 5; /// deprecated
+    int32 uid = 2 [(dlg).log="visible"];
+    int64 date = 3 [(dlg).log="visible"];
+}
+
+// Update about kicking user
+message UpdateGroupUserKickObsolete {
+    int32 group_id = 1 [(dlg).log="visible"];
+    UUIDValue mid = 6; /// deprecated
+    int32 uid = 2 [(dlg).log="visible"];
+    int32 kicker_uid = 3 [(dlg).log="visible"];
+    int64 date = 4 [(dlg).log="visible"];
+}
+
+// Silent group members update
+message UpdateGroupMembersUpdateObsolete {
+    int32 group_id = 1 [(dlg).log="visible"];
+    repeated Member members = 2 [(dlg).log="visible"];
+}
+
+// Update about group title change
+message UpdateGroupTitleChangedObsolete {
+    int32 group_id = 1 [(dlg).log="visible"];
+    UUIDValue mid = 6; /// deprecated
+    int32 uid = 2 [(dlg).log="visible"];
+    string title = 3 [(dlg).log="hidden"];
+    int64 date = 4 [(dlg).log="visible"];
+}
+
+// Update about group topic change
+message UpdateGroupTopicChangedObsolete {
+    int32 group_id = 1 [(dlg).log="visible"];
+    int64 rid = 2 [(dlg).log="visible"]; /// deprecated
+    int32 uid = 3 [(dlg).log="visible"];
+    google.protobuf.StringValue topic = 4 [(dlg).log="hidden"];
+    int64 date = 5 [(dlg).log="visible"];
+}
+
+// Update about group about change
+message UpdateGroupAboutChangedObsolete {
+    int32 group_id = 1 [(dlg).log="visible"];
+    google.protobuf.StringValue about = 2 [(dlg).log="hidden"];
+}
+
+// Update about group avatar change
+message UpdateGroupAvatarChangedObsolete {
+    int32 group_id = 1 [(dlg).log="visible"];
+    UUIDValue mid = 6; /// deprecated
+    int32 uid = 2 [(dlg).log="visible"];
+    Avatar avatar = 3 [(dlg).log="compact"];
+    int64 date = 4 [(dlg).log="visible"];
+}
+
+// Update group short name
+message UpdateGroupShortnameChanged {
+    int32 group_id = 1 [(dlg).log="visible"];
+    string shortname = 2 [(dlg).log="visible"];
+    int32 uid = 3 [(dlg).log="visible"];
+}
+
+service Groups {
+    /// deprecated
+    rpc LoadFullGroups (RequestLoadFullGroups) returns (ResponseLoadFullGroups) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/LoadFullGroups"
+            body: "*"
+        };
+    }
+    rpc LoadMembers (RequestLoadMembers) returns (ResponseLoadMembers) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/LoadMembers"
+            body: "*"
+        };
+    }
+    rpc CreateGroup (RequestCreateGroup) returns (ResponseCreateGroup) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/CreateGroup"
+            body: "*"
+        };
+    }
+    rpc EditGroupTitle (RequestEditGroupTitle) returns (ResponseSeqDateMid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/EditGroupTitle"
+            body: "*"
+        };
+    }
+    rpc SetGroupShortname (RequestSetGroupShortname) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/SetGroupShortname"
+            body: "*"
+        };
+    }
+    rpc EditGroupAvatar (RequestEditGroupAvatar) returns (ResponseEditGroupAvatar) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/EditGroupAvatar"
+            body: "*"
+        };
+    }
+    rpc RemoveGroupAvatar (RequestRemoveGroupAvatar) returns (ResponseSeqDateMid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/RemoveGroupAvatar"
+            body: "*"
+        };
+    }
+    rpc EditGroupTopic (RequestEditGroupTopic) returns (ResponseSeqDate) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/EditGroupTopic"
+            body: "*"
+        };
+    }
+    rpc EditGroupAbout (RequestEditGroupAbout) returns (ResponseSeqDate) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/EditGroupAbout"
+            body: "*"
+        };
+    }
+    rpc InviteUser (RequestInviteUser) returns (ResponseSeqDateMid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/InviteUser"
+            body: "*"
+        };
+    }
+    rpc LeaveGroup (RequestLeaveGroup) returns (ResponseSeqDateMid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/LeaveGroup"
+            body: "*"
+        };
+    }
+    rpc KickUser (RequestKickUser) returns (ResponseSeqDateMid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/KickUser"
+            body: "*"
+        };
+    }
+    rpc MakeUserAdmin (RequestMakeUserAdmin) returns (ResponseSeqDate) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/MakeUserAdmin"
+            body: "*"
+        };
+    }
+    rpc GetGroupMemberPermissions (RequestGetGroupMemberPermissions) returns (ResponseGetGroupMemberPermissions) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/GetGroupMemberPermissions"
+            body: "*"
+        };
+    }
+    rpc TransferOwnership (RequestTransferOwnership) returns (ResponseSeqDate) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/TransferOwnership"
+            body: "*"
+        };
+    }
+    rpc GetGroupInviteUrl (RequestGetGroupInviteUrl) returns (ResponseInviteUrl) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/GetGroupInviteUrl"
+            body: "*"
+        };
+    }
+    rpc GetGroupInviteUrlBase (RequestGetGroupInviteUrlBase) returns (ResponseGetGroupInviteUrlBase) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/GetGroupInviteUrlBase"
+            body: "*"
+        };
+    }
+    rpc RevokeInviteUrl (RequestRevokeInviteUrl) returns (ResponseInviteUrl) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/RevokeInviteUrl"
+            body: "*"
+        };
+    }
+    rpc JoinGroup (RequestJoinGroup) returns (ResponseJoinGroup) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/JoinGroup"
+            body: "*"
+        };
+    }
+    rpc JoinGroupByPeer (RequestJoinGroupByPeer) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/JoinGroupByPeer"
+            body: "*"
+        };
+    }
+    rpc MakeUserAdminObsolete (RequestMakeUserAdminObsolete) returns (ResponseMakeUserAdminObsolete) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/MakeUserAdminObsolete"
+            body: "*"
+        };
+    }
+}

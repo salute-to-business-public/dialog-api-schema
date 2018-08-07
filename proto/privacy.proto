@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package dialog;
+
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "miscellaneous.proto";
+import "peers.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Block User
+message RequestBlockUser {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UserOutPeer peer = 1 [(dlg).log="visible"];
+}
+
+// Unblock User
+message RequestUnblockUser {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UserOutPeer peer = 1 [(dlg).log="visible"];
+}
+
+// Load Blocked Users
+message RequestLoadBlockedUsers {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+}
+
+message ResponseLoadBlockedUsers {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated UserOutPeer user_peers = 1;
+}
+
+// Update about User Blocked
+message UpdateUserBlocked {
+    int32 uid = 1 [(dlg).log="visible"];
+}
+
+// Update about User Unblocked
+message UpdateUserUnblocked {
+    int32 uid = 1 [(dlg).log="visible"];
+}
+
+service Privacy {
+    rpc BlockUser (RequestBlockUser) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Privacy/BlockUser"
+            body: "*"
+        };
+    }
+    rpc UnblockUser (RequestUnblockUser) returns (ResponseSeq) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Privacy/UnblockUser"
+            body: "*"
+        };
+    }
+    rpc LoadBlockedUsers (RequestLoadBlockedUsers) returns (ResponseLoadBlockedUsers) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Privacy/LoadBlockedUsers"
+            body: "*"
+        };
+    }
+}

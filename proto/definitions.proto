@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package dialog;
+
+import "scalapb/scalapb.proto";
+import "google/protobuf/descriptor.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+message UUIDValue {
+  bytes value = 1;
+}
+
+message DialogOptions {
+  string log = 1;
+}
+
+extend google.protobuf.FieldOptions {
+  DialogOptions dlg = 100001;
+}

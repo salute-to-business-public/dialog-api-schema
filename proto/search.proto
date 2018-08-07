@@ -1,0 +1,252 @@
+syntax = "proto3";
+
+package dialog;
+
+// Searching API
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "groups.proto";
+import "peers.proto";
+import "messaging.proto";
+import "users.proto";
+import "miscellaneous.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+enum SearchPeerType {
+    SEARCHPEERTYPE_UNKNOWN = 0;
+    SEARCHPEERTYPE_GROUPS = 1;
+    SEARCHPEERTYPE_CONTACTS = 2;
+    SEARCHPEERTYPE_PUBLIC = 3;
+}
+
+enum SearchContentType {
+    SEARCHCONTENTTYPE_UNKNOWN = 0;
+    SEARCHCONTENTTYPE_ANY = 1;
+    SEARCHCONTENTTYPE_TEXT = 2;
+    SEARCHCONTENTTYPE_LINKS = 3;
+    SEARCHCONTENTTYPE_DOCUMENTS = 4;
+    SEARCHCONTENTTYPE_PHOTOS = 5;
+}
+
+message SimpleContactSearchCondition {
+    string text = 1;
+}
+
+message SimpleMessageSearchCondition {
+    Peer peer = 1; /// where to search
+    string text = 2; /// search term
+    SearchContentType content_type = 3; /// content message type to search
+}
+
+/// Search among contacts/groups/users
+message SimplePeerSearchCondition {
+    SearchPeerType peer_type = 1;
+    google.protobuf.StringValue text = 2;
+}
+
+message SimpleUserProfileSearchCondition {
+    string query_string = 1;
+}
+
+message criterion {
+}
+
+message SimpleSearchCondition {
+    oneof criterion {
+        SimpleContactSearchCondition contact = 1;
+        SimpleMessageSearchCondition message = 2;
+        SimplePeerSearchCondition peer = 3;
+        SimpleUserProfileSearchCondition userProfile = 4;
+    }
+}
+
+message SearchCondition {
+    oneof body {
+        SearchPeerTypeCondition searchPeerTypeCondition = 1;
+        SearchPieceText searchPieceText = 2;
+        SearchAndCondition searchAndCondition = 3;
+        SearchOrCondition searchOrCondition = 4;
+        SearchPeerCondition searchPeerCondition = 5;
+        SearchPeerContentType searchPeerContentType = 6;
+        SearchSenderIdConfition searchSenderIdConfition = 7;
+    }
+}
+
+// Search peer type condition
+message SearchPeerTypeCondition {
+    SearchPeerType peer_type = 1 [(dlg).log="hidden"];
+}
+
+// Search peer name condition
+message SearchPieceText {
+    string query = 1 [(dlg).log="hidden"];
+}
+
+// Search AND condion
+message SearchAndCondition {
+    /// "And" query
+    repeated SearchCondition and_query = 1 [(dlg).log="visible"];
+}
+
+// Search OR condition
+message SearchOrCondition {
+    /// "Or" query
+    repeated SearchCondition or_query = 2 [(dlg).log="visible"];
+}
+
+// Serch Peer condition
+message SearchPeerCondition {
+    OutPeer peer = 1 [(dlg).log="visible"];
+}
+
+// Search content type condition
+message SearchPeerContentType {
+    SearchContentType content_type = 1 [(dlg).log="visible"];
+}
+
+// Searching sender uid condition
+message SearchSenderIdConfition {
+    int32 sender_id = 1 [(dlg).log="visible"];
+}
+
+// Peer search result
+message PeerSearchResult {
+    Peer peer = 1 [(dlg).log="visible"];
+    string title = 2 [(dlg).log="hidden"];
+    google.protobuf.StringValue shortname = 9;
+    google.protobuf.StringValue description = 3 [(dlg).log="hidden"];
+    google.protobuf.Int32Value members_count = 4 [(dlg).log="visible"];
+    /// Group Creation Date
+    int64 date_created = 5 [(dlg).log="visible"];
+    google.protobuf.Int32Value creator = 6 [(dlg).log="visible"];
+    google.protobuf.BoolValue is_public = 7 [(dlg).log="visible"];
+    /// Are you joined?
+    google.protobuf.BoolValue is_joined = 8;
+}
+
+// Performing peer search
+message RequestPeerSearch {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated SearchCondition query = 1 [(dlg).log="hidden"];
+    repeated UpdateOptimization optimizations = 2 [(dlg).log="visible"];
+}
+
+/// Response with related peers and entities
+message ResponsePeerSearch {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated PeerSearchResult search_results = 1;
+    repeated User users = 2;
+    repeated Group groups = 3;
+    repeated UserOutPeer user_peers = 4;
+    repeated GroupOutPeer group_peers = 5;
+}
+
+// Resolve peer by shortname
+message RequestResolvePeer {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string shortname = 1 [(dlg).log="visible"];
+}
+
+message ResponseResolvePeer {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    OutPeer peer = 1;
+}
+
+// Message container
+message MessageSearchResult {
+    Peer peer = 1 [(dlg).log="visible"];
+    int64 rid = 2 [(dlg).log="visible"]; /// deprecated
+    int64 date = 3 [(dlg).log="visible"];
+    int32 sender_id = 4 [(dlg).log="visible"];
+    MessageContent content = 5 [(dlg).log="visible"];
+}
+
+// Message Search result container
+message MessageSearchItem {
+    MessageSearchResult result = 1;
+}
+
+// Search Result with related peers and entities
+message ResponseMessageSearchResponse {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated MessageSearchItem search_results = 1 [(dlg).log="visible"];
+    repeated User users = 2 [(dlg).log="visible"];
+    repeated Group groups = 3 [(dlg).log="visible"];
+    google.protobuf.BytesValue load_more_state = 4 [(dlg).log="hidden"];
+    repeated UserOutPeer user_out_peers = 5 [(dlg).log="visible"];
+    repeated GroupOutPeer group_out_peers = 6 [(dlg).log="visible"];
+}
+
+// Performing message search
+message RequestMessageSearch {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    SearchCondition query = 1 [(dlg).log="hidden"];
+    repeated UpdateOptimization optimizations = 2 [(dlg).log="visible"];
+}
+
+// Performing message search paging
+message RequestMessageSearchMore {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    bytes load_more_state = 1 [(dlg).log="hidden"]; /// Cursor
+    repeated UpdateOptimization optimizations = 2 [(dlg).log="visible"];
+}
+
+message RequestSimpleSearch {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated SimpleSearchCondition criteria = 1;
+    repeated UpdateOptimization optimizations = 2;
+}
+
+message RequestSimpleSearchMore {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    bytes load_more_state = 1; /// Cursor
+    repeated UpdateOptimization optimizations = 2;
+}
+
+service Search {
+    /// Search among groups/users/contacts
+    rpc PeerSearch (RequestPeerSearch) returns (ResponsePeerSearch) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/PeerSearch"
+            body: "*"
+        };
+    }
+    rpc ResolvePeer (RequestResolvePeer) returns (ResponseResolvePeer) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/ResolvePeer"
+            body: "*"
+        };
+    }
+    /// Search by messages
+    rpc MessageSearch (RequestMessageSearch) returns (ResponseMessageSearchResponse) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/MessageSearch"
+            body: "*"
+        };
+    }
+    rpc MessageSearchMore (RequestMessageSearchMore) returns (ResponseMessageSearchResponse) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/MessageSearchMore"
+            body: "*"
+        };
+    }
+    /// Custom search by conditions
+    rpc SimpleSearch (RequestSimpleSearch) returns (ResponseMessageSearchResponse) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/SimpleSearch"
+            body: "*"
+        };
+    }
+    rpc SimpleSearchMore (RequestSimpleSearchMore) returns (ResponseMessageSearchResponse) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/SimpleSearchMore"
+            body: "*"
+        };
+    }
+}

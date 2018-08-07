@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+package dialog;
+
+// Vendor's pushes for receiving push notifications.
+// Push notification contains current sequence number of main sequence.
+
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "miscellaneous.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Registering push token on server
+message RequestRegisterGooglePush {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 project_id = 1 [(dlg).log="hidden"];
+    string token = 2 [(dlg).log="hidden"];
+}
+
+// Unregistering Google Push
+message RequestUnregisterGooglePush {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string token = 1 [(dlg).log="hidden"];
+}
+
+// Registering apple push on server
+message RequestRegisterApplePush {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int32 apns_key = 1 [(dlg).log="visible"];
+    string token = 2 [(dlg).log="hidden"];
+}
+
+// Unregistering Apple Push
+message RequestUnregisterApplePush {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string token = 1 [(dlg).log="hidden"];
+}
+
+// Registration of a new Apple's PushKit tokens
+message RequestRegisterApplePushKit {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int32 apns_key = 1 [(dlg).log="visible"];
+    string token = 2 [(dlg).log="hidden"];
+}
+
+// Unregistering Apple Push Kit token
+message RequestUnregisterApplePushKit {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string token = 1 [(dlg).log="hidden"];
+}
+
+// Registering Apple Push Token
+message RequestRegisterApplePushToken {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string bundle_id = 1 [(dlg).log="visible"];
+    string token = 2 [(dlg).log="hidden"];
+}
+
+// Unregister Apple Push token
+message RequestUnregisterApplePushToken {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string token = 1 [(dlg).log="hidden"];
+}
+
+service Push {
+    rpc RegisterGooglePush (RequestRegisterGooglePush) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Push/RegisterGooglePush"
+            body: "*"
+        };
+    }
+    rpc UnregisterGooglePush (RequestUnregisterGooglePush) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Push/UnregisterGooglePush"
+            body: "*"
+        };
+    }
+    rpc RegisterApplePush (RequestRegisterApplePush) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Push/RegisterApplePush"
+            body: "*"
+        };
+    }
+    rpc UnregisterApplePush (RequestUnregisterApplePush) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Push/UnregisterApplePush"
+            body: "*"
+        };
+    }
+    rpc RegisterApplePushKit (RequestRegisterApplePushKit) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Push/RegisterApplePushKit"
+            body: "*"
+        };
+    }
+    rpc UnregisterApplePushKit (RequestUnregisterApplePushKit) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Push/UnregisterApplePushKit"
+            body: "*"
+        };
+    }
+    rpc RegisterApplePushToken (RequestRegisterApplePushToken) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Push/RegisterApplePushToken"
+            body: "*"
+        };
+    }
+    rpc UnregisterApplePushToken (RequestUnregisterApplePushToken) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Push/UnregisterApplePushToken"
+            body: "*"
+        };
+    }
+}

@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package dialog;
+
+// Crypto package contains everything related to encryption
+
+import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+// Exchange public keys
+message RequestKeyExchange {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    google.protobuf.BytesValue client_key = 1 [(dlg).log="compact"];
+}
+
+message ResponseKeyExchange {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    google.protobuf.BytesValue server_key = 1;
+}
+
+service Crypto {
+    rpc KeyExchange (RequestKeyExchange) returns (ResponseKeyExchange) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Crypto/KeyExchange"
+            body: "*"
+        };
+    }
+}
