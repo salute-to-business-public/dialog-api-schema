@@ -30,6 +30,7 @@ import "privacy.proto";
 import "peers.proto";
 import "messaging.proto";
 import "users.proto";
+import "spaces.proto";
 import "scalapb/scalapb.proto";
 
 option (scalapb.options) = {
@@ -129,6 +130,8 @@ message UpdateSeqUpdate {
       UpdateEmptyUpdate updateEmptyUpdate = 87;
       UpdateCountersChanged updateCountersChanged = 88;
       UpdateConfig updateConfig = 89;
+      UpdateSpaceModified updateSpaceModified = 90;
+      UpdateSpaceMemberModified updateSpaceMemberModified = 91;
     }
 }
 
@@ -252,6 +255,7 @@ message RequestGetReferencedEntitites {
     repeated GroupMembersSubset group_members = 4 [(dlg).log="visible"];
     /// groups needed
     repeated GroupOutPeer groups = 5 [(dlg).log="visible"];
+    repeated UUIDValue space_ids = 6;
 }
 
 message ResponseGetReferencedEntitites {
@@ -259,6 +263,7 @@ message ResponseGetReferencedEntitites {
     repeated User users = 1;
     repeated Group groups = 2;
     repeated HistoryMessage messages = 3;
+    repeated Space spaces = 4;
 }
 
 // Custom Raw Update

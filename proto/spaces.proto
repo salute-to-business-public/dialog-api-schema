@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+package dialog;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "definitions.proto";
+import "peers.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+    package_name: "im.dlg.grpc.services"
+};
+
+message Space {
+    UUIDValue id = 1;
+    int32 owner = 2;
+    string title = 3;
+    google.protobuf.StringValue shortname = 4;
+    google.protobuf.StringValue about = 5;
+    google.protobuf.Timestamp created_at = 6;
+    google.protobuf.Timestamp deleted_at = 7;
+    int64 order = 8; /// server timestamp when space was created or modified
+}
+
+message SpaceMember {
+    UUIDValue space_id = 1;
+    int32 user_id = 2;
+    google.protobuf.Timestamp invited_at = 3;
+    google.protobuf.Timestamp joined_at = 4;
+    google.protobuf.Timestamp deleted_at = 5;
+    int64 order = 6; /// server timestamp when space was created or modified
+}
+
+message UpdateSpaceModified {
+    Space space = 1;
+}
+
+message UpdateSpaceMemberModified {
+    Space space = 1;
+    SpaceMember member = 2;
+}
+
+message RequestCreateSpace {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 request_id = 1;
+    string title = 2;
+    google.protobuf.StringValue shortname = 3;
+    google.protobuf.StringValue about = 4;
+}
+
+message ResponseSpace {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    Space space = 1;
+}
+
+message ResponseSpaceMember {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    UUIDValue space_id = 1;
+    SpaceMember member = 2;
+}
+
+message RequestDeleteSpace {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UUIDValue id = 1;
+}
+
+message RequestLoadSpaces {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+}
+
+message ResponseLoadSpaces {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated Space space = 1;
+    repeated UserOutPeer owner_peers = 2;
+}
+
+message RequestLoadSpaceMembers {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UUIDValue space_id = 1;
+    int64 from_date = 2;
+}
+
+message ResponseLoadSpaceMembers {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated  members = 1;
+    repeated UserOutPeer member_peers = 2;
+    bool need_load_more = 3;
+}
+
+message RequestSetTitle {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UUIDValue id = 1;
+    string title = 2;
+}
+
+message RequestSetShortname {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UUIDValue id = 1;
+    google.protobuf.StringValue shortname = 2;
+}
+
+message RequestSetAbout {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UUIDValue id = 1;
+    google.protobuf.StringValue about = 2;
+}
+
+message RequestKick {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UUIDValue id = 1;
+    int32 user_id = 2;
+}
+
+message RequestLeave {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UUIDValue id = 1;
+    int32 user_id = 2;
+}
+
+service Spaces {
+    rpc CreateSpace (RequestCreateSpace) returns (ResponseSpace) {}
+    rpc DeleteSpace (RequestDeleteSpace) returns (ResponseSpace) {}
+    rpc SetTitle (RequestSetTitle) returns (ResponseSpace) {}
+    rpc SetShortname (RequestSetShortname) returns (ResponseSpace) {}
+    rpc SetAbout (RequestSetAbout) returns (ResponseSpace) {}
+    rpc LoadSpaces (RequestLoadSpaces) returns (ResponseLoadSpaces) {}
+    rpc LoadSpaceMembers (RequestLoadSpaceMembers) returns (ResponseLoadSpaceMembers) {}
+    rpc Kick (RequestKick) returns (ResponseSpaceMember) {}
+    rpc Leave (RequestLeave) returns (ResponseSpaceMember) {}
+}

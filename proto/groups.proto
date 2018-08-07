@@ -34,6 +34,7 @@ enum GroupType {
 // Group information
 message Group {
     int32 id = 1 [(dlg).log="visible"]; /// group id
+    UUIDValue space_id = 27;
     int64 access_hash = 2 [(dlg).log="danger"]; /// Access hash of group
     string title = 3 [(dlg).log="hidden"]; /// Title of group
     Avatar avatar = 4 [(dlg).log="compact"]; /// Avatar of group
@@ -200,11 +201,14 @@ message UpdateGroupMemberAdminChanged {
 message RequestCreateGroup {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     int64 rid = 1 [(dlg).log="visible"]; /// Id for query deduplication
+    UUIDValue space_id = 9;
     string title = 2 [(dlg).log="hidden"];
     repeated UserOutPeer users = 3 [(dlg).log="visible"]; /// members
     GroupType group_type = 6 [(dlg).log="visible"]; /// group or channel
+
     /// optional shortname of a group, group will be public if set
     google.protobuf.StringValue username = 8 [(dlg).log="visible"];
+
     /// Optimizations drops some info from response to decrease traffic and latency
     repeated UpdateOptimization optimizations = 7 [(dlg).log="visible"];
 }

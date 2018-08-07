@@ -10,7 +10,8 @@ option (scalapb.options) = {
 };
 
 message UUIDValue {
-  bytes value = 1;
+  int64 msb = 1;
+  int64 lsb = 2;
 }
 
 message DialogOptions {
