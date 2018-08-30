@@ -21,3 +21,8 @@ message DialogOptions {
 extend google.protobuf.FieldOptions {
   DialogOptions dlg = 100001;
 }
+
+/// server timestamp when state was created or modified
+message DataClock {
+  int64 clock = 1;
+}
