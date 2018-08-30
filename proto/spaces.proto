@@ -91,6 +91,16 @@ message ResponseLoadSpaces {
     repeated UserOutPeer owner_peers = 2;
 }
 
+message RequestStreamSpaceMembers {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated UUIDValue space_id = 1;
+}
+
+message SpaceMemberWithPeer {
+    SpaceMember member = 1;
+    UserOutPeer peer = 2;
+}
+
 message RequestSetTitle {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     UUIDValue id = 1;
@@ -141,6 +151,7 @@ service Spaces {
     rpc SetAbout (RequestSetAbout) returns (ResponseSpace) {}
     rpc SetAvatar (RequestSetAvatar) returns (ResponseSpace) {}
     rpc LoadSpaces (RequestLoadSpaces) returns (ResponseLoadSpaces) {}
+    rpc LoadSpaceMembers (RequestStreamSpaceMembers) returns (stream SpaceMemberWithPeer) {}
     rpc Invite (RequestInvite) returns (ResponseSpaceMember) {}
     rpc Kick (RequestKick) returns (ResponseSpaceMember) {}
     rpc Leave (RequestLeave) returns (ResponseSpaceMember) {}
