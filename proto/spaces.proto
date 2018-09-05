@@ -14,16 +14,16 @@ option (scalapb.options) = {
     package_name: "im.dlg.grpc.services"
 };
 
-message Space {
-    message General {}
-    message Public {
-        int32 owner_user_id = 1;
-        string shortname = 2;
-    }
-    message Private {
-      int32 owner_user_id = 1;
-    }
+message General {}
+message Public {
+    int32 owner_user_id = 1;
+    string shortname = 2;
+}
+message Private {
+  int32 owner_user_id = 1;
+}
 
+message Space {
     UUIDValue id = 1;
     google.protobuf.Timestamp created_at = 2;
 
@@ -59,6 +59,34 @@ message SpaceMember {
 
 message UpdateSpaceModified {
     Space space = 1;
+}
+
+message UpdateSpaceType {
+    UUIDValue id = 1;
+    oneof space_type {
+      General general = 3;
+      Public public = 4;
+      Private private = 5;
+    }
+    DataClock space_type_clk = 6;
+}
+
+message UpdateSpaceTitle {
+    UUIDValue id = 1;
+    string title = 7;
+    DataClock title_clk = 8;
+}
+
+message UpdateSpaceAbout {
+    UUIDValue id = 1;
+    google.protobuf.StringValue about = 9;
+    DataClock about_clk = 10;
+}
+
+message UpdateSpaceAvatar {
+    UUIDValue id = 1;
+    Avatar avatar = 11;
+    DataClock avatar_clk = 12;
 }
 
 message UpdateSpaceMemberModified {
@@ -153,6 +181,16 @@ message RequestLeave {
     DataClock clock = 3;
 }
 
+message RequestGetSpaceInviteUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UUIDValue id = 1;
+}
+
+message ResponseInviteUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    string invite_url = 1;
+}
+
 service Spaces {
     rpc CreateSpace (RequestCreateSpace) returns (ResponseSpace) {}
     rpc DeleteSpace (RequestDeleteSpace) returns (ResponseSpace) {}
@@ -165,4 +203,6 @@ service Spaces {
     rpc Invite (RequestInvite) returns (ResponseSpaceMember) {}
     rpc Kick (RequestKick) returns (ResponseSpaceMember) {}
     rpc Leave (RequestLeave) returns (ResponseSpaceMember) {}
+    rpc GetSpaceInviteUrl (RequestGetSpaceInviteUrl) returns (ResponseInviteUrl) {}
+    rpc RevokeSpaceInviteUrl (RequestRevokeSpaceInviteUrl) returns (ResponseInviteUrl) {}
 }
