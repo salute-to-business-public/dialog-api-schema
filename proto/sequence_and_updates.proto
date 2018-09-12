@@ -30,6 +30,7 @@ import "privacy.proto";
 import "peers.proto";
 import "messaging.proto";
 import "users.proto";
+import "spaces.proto";
 import "scalapb/scalapb.proto";
 
 option (scalapb.options) = {
@@ -129,6 +130,8 @@ message UpdateSeqUpdate {
       UpdateEmptyUpdate updateEmptyUpdate = 87;
       UpdateCountersChanged updateCountersChanged = 88;
       UpdateConfig updateConfig = 89;
+      UpdateSpaceModified updateSpaceModified = 90;
+      UpdateSpaceMemberModified updateSpaceMemberModified = 91;
     }
 }
 
