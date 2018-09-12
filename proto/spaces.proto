@@ -32,19 +32,13 @@ message Space {
       Public public = 4;
       Private private = 5;
     }
-    DataClock space_type_clk = 6;
 
-    string title = 7;
-    DataClock title_clk = 8;
+    string title = 6;
+    google.protobuf.StringValue about = 7;
+    Avatar avatar = 8;
+    google.protobuf.Timestamp deleted_at = 9;
 
-    google.protobuf.StringValue about = 9;
-    DataClock about_clk = 10;
-
-    Avatar avatar = 11;
-    DataClock avatar_clk = 12;
-
-    bool deleted = 13;
-    DataClock deleted_clk = 14;
+    DataClock clock = 10;
 }
 
 message SpaceMember {
@@ -59,34 +53,6 @@ message SpaceMember {
 
 message UpdateSpaceModified {
     Space space = 1;
-}
-
-message UpdateSpaceType {
-    UUIDValue id = 1;
-    oneof space_type {
-      General general = 3;
-      Public public = 4;
-      Private private = 5;
-    }
-    DataClock space_type_clk = 6;
-}
-
-message UpdateSpaceTitle {
-    UUIDValue id = 1;
-    string title = 7;
-    DataClock title_clk = 8;
-}
-
-message UpdateSpaceAbout {
-    UUIDValue id = 1;
-    google.protobuf.StringValue about = 9;
-    DataClock about_clk = 10;
-}
-
-message UpdateSpaceAvatar {
-    UUIDValue id = 1;
-    Avatar avatar = 11;
-    DataClock avatar_clk = 12;
 }
 
 message UpdateSpaceMemberModified {
@@ -131,7 +97,8 @@ message ResponseLoadSpaces {
 
 message RequestStreamSpaceMembers {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
-    repeated UUIDValue space_id = 1;
+    UUIDValue space_id = 1;
+    DataClock clock = 2;
 }
 
 message SpaceMemberWithPeer {
