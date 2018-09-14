@@ -82,7 +82,7 @@ message ResponseSpaceMember {
 message RequestDeleteSpace {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     UUIDValue id = 1;
-    DataClock = 2;
+    DataClock clock = 2;
 }
 
 message RequestLoadSpaces {
@@ -130,18 +130,25 @@ message RequestSetAbout {
 message RequestSetAvatar {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     UUIDValue id = 1;
-    Avatar avatar = 2;
+    string file_id = 2;
     DataClock clock = 3;
 }
 
-message RequestKick {
+message RequestSpaceInvite {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     UUIDValue id = 1;
     int32 user_id = 2;
     DataClock clock = 3;
 }
 
-message RequestLeave {
+message RequestSpaceKick {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UUIDValue id = 1;
+    int32 user_id = 2;
+    DataClock clock = 3;
+}
+
+message RequestSpaceLeave {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     UUIDValue id = 1;
     int32 user_id = 2;
@@ -153,9 +160,14 @@ message RequestGetSpaceInviteUrl {
     UUIDValue id = 1;
 }
 
-message ResponseInviteUrl {
+message ResponseSpaceInviteUrl {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
     string invite_url = 1;
+}
+
+message RequestRevokeSpaceInviteUrl {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UUIDValue id = 1;
 }
 
 service Spaces {
@@ -167,9 +179,9 @@ service Spaces {
     rpc SetAvatar (RequestSetAvatar) returns (ResponseSpace) {}
     rpc LoadSpaces (RequestLoadSpaces) returns (ResponseLoadSpaces) {}
     rpc LoadSpaceMembers (RequestStreamSpaceMembers) returns (stream SpaceMemberWithPeer) {}
-    rpc Invite (RequestInvite) returns (ResponseSpaceMember) {}
-    rpc Kick (RequestKick) returns (ResponseSpaceMember) {}
-    rpc Leave (RequestLeave) returns (ResponseSpaceMember) {}
-    rpc GetSpaceInviteUrl (RequestGetSpaceInviteUrl) returns (ResponseInviteUrl) {}
-    rpc RevokeSpaceInviteUrl (RequestRevokeSpaceInviteUrl) returns (ResponseInviteUrl) {}
+    rpc Invite (RequestSpaceInvite) returns (ResponseSpaceMember) {}
+    rpc Kick (RequestSpaceKick) returns (ResponseSpaceMember) {}
+    rpc Leave (RequestSpaceLeave) returns (ResponseSpaceMember) {}
+    rpc GetSpaceInviteUrl (RequestGetSpaceInviteUrl) returns (ResponseSpaceInviteUrl) {}
+    rpc RevokeSpaceInviteUrl (RequestRevokeSpaceInviteUrl) returns (ResponseSpaceInviteUrl) {}
 }
