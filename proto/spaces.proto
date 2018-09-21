@@ -130,7 +130,7 @@ message RequestSetAbout {
 message RequestSetAvatar {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     UUIDValue id = 1;
-    string file_id = 2;
+    FileLocation file_location = 2;
     DataClock clock = 3;
 }
 
