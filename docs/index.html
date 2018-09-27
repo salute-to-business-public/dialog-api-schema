@@ -498,6 +498,10 @@
             <ul>
               
                 <li>
+                  <a href="#dialog.DataClock"><span class="badge">M</span>DataClock</a>
+                </li>
+              
+                <li>
                   <a href="#dialog.DialogOptions"><span class="badge">M</span>DialogOptions</a>
                 </li>
               
@@ -2098,6 +2102,121 @@
               
                 <li>
                   <a href="#dialog.SequenceAndUpdates"><span class="badge">S</span>SequenceAndUpdates</a>
+                </li>
+              
+            </ul>
+          </li>
+        
+          
+          <li>
+            <a href="#spaces.proto">spaces.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#dialog.RequestCreateSpace"><span class="badge">M</span>RequestCreateSpace</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestDeleteSpace"><span class="badge">M</span>RequestDeleteSpace</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestGetSpaceInviteUrl"><span class="badge">M</span>RequestGetSpaceInviteUrl</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestLoadSpaces"><span class="badge">M</span>RequestLoadSpaces</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestRevokeSpaceInviteUrl"><span class="badge">M</span>RequestRevokeSpaceInviteUrl</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestSetAbout"><span class="badge">M</span>RequestSetAbout</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestSetAvatar"><span class="badge">M</span>RequestSetAvatar</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestSetShortname"><span class="badge">M</span>RequestSetShortname</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestSetTitle"><span class="badge">M</span>RequestSetTitle</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestSpaceInvite"><span class="badge">M</span>RequestSpaceInvite</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestSpaceKick"><span class="badge">M</span>RequestSpaceKick</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestSpaceLeave"><span class="badge">M</span>RequestSpaceLeave</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.RequestStreamSpaceMembers"><span class="badge">M</span>RequestStreamSpaceMembers</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.ResponseLoadSpaces"><span class="badge">M</span>ResponseLoadSpaces</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.ResponseSpace"><span class="badge">M</span>ResponseSpace</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.ResponseSpaceInviteUrl"><span class="badge">M</span>ResponseSpaceInviteUrl</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.ResponseSpaceMember"><span class="badge">M</span>ResponseSpaceMember</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.Space"><span class="badge">M</span>Space</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.Space.General"><span class="badge">M</span>Space.General</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.Space.Private"><span class="badge">M</span>Space.Private</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.Space.Public"><span class="badge">M</span>Space.Public</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.SpaceMember"><span class="badge">M</span>SpaceMember</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.SpaceMemberWithPeer"><span class="badge">M</span>SpaceMemberWithPeer</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.UpdateSpaceMemberModified"><span class="badge">M</span>UpdateSpaceMemberModified</a>
+                </li>
+              
+                <li>
+                  <a href="#dialog.UpdateSpaceModified"><span class="badge">M</span>UpdateSpaceModified</a>
+                </li>
+              
+              
+              
+              
+                <li>
+                  <a href="#dialog.Spaces"><span class="badge">S</span>Spaces</a>
                 </li>
               
             </ul>
@@ -4947,6 +5066,29 @@
       <p></p>
 
       
+        <h3 id="dialog.DataClock">DataClock</h3>
+        <p>server timestamp when state was created or modified</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
         <h3 id="dialog.DialogOptions">DialogOptions</h3>
         <p></p>
 
@@ -4981,8 +5123,15 @@
             <tbody>
               
                 <tr>
-                  <td>value</td>
-                  <td><a href="#bytes">bytes</a></td>
+                  <td>msb</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>lsb</td>
+                  <td><a href="#int64">int64</a></td>
                   <td></td>
                   <td><p> </p></td>
                 </tr>
@@ -5538,6 +5687,13 @@
                 </tr>
               
                 <tr>
+                  <td>space_id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
                   <td>access_hash</td>
                   <td><a href="#int64">int64</a></td>
                   <td></td>
@@ -5830,6 +5986,13 @@
                   <td><a href="#int64">int64</a></td>
                   <td></td>
                   <td><p>Id for query deduplication </p></td>
+                </tr>
+              
+                <tr>
+                  <td>space_id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
                 </tr>
               
                 <tr>
@@ -18382,6 +18545,20 @@ For loading members of big groups by chunks. </p></td>
                   <td><p> </p></td>
                 </tr>
               
+                <tr>
+                  <td>updateSpaceModified</td>
+                  <td><a href="#dialog.UpdateSpaceModified">UpdateSpaceModified</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>updateSpaceMemberModified</td>
+                  <td><a href="#dialog.UpdateSpaceMemberModified">UpdateSpaceMemberModified</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
             </tbody>
           </table>
         
@@ -18558,6 +18735,931 @@ For loading members of big groups by chunks. </p></td>
                 <td><a href="#google.protobuf.Empty">.google.protobuf.Empty</a></td>
                 <td><a href="#dialog.SeqUpdateBox">SeqUpdateBox</a></td>
                 <td><p>Get stream of the user&#39;s updates</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      
+    
+      
+      <div class="file-heading">
+        <h2 id="spaces.proto">spaces.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="dialog.RequestCreateSpace">RequestCreateSpace</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>request_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>title</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>shortname</td>
+                  <td><a href="#google.protobuf.StringValue">google.protobuf.StringValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>about</td>
+                  <td><a href="#google.protobuf.StringValue">google.protobuf.StringValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>avatar</td>
+                  <td><a href="#dialog.Avatar">Avatar</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestDeleteSpace">RequestDeleteSpace</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestGetSpaceInviteUrl">RequestGetSpaceInviteUrl</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestLoadSpaces">RequestLoadSpaces</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="dialog.RequestRevokeSpaceInviteUrl">RequestRevokeSpaceInviteUrl</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestSetAbout">RequestSetAbout</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>about</td>
+                  <td><a href="#google.protobuf.StringValue">google.protobuf.StringValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestSetAvatar">RequestSetAvatar</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>file_location</td>
+                  <td><a href="#dialog.FileLocation">FileLocation</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestSetShortname">RequestSetShortname</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>shortname</td>
+                  <td><a href="#google.protobuf.StringValue">google.protobuf.StringValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestSetTitle">RequestSetTitle</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>title</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestSpaceInvite">RequestSpaceInvite</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestSpaceKick">RequestSpaceKick</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestSpaceLeave">RequestSpaceLeave</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.RequestStreamSpaceMembers">RequestStreamSpaceMembers</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>space_id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.ResponseLoadSpaces">ResponseLoadSpaces</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>space</td>
+                  <td><a href="#dialog.Space">Space</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>owner_peers</td>
+                  <td><a href="#dialog.UserOutPeer">UserOutPeer</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.ResponseSpace">ResponseSpace</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>space</td>
+                  <td><a href="#dialog.Space">Space</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.ResponseSpaceInviteUrl">ResponseSpaceInviteUrl</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>invite_url</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.ResponseSpaceMember">ResponseSpaceMember</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>space_id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>member</td>
+                  <td><a href="#dialog.SpaceMember">SpaceMember</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.Space">Space</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>created_at</td>
+                  <td><a href="#google.protobuf.Timestamp">google.protobuf.Timestamp</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>general</td>
+                  <td><a href="#dialog.Space.General">Space.General</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>public</td>
+                  <td><a href="#dialog.Space.Public">Space.Public</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>private</td>
+                  <td><a href="#dialog.Space.Private">Space.Private</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>title</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>about</td>
+                  <td><a href="#google.protobuf.StringValue">google.protobuf.StringValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>avatar</td>
+                  <td><a href="#dialog.Avatar">Avatar</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>deleted_at</td>
+                  <td><a href="#google.protobuf.Timestamp">google.protobuf.Timestamp</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.Space.General">Space.General</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="dialog.Space.Private">Space.Private</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>owner_user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.Space.Public">Space.Public</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>owner_user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>shortname</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.SpaceMember">SpaceMember</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>space_id</td>
+                  <td><a href="#dialog.UUIDValue">UUIDValue</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>invited_at</td>
+                  <td><a href="#google.protobuf.Timestamp">google.protobuf.Timestamp</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>joined_at</td>
+                  <td><a href="#google.protobuf.Timestamp">google.protobuf.Timestamp</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>deleted_at</td>
+                  <td><a href="#google.protobuf.Timestamp">google.protobuf.Timestamp</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>clock</td>
+                  <td><a href="#dialog.DataClock">DataClock</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.SpaceMemberWithPeer">SpaceMemberWithPeer</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>member</td>
+                  <td><a href="#dialog.SpaceMember">SpaceMember</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>peer</td>
+                  <td><a href="#dialog.UserOutPeer">UserOutPeer</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.UpdateSpaceMemberModified">UpdateSpaceMemberModified</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>member</td>
+                  <td><a href="#dialog.SpaceMember">SpaceMember</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="dialog.UpdateSpaceModified">UpdateSpaceModified</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>space</td>
+                  <td><a href="#dialog.Space">Space</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+
+      
+
+      
+
+      
+        <h3 id="dialog.Spaces">Spaces</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>CreateSpace</td>
+                <td><a href="#dialog.RequestCreateSpace">RequestCreateSpace</a></td>
+                <td><a href="#dialog.ResponseSpace">ResponseSpace</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>DeleteSpace</td>
+                <td><a href="#dialog.RequestDeleteSpace">RequestDeleteSpace</a></td>
+                <td><a href="#dialog.ResponseSpace">ResponseSpace</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>SetTitle</td>
+                <td><a href="#dialog.RequestSetTitle">RequestSetTitle</a></td>
+                <td><a href="#dialog.ResponseSpace">ResponseSpace</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>SetShortname</td>
+                <td><a href="#dialog.RequestSetShortname">RequestSetShortname</a></td>
+                <td><a href="#dialog.ResponseSpace">ResponseSpace</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>SetAbout</td>
+                <td><a href="#dialog.RequestSetAbout">RequestSetAbout</a></td>
+                <td><a href="#dialog.ResponseSpace">ResponseSpace</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>SetAvatar</td>
+                <td><a href="#dialog.RequestSetAvatar">RequestSetAvatar</a></td>
+                <td><a href="#dialog.ResponseSpace">ResponseSpace</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>LoadSpaces</td>
+                <td><a href="#dialog.RequestLoadSpaces">RequestLoadSpaces</a></td>
+                <td><a href="#dialog.ResponseLoadSpaces">ResponseLoadSpaces</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>LoadSpaceMembers</td>
+                <td><a href="#dialog.RequestStreamSpaceMembers">RequestStreamSpaceMembers</a></td>
+                <td><a href="#dialog.SpaceMemberWithPeer">SpaceMemberWithPeer</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>Invite</td>
+                <td><a href="#dialog.RequestSpaceInvite">RequestSpaceInvite</a></td>
+                <td><a href="#dialog.ResponseSpaceMember">ResponseSpaceMember</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>Kick</td>
+                <td><a href="#dialog.RequestSpaceKick">RequestSpaceKick</a></td>
+                <td><a href="#dialog.ResponseSpaceMember">ResponseSpaceMember</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>Leave</td>
+                <td><a href="#dialog.RequestSpaceLeave">RequestSpaceLeave</a></td>
+                <td><a href="#dialog.ResponseSpaceMember">ResponseSpaceMember</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>GetSpaceInviteUrl</td>
+                <td><a href="#dialog.RequestGetSpaceInviteUrl">RequestGetSpaceInviteUrl</a></td>
+                <td><a href="#dialog.ResponseSpaceInviteUrl">ResponseSpaceInviteUrl</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>RevokeSpaceInviteUrl</td>
+                <td><a href="#dialog.RequestRevokeSpaceInviteUrl">RequestRevokeSpaceInviteUrl</a></td>
+                <td><a href="#dialog.ResponseSpaceInviteUrl">ResponseSpaceInviteUrl</a></td>
+                <td><p></p></td>
               </tr>
             
           </tbody>

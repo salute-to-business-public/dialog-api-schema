@@ -100,6 +100,7 @@
   
 
 - [definitions.proto](#definitions.proto)
+    - [DataClock](#dialog.DataClock)
     - [DialogOptions](#dialog.DialogOptions)
     - [UUIDValue](#dialog.UUIDValue)
   
@@ -555,6 +556,38 @@
   
   
     - [SequenceAndUpdates](#dialog.SequenceAndUpdates)
+  
+
+- [spaces.proto](#spaces.proto)
+    - [RequestCreateSpace](#dialog.RequestCreateSpace)
+    - [RequestDeleteSpace](#dialog.RequestDeleteSpace)
+    - [RequestGetSpaceInviteUrl](#dialog.RequestGetSpaceInviteUrl)
+    - [RequestLoadSpaces](#dialog.RequestLoadSpaces)
+    - [RequestRevokeSpaceInviteUrl](#dialog.RequestRevokeSpaceInviteUrl)
+    - [RequestSetAbout](#dialog.RequestSetAbout)
+    - [RequestSetAvatar](#dialog.RequestSetAvatar)
+    - [RequestSetShortname](#dialog.RequestSetShortname)
+    - [RequestSetTitle](#dialog.RequestSetTitle)
+    - [RequestSpaceInvite](#dialog.RequestSpaceInvite)
+    - [RequestSpaceKick](#dialog.RequestSpaceKick)
+    - [RequestSpaceLeave](#dialog.RequestSpaceLeave)
+    - [RequestStreamSpaceMembers](#dialog.RequestStreamSpaceMembers)
+    - [ResponseLoadSpaces](#dialog.ResponseLoadSpaces)
+    - [ResponseSpace](#dialog.ResponseSpace)
+    - [ResponseSpaceInviteUrl](#dialog.ResponseSpaceInviteUrl)
+    - [ResponseSpaceMember](#dialog.ResponseSpaceMember)
+    - [Space](#dialog.Space)
+    - [Space.General](#dialog.Space.General)
+    - [Space.Private](#dialog.Space.Private)
+    - [Space.Public](#dialog.Space.Public)
+    - [SpaceMember](#dialog.SpaceMember)
+    - [SpaceMemberWithPeer](#dialog.SpaceMemberWithPeer)
+    - [UpdateSpaceMemberModified](#dialog.UpdateSpaceMemberModified)
+    - [UpdateSpaceModified](#dialog.UpdateSpaceModified)
+  
+  
+  
+    - [Spaces](#dialog.Spaces)
   
 
 - [stickers.proto](#stickers.proto)
@@ -1845,6 +1878,21 @@ Exchange public keys
 
 
 
+<a name="dialog.DataClock"/>
+
+### DataClock
+server timestamp when state was created or modified
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clock | [int64](#int64) |  |  |
+
+
+
+
+
+
 <a name="dialog.DialogOptions"/>
 
 ### DialogOptions
@@ -1868,7 +1916,8 @@ Exchange public keys
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| value | [bytes](#bytes) |  |  |
+| msb | [int64](#int64) |  |  |
+| lsb | [int64](#int64) |  |  |
 
 
 
@@ -2148,6 +2197,7 @@ Group information
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | group id |
+| space_id | [UUIDValue](#dialog.UUIDValue) |  |  |
 | access_hash | [int64](#int64) |  | Access hash of group |
 | title | [string](#string) |  | Title of group |
 | avatar | [Avatar](#dialog.Avatar) |  | Avatar of group |
@@ -2239,6 +2289,7 @@ Creating group chat
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | rid | [int64](#int64) |  | Id for query deduplication |
+| space_id | [UUIDValue](#dialog.UUIDValue) |  |  |
 | title | [string](#string) |  |  |
 | users | [UserOutPeer](#dialog.UserOutPeer) | repeated | members |
 | group_type | [GroupType](#dialog.GroupType) |  | group or channel |
@@ -8008,6 +8059,8 @@ Sequence update
 | updateEmptyUpdate | [UpdateEmptyUpdate](#dialog.UpdateEmptyUpdate) |  |  |
 | updateCountersChanged | [UpdateCountersChanged](#dialog.UpdateCountersChanged) |  |  |
 | updateConfig | [UpdateConfig](#dialog.UpdateConfig) |  |  |
+| updateSpaceModified | [UpdateSpaceModified](#dialog.UpdateSpaceModified) |  |  |
+| updateSpaceMemberModified | [UpdateSpaceMemberModified](#dialog.UpdateSpaceMemberModified) |  |  |
 
 
 
@@ -8082,6 +8135,447 @@ Out of sequence update (for typing and online statuses)
 | SubscribeToGroupOnline | [RequestSubscribeToGroupOnline](#dialog.RequestSubscribeToGroupOnline) | [ResponseVoid](#dialog.RequestSubscribeToGroupOnline) |  |
 | SubscribeFromGroupOnline | [RequestSubscribeFromGroupOnline](#dialog.RequestSubscribeFromGroupOnline) | [ResponseVoid](#dialog.RequestSubscribeFromGroupOnline) |  |
 | SeqUpdates | [.google.protobuf.Empty](#google.protobuf.Empty) | [SeqUpdateBox](#google.protobuf.Empty) | Get stream of the user&#39;s updates |
+
+ 
+
+
+
+<a name="spaces.proto"/>
+<p align="right"><a href="#top">Top</a></p>
+
+## spaces.proto
+
+
+
+<a name="dialog.RequestCreateSpace"/>
+
+### RequestCreateSpace
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| request_id | [int64](#int64) |  |  |
+| title | [string](#string) |  |  |
+| shortname | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+| about | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+| avatar | [Avatar](#dialog.Avatar) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestDeleteSpace"/>
+
+### RequestDeleteSpace
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestGetSpaceInviteUrl"/>
+
+### RequestGetSpaceInviteUrl
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestLoadSpaces"/>
+
+### RequestLoadSpaces
+
+
+
+
+
+
+
+<a name="dialog.RequestRevokeSpaceInviteUrl"/>
+
+### RequestRevokeSpaceInviteUrl
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestSetAbout"/>
+
+### RequestSetAbout
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| about | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestSetAvatar"/>
+
+### RequestSetAvatar
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| file_location | [FileLocation](#dialog.FileLocation) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestSetShortname"/>
+
+### RequestSetShortname
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| shortname | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestSetTitle"/>
+
+### RequestSetTitle
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| title | [string](#string) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestSpaceInvite"/>
+
+### RequestSpaceInvite
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| user_id | [int32](#int32) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestSpaceKick"/>
+
+### RequestSpaceKick
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| user_id | [int32](#int32) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestSpaceLeave"/>
+
+### RequestSpaceLeave
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| user_id | [int32](#int32) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestStreamSpaceMembers"/>
+
+### RequestStreamSpaceMembers
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| space_id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseLoadSpaces"/>
+
+### ResponseLoadSpaces
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| space | [Space](#dialog.Space) | repeated |  |
+| owner_peers | [UserOutPeer](#dialog.UserOutPeer) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.ResponseSpace"/>
+
+### ResponseSpace
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| space | [Space](#dialog.Space) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseSpaceInviteUrl"/>
+
+### ResponseSpaceInviteUrl
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| invite_url | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseSpaceMember"/>
+
+### ResponseSpaceMember
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| space_id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| member | [SpaceMember](#dialog.SpaceMember) |  |  |
+
+
+
+
+
+
+<a name="dialog.Space"/>
+
+### Space
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| created_at | [google.protobuf.Timestamp](#google.protobuf.Timestamp) |  |  |
+| general | [Space.General](#dialog.Space.General) |  |  |
+| public | [Space.Public](#dialog.Space.Public) |  |  |
+| private | [Space.Private](#dialog.Space.Private) |  |  |
+| title | [string](#string) |  |  |
+| about | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+| avatar | [Avatar](#dialog.Avatar) |  |  |
+| deleted_at | [google.protobuf.Timestamp](#google.protobuf.Timestamp) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.Space.General"/>
+
+### Space.General
+
+
+
+
+
+
+
+<a name="dialog.Space.Private"/>
+
+### Space.Private
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| owner_user_id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="dialog.Space.Public"/>
+
+### Space.Public
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| owner_user_id | [int32](#int32) |  |  |
+| shortname | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="dialog.SpaceMember"/>
+
+### SpaceMember
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| space_id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| user_id | [int32](#int32) |  |  |
+| invited_at | [google.protobuf.Timestamp](#google.protobuf.Timestamp) |  |  |
+| joined_at | [google.protobuf.Timestamp](#google.protobuf.Timestamp) |  |  |
+| deleted_at | [google.protobuf.Timestamp](#google.protobuf.Timestamp) |  |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+
+
+
+
+
+
+<a name="dialog.SpaceMemberWithPeer"/>
+
+### SpaceMemberWithPeer
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| member | [SpaceMember](#dialog.SpaceMember) |  |  |
+| peer | [UserOutPeer](#dialog.UserOutPeer) |  |  |
+
+
+
+
+
+
+<a name="dialog.UpdateSpaceMemberModified"/>
+
+### UpdateSpaceMemberModified
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| member | [SpaceMember](#dialog.SpaceMember) |  |  |
+
+
+
+
+
+
+<a name="dialog.UpdateSpaceModified"/>
+
+### UpdateSpaceModified
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| space | [Space](#dialog.Space) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+<a name="dialog.Spaces"/>
+
+### Spaces
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| CreateSpace | [RequestCreateSpace](#dialog.RequestCreateSpace) | [ResponseSpace](#dialog.RequestCreateSpace) |  |
+| DeleteSpace | [RequestDeleteSpace](#dialog.RequestDeleteSpace) | [ResponseSpace](#dialog.RequestDeleteSpace) |  |
+| SetTitle | [RequestSetTitle](#dialog.RequestSetTitle) | [ResponseSpace](#dialog.RequestSetTitle) |  |
+| SetShortname | [RequestSetShortname](#dialog.RequestSetShortname) | [ResponseSpace](#dialog.RequestSetShortname) |  |
+| SetAbout | [RequestSetAbout](#dialog.RequestSetAbout) | [ResponseSpace](#dialog.RequestSetAbout) |  |
+| SetAvatar | [RequestSetAvatar](#dialog.RequestSetAvatar) | [ResponseSpace](#dialog.RequestSetAvatar) |  |
+| LoadSpaces | [RequestLoadSpaces](#dialog.RequestLoadSpaces) | [ResponseLoadSpaces](#dialog.RequestLoadSpaces) |  |
+| LoadSpaceMembers | [RequestStreamSpaceMembers](#dialog.RequestStreamSpaceMembers) | [SpaceMemberWithPeer](#dialog.RequestStreamSpaceMembers) |  |
+| Invite | [RequestSpaceInvite](#dialog.RequestSpaceInvite) | [ResponseSpaceMember](#dialog.RequestSpaceInvite) |  |
+| Kick | [RequestSpaceKick](#dialog.RequestSpaceKick) | [ResponseSpaceMember](#dialog.RequestSpaceKick) |  |
+| Leave | [RequestSpaceLeave](#dialog.RequestSpaceLeave) | [ResponseSpaceMember](#dialog.RequestSpaceLeave) |  |
+| GetSpaceInviteUrl | [RequestGetSpaceInviteUrl](#dialog.RequestGetSpaceInviteUrl) | [ResponseSpaceInviteUrl](#dialog.RequestGetSpaceInviteUrl) |  |
+| RevokeSpaceInviteUrl | [RequestRevokeSpaceInviteUrl](#dialog.RequestRevokeSpaceInviteUrl) | [ResponseSpaceInviteUrl](#dialog.RequestRevokeSpaceInviteUrl) |  |
 
  
 
