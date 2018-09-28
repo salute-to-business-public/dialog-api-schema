@@ -11,3 +11,9 @@ Usage
 -----
 
 Currently API available by request in Dialog [chat](https://dlg.im/@botsfordialog).
+
+| Project      | Link                                      |
+|--------------|-------------------------------------------|
+| Java Bot SDK | https://github.com/dialogs/java-bot-sdk   |
+| Python (WIP) | https://github.com/dialogs/python-bot-sdk |
+| Go (Example) | https://github.com/dialogs/stressbot      |
