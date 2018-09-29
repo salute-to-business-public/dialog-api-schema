@@ -7,3 +7,6 @@ js/
 http_gateway/
 python/
 .idea
+.gradle/
+build/
+gradle.properties

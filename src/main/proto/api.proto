@@ -1,0 +1,5 @@
+syntax = "proto3";
+// Don't remove, required for java codegen
+message TestStub {
+    
+}

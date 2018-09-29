@@ -1,0 +1,152 @@
+apply plugin: 'java'
+apply plugin: 'com.google.protobuf'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+group = 'im.dlg'
+version = '0.0.6'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.5'
+    }
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir 'include'
+            srcDir 'proto'
+        }
+    }
+}
+
+jar {
+    exclude '**.proto'
+    exclude 'google'
+    exclude 'scalapb'
+    exclude 'com/google'
+}
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+    maven { url "https://maven.google.com" }
+    maven { url "https://jitpack.io" }
+    maven {
+        url "http://dialog.bintray.com/maven"
+        credentials {
+            username bintrayUser
+            password bintrayPassword
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'io.grpc:grpc-okhttp:1.12.0'
+    compile 'io.grpc:grpc-protobuf:1.12.0'
+    compile 'io.grpc:grpc-stub:1.12.0'
+    compile "com.google.api.grpc:proto-google-common-protos:1.0.0"
+}
+
+ext {
+    artifact = 'java-api-schema'
+    libraryDescription = 'Protocol schema for java apps'
+    gitUrl = 'https://bitbucket.transmit.im/projects/DLG/repos/dialog-api-schema/browse'
+    libraryVersion = version
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.6.0"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.12.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
+    }
+}
+
+//bintray
+apply plugin: 'com.jfrog.bintray'
+
+if (project.hasProperty("android")) { // Android libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+} else { // Java libraries
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId group
+            artifactId 'java-api-schema'
+            version version
+            from components.java
+        }
+    }
+}
+
+bintray {
+    user = bintrayUser
+    key = bintrayPassword
+    override = false
+
+    configurations = ['archives']
+
+    pkg {
+        userOrg = 'dialog'
+        repo = 'maven'
+        name = artifact
+        desc = libraryDescription
+        websiteUrl = 'https://dlg.im'
+        vcsUrl = gitUrl
+        licenses = ["Dialog"]
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = libraryDescription
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                if (hasProperty('bintrayGpgPassword')) {
+                    bintray.pkg.version.gpg.passphrase = bintrayGpgPassword
+                }
+            }
+        }
+    }
+}
