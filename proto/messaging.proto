@@ -654,6 +654,24 @@ message UpdateReactionsUpdate {
     repeated MessageReaction reactions = 3 [(dlg).log="visible"];
 }
 
+// Update about rejection of message send request
+message UpdateMessageRejectedByHook {
+    Peer peer = 1 [(dlg).log="visible"];
+    int64 rid = 2 [(dlg).log="visible"];
+    int64 date = 3 [(dlg).log="visible"];
+    string hookId = 4 [(dlg).log="visible"];
+    google.protobuf.StringValue reason = 5 [(dlg).log="visible"];
+}
+
+// Update about rejection of message update request
+message UpdateMessageEditRejectedByHook {
+    Peer peer = 1 [(dlg).log="visible"];
+    UUIDValue mid = 2 [(dlg).log="visible"]; // related message id
+    int64 date = 3 [(dlg).log="visible"];
+    string hookId = 4 [(dlg).log="visible"];
+    google.protobuf.StringValue reason = 5 [(dlg).log="visible"];
+}
+
 enum MessageState {
     MESSAGESTATE_UNKNOWN = 0;
     MESSAGESTATE_SENT = 1;

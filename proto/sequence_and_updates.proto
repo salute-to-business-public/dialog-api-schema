@@ -132,6 +132,8 @@ message UpdateSeqUpdate {
       UpdateConfig updateConfig = 89;
       UpdateSpaceModified updateSpaceModified = 90;
       UpdateSpaceMemberModified updateSpaceMemberModified = 91;
+      UpdateMessageRejectedByHook updateMessageRejectedByHook = 92;
+      UpdateMessageEditRejectedByHook updateMessageEditRejectedByHook = 93;
     }
 }
 
@@ -302,7 +304,8 @@ message RequestSubscribeFromGroupOnline {
 message SeqUpdateBox {
   int32 seq = 1;
   bytes state = 2;
-  google.protobuf.BytesValue update = 3; /// serialized UpdateSeqUpdate
+  google.protobuf.BytesValue update = 3; /// UpdateSeqUpdate in bytes
+  UpdateSeqUpdate unboxed_update = 4;
 }
 
 service SequenceAndUpdates {
