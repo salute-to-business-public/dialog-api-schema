@@ -77,7 +77,6 @@ message User {
     Sex sex = 5 [(dlg).log="hidden"];
     Avatar avatar = 8 [(dlg).log="compact"];
     google.protobuf.BoolValue is_bot = 11 [(dlg).log="visible"];
-    repeated ContactRecord contacts = 20 [(dlg).log="hidden"];
 }
 
 // Full User representation - deprecated

@@ -132,6 +132,8 @@ message UpdateSeqUpdate {
       UpdateConfig updateConfig = 89;
       UpdateSpaceModified updateSpaceModified = 90;
       UpdateSpaceMemberModified updateSpaceMemberModified = 91;
+      UpdateMessageRejectedByHook updateMessageRejectedByHook = 92;
+      UpdateMessageEditRejectedByHook updateMessageEditRejectedByHook = 93;
     }
 }
 
