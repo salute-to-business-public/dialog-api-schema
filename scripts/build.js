@@ -19,8 +19,9 @@ async function build({ include, protos }) {
     '-t', 'static-module',
     '-w', 'commonjs',
     '-p', include,
-    '--no-delimited',
     '--force-long',
+    '--no-delimited',
+    '--force-message',
     ...protos
   ]);
   await writeFile(path.join(output, 'api.js'), js);
