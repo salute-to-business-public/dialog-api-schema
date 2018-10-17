@@ -12,13 +12,20 @@ async function build({ include, protos }) {
   const output = path.join(__dirname, '../js');
   await mkdirp(output);
 
-  const json = await compile(['--target', 'json', '--path', include, ...protos]);
+  const json = await compile(['-t', 'json', '-p', include, ...protos]);
   await writeFile(path.join(output, 'api.json'), json);
 
-  const js = await compile(['--target', 'static-module', '-w', 'commonjs', '--path', include, ...protos]);
+  const js = await compile([
+    '-t', 'static-module',
+    '-w', 'commonjs',
+    '-p', include,
+    '--no-delimited',
+    '--force-long',
+    ...protos
+  ]);
   await writeFile(path.join(output, 'api.js'), js);
 
-  const proto = await compile(['--target', 'proto3', '--path', include, ...protos]);
+  const proto = await compile(['-t', 'proto3', '-p', include, ...protos]);
   await writeFile(path.join(output, 'api.proto'), proto);
 }
 

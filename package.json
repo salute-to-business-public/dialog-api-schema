@@ -24,7 +24,7 @@
   },
   "homepage": "https://dialogs.github.io/api-schema",
   "dependencies": {
-    "protobufjs": "6.8.6"
+    "protobufjs": "6.8.8"
   },
   "devDependencies": {
     "mkdirp": "0.5.1"
