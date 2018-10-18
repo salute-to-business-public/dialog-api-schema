@@ -4,12 +4,15 @@
 
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
+const api = require('./api.js');
 
 const packageDefinition = protoLoader.loadSync(
   require.resolve('./api.proto'),
   { keepCase: false, arrays: true }
 );
 
-const api = grpc.loadPackageDefinition(packageDefinition);
+const services = grpc.loadPackageDefinition(packageDefinition);
+
+Object.assign(api, services);
 
 module.exports = api;
