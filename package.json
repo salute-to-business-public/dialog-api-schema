@@ -23,9 +23,11 @@
     "url": "https://github.com/dialogs/api-schema/issues"
   },
   "homepage": "https://dialogs.github.io/api-schema",
+  "peerDependencies": {
+    "grpc": "^1.15.1"
+  },
   "dependencies": {
     "@grpc/proto-loader": "^0.3.0",
-    "grpc": "^1.15.1",
     "protobufjs": "^6.8.8"
   },
   "devDependencies": {
