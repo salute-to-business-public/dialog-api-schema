@@ -24,7 +24,9 @@
   },
   "homepage": "https://dialogs.github.io/api-schema",
   "dependencies": {
-    "protobufjs": "6.8.8"
+    "@grpc/proto-loader": "^0.3.0",
+    "grpc": "^1.15.1",
+    "protobufjs": "^6.8.8"
   },
   "devDependencies": {
     "mkdirp": "0.5.1"
