@@ -13,6 +13,6 @@ const packageDefinition = protoLoader.loadSync(
 
 const services = grpc.loadPackageDefinition(packageDefinition);
 
-Object.assign(api, services);
+Object.assign(api.dialog, services.dialog);
 
 module.exports = api;
