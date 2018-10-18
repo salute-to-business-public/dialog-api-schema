@@ -7,7 +7,7 @@ const protoLoader = require('@grpc/proto-loader');
 
 const packageDefinition = protoLoader.loadSync(
   require.resolve('./api.proto'),
-  { keepCase: false }
+  { keepCase: false, arrays: true }
 );
 
 const api = grpc.loadPackageDefinition(packageDefinition);
