@@ -463,6 +463,12 @@ message MessageReaction {
     string code = 2 [(dlg).log="visible"]; /// Reaction EMOJI code
 }
 
+// Predicate for searching in custom profile
+message SearchPredicate {
+    string key = 1 [(dlg).log = "visible"];
+    repeated string values = 2 [(dlg).log = "visible"];
+}
+
 // Sending plain message
 message RequestSendMessage {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
@@ -475,6 +481,7 @@ message RequestSendMessage {
     ReferencedMessages forward = 8 [(dlg).log="visible"];
     /// If current message is a reply on some other
     ReferencedMessages reply = 9 [(dlg).log="visible"];
+    repeated SearchPredicate predicates = 10 [(dlg).log = "visible"];
 }
 
 // Changing Message content
