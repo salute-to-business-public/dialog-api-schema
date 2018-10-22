@@ -465,8 +465,8 @@ message MessageReaction {
 
 // Predicate for searching in custom profile
 message SearchPredicate {
-    string key = 1;
-    repeated string values = 2;
+    string key = 1 [(dlg).log = "visible"];
+    repeated string values = 2 [(dlg).log = "visible"];
 }
 
 // Sending plain message
