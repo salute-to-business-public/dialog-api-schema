@@ -213,7 +213,7 @@ message ResponseGetDifference {
     bytes state = 2;
     repeated User users = 3;
     repeated Group groups = 6;
-    repeated UpdateContainer updates = 4;
+    repeated UpdateSeqUpdate updates = 4;
     repeated HistoryMessage messages = 7;
     bool need_more = 5; /// false if all updates returned
     repeated UserOutPeer users_refs = 8;
