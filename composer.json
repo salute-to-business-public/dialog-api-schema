@@ -15,11 +15,9 @@
   ],
   "minimum-stability": "stable",
   "autoload": {
-    "autoload": {
-      "psr-4": {
-        "Dialog\\": "php/Dialog/",
-        "GPBMetadata\\": "php/GPBMetadata/"
-      }
+    "psr-4": {
+      "Dialog\\": "php/Dialog/",
+      "GPBMetadata\\": "php/GPBMetadata/"
     }
   }
 }
