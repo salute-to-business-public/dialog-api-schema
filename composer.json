@@ -1,0 +1,25 @@
+{
+  "name": "dlghq/dialog-api-schema",
+  "description": "Dialog Messenger API Schema",
+  "type": "library",
+  "require": {
+    "grpc/grpc": "^1.15",
+    "google/protobuf": "^3.6"
+  },
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Nikita Gusakov",
+      "email": "nkt@dlg.im"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "autoload": {
+      "psr-4": {
+        "Dialog\\": "php/Dialog/",
+        "GPBMetadata\\": "php/GPBMetadata/"
+      }
+    }
+  }
+}

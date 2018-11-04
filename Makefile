@@ -1,9 +1,9 @@
-.PHONY: docs java js swagger gateway python
+.PHONY: docs java swagger gateway python php
 
 PROJECT_PATH   := $(shell pwd)
 PROTO_PATH     := $(PROJECT_PATH)/proto
 JAVA_GEN_PATH  := $(PROJECT_PATH)/java
-JS_GEN_PATH    := $(PROJECT_PATH)/js
+PHP_GEN_PATH   := $(PROJECT_PATH)/php
 DOCS_PATH      := $(PROJECT_PATH)/docs
 SWAGGER_PATH   := $(PROJECT_PATH)/swagger
 HTTP_GW_PATH   := $(PROJECT_PATH)/http_gateway
@@ -35,12 +35,11 @@ java:
 	--java_out="$(JAVA_GEN_PATH)" \
 	include/scalapb/scalapb.proto
 
-js:
-	mkdir -p $(JS_GEN_PATH)
+php:
+	mkdir -p $(PHP_GEN_PATH)
 	@protoc -I$(PROTO_PATH) \
 	-Iinclude \
-	-I$(GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-	--js_out=$(JS_GEN_PATH) \
+	--php_out=$(PHP_GEN_PATH) \
 	$(PROTO_PATH)/*.proto
 
 swagger:

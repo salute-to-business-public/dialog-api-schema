@@ -1,12 +1,18 @@
 swagger/
-node_modules/
 target/
 project/target/
 scalafmt/
-/js/
 http_gateway/
 python/
 .idea
 .gradle/
 build/
 gradle.properties
+
+# PHP
+/php/
+/vendor/
+
+# JS
+/js/
+node_modules/
