@@ -209,6 +209,19 @@ message RequestSimpleSearchMore {
     repeated UpdateOptimization optimizations = 2;
 }
 
+
+message RequestFieldAutocomplete {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string field_name = 1 [(dlg).log = "visible"];
+    string field_value = 2 [(dlg).log = "visible"];
+}
+
+message ResponseFieldAutocomplete {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    string field_name = 1 [(dlg).log = "visible"];
+    repeated string field_value = 2 [(dlg).log = "visible"];
+}
+
 service Search {
     /// Search among groups/users/contacts
     rpc PeerSearch (RequestPeerSearch) returns (ResponsePeerSearch) {
@@ -246,6 +259,13 @@ service Search {
     rpc SimpleSearchMore (RequestSimpleSearchMore) returns (ResponseMessageSearchResponse) {
         option (google.api.http) = {
             post: "/v1/grpc/Search/SimpleSearchMore"
+            body: "*"
+        };
+    }
+    /// Search for autocomplete suggestions among custom user profile
+    rpc AutocompleteSuggestions (RequestFieldAutocomplete) returns (ResponseFieldAutocomplete) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/AutocompleteSuggestions"
             body: "*"
         };
     }
