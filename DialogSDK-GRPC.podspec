@@ -20,8 +20,7 @@ Pod::Spec.new do |s|
   dependencies = 'Dependencies'
 
   # Path where Cocoapods downloads protoc and the gRPC plugin.
-  google_api_import = "include/google/api"
-  scala_api_import = "include/scalapb"
+  api_import = "include"
   protoc_dir = "#{dependencies}/!ProtoCompiler"
   protoc = "#{protoc_dir}/protoc"
   plugin = "#{dependencies}/!ProtoCompiler-gRPCPlugin/grpc_objective_c_plugin"
@@ -37,8 +36,7 @@ Pod::Spec.new do |s|
         --grpc_out=#{dir} \
         -I #{src} \
         -I #{protoc_dir} \
-        -I #{google_api_import} \
-        -I #{scala_api_import} \
+        -I #{api_import} \
         #{src}/gateway_service.proto \
         #{src}/registration.proto
   CMD
