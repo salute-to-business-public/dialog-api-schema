@@ -37,7 +37,9 @@ Pod::Spec.new do |s|
         -I #{src} \
         -I #{protoc_dir} \
         -I #{api_import} \
-        #{src}/gateway_service.proto \
+        #{api_import}/scalapb/scalapb.proto \
+        #{api_import}google/api/annotations.proto \
+        #{src}/obsolete.proto \
         #{src}/registration.proto
   CMD
 
@@ -51,7 +53,7 @@ Pod::Spec.new do |s|
         --grpc_out=#{dir} \
         -I #{src} \
         -I #{protoc_dir} \
-        #{src}/gateway_service.proto \
+        #{src}/gobsolete.proto \
         #{src}/registration.proto
   CMD"
 
