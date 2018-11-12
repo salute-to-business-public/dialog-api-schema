@@ -29,6 +29,24 @@ Pod::Spec.new do |s|
   dir = "#{s.name}"
 
   s.prepare_command = <<-CMD
+    mkdir -p #{dir}/scalapb
+    #{protoc} \
+        --plugin=protoc-gen-grpc=#{plugin} \
+        --objc_out=#{dir}/scalapb \
+        --grpc_out=#{dir}/scalapb \
+        -I #{protoc_dir} \
+        -I #{api_import} \
+        #{api_import}/scalapb/scalapb.proto
+
+    mkdir -p #{dir}/google/api
+    #{protoc} \
+        --plugin=protoc-gen-grpc=#{plugin} \
+        --objc_out=#{dir}/google/api \
+        --grpc_out=#{dir}/google/api \
+        -I #{protoc_dir} \
+        -I #{api_import} \
+        #{api_import}/google/api/annotations.proto
+
     mkdir -p #{dir}
     #{protoc} \
         --plugin=protoc-gen-grpc=#{plugin} \
@@ -37,11 +55,24 @@ Pod::Spec.new do |s|
         -I #{src} \
         -I #{protoc_dir} \
         -I #{api_import} \
-        #{api_import}/scalapb/scalapb.proto \
-        #{api_import}/google/api/annotations.proto \
         #{src}/obsolete.proto \
         #{src}/registration.proto
-  CMD
+    CMD
+
+#s.prepare_command = <<-CMD
+#mkdir -p #{dir}
+##{protoc} \
+#--plugin=protoc-gen-grpc=#{plugin} \
+#--objc_out=#{dir} \
+#--grpc_out=#{dir} \
+#-I #{src} \
+#-I #{protoc_dir} \
+#-I #{api_import} \
+##{api_import}/scalapb/scalapb.proto \
+##{api_import}/google/api/annotations.proto \
+##{src}/obsolete.proto \
+##{src}/registration.proto
+#CMD
 
   ### TODO: default instruction above s.prepare_command  sometimes not executed causing absense of DialogSDK_GRPC pod module during Xcode compilation
   ### So put additional invocation to guarantee right installation
