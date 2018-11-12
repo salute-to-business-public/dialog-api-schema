@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
         -I #{protoc_dir} \
         -I #{api_import} \
         #{api_import}/scalapb/scalapb.proto \
-        #{api_import}google/api/annotations.proto \
+        #{api_import}/google/api/annotations.proto \
         #{src}/obsolete.proto \
         #{src}/registration.proto
   CMD
