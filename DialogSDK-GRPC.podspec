@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 
   # Base directory where the .proto files are.
   #src = "../sdk-api/api-grpc/src/main/proto"
-  src = "proto"
+  src = "ios_non_relative_path_proto"
 
   # Run protoc with the Objective-C and gRPC plugins to generate protocol messages and gRPC clients.
   s.dependency "!ProtoCompiler-gRPCPlugin", "~> 1.0"
@@ -31,34 +31,13 @@ Pod::Spec.new do |s|
   s.prepare_command = <<-CMD
     mkdir -p #{dir}
 
-#cp -r #{api_import}/scalapb #{src}
-#cp -r #{api_import}/google/api #{src}
-#cp -r #{api_import}/google/protobuf #{src}
-
     #{protoc} \
         --plugin=protoc-gen-grpc=#{plugin} \
         --objc_out=#{dir}\
         --grpc_out=#{dir} \
         -I #{protoc_dir} \
-        -I #{api_import} \
-        #{src}/obsolete.proto \
-        #{src}/registration.proto
+        #{src}/*.proto
     CMD
-
-#s.prepare_command = <<-CMD
-#mkdir -p #{dir}
-##{protoc} \
-#--plugin=protoc-gen-grpc=#{plugin} \
-#--objc_out=#{dir} \
-#--grpc_out=#{dir} \
-#-I #{src} \
-#-I #{protoc_dir} \
-#-I #{api_import} \
-##{api_import}/scalapb/scalapb.proto \
-##{api_import}/google/api/annotations.proto \
-##{src}/obsolete.proto \
-##{src}/registration.proto
-#CMD
 
   ### TODO: default instruction above s.prepare_command  sometimes not executed causing absense of DialogSDK_GRPC pod module during Xcode compilation
   ### So put additional invocation to guarantee right installation

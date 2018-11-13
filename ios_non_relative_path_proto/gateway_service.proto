@@ -1,0 +1,196 @@
+syntax = "proto3";
+
+package dialog;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+option objc_class_prefix = "API";
+option swift_prefix="API";
+
+// Gateway service: client apps use it to make requests to server
+service Obsolete {
+    rpc Obsolete(google.protobuf.BytesValue) returns (google.protobuf.BytesValue);
+
+    rpc SeqUpdates(google.protobuf.Empty) returns (stream ObsoleteSeqUpdateBox);
+    rpc WeakUpdates(stream ObsoleteWeakUpdateCommand) returns (stream ObsoleteWeakUpdateBox);
+}
+
+// Updates
+
+message ObsoletePeer {
+    enum ObsoletePeerType {
+        OBSOLETE_PEERTYPE_UNKNOWN           = 0;
+        OBSOLETE_PEERTYPE_PRIVATE           = 1;
+        OBSOLETE_PEERTYPE_GROUP             = 2;
+        //PEERTYPE_ENCRYPTED_PRIVATE = 3;
+        OBSOLETE_PEERTYPE_SIP               = 4;
+    }
+
+    ObsoletePeerType type                     = 1;
+    int32 id                          = 2;
+    google.protobuf.StringValue strId = 3;
+    int64 access_hash                 = 4;
+}
+
+message ObsoleteOutPeer {
+    ObsoletePeer peer = 1;
+    int64 accessHash = 2;
+}
+
+message ObsoletePeersList {
+    repeated ObsoletePeer peers = 1;
+}
+
+message GetDifferenceCommand {
+    google.protobuf.Int32Value seq = 1;
+    bytes state = 2;
+    int64 configHash = 3;
+}
+
+message ObsoleteSeqUpdateBox {
+    int32 seq = 1;
+    bytes state = 2;
+    oneof updatebox {
+        google.protobuf.BytesValue obsoleteUpdate = 3;
+    }
+}
+
+message ObsoleteWeakUpdateBox {
+    message ObsoleteUpdateTyping {
+        ObsoletePeer peer       = 1;
+        int32 userId    = 2;
+        ObsoleteTypingType type = 3;
+        bool isTyping   = 4;
+    }
+
+    message ObsoleteUpdateUserLastSeen {
+        int32 userId          = 1;
+        int64 epochMillis     = 2;
+        int32 deviceType      = 3;
+        string deviceCategory = 4;
+        bool isOnline         = 5;
+    }
+
+    message ObsoleteUpdateGroupOnline {
+        int32 groupId = 1;
+        int32 count   = 2;
+    }
+
+    message ObsoleteUpdateEventBusMessage {
+        string busId                              = 1;
+        google.protobuf.Int32Value senderId       = 2;
+        google.protobuf.Int64Value senderDeviceId = 3;
+        bytes message                             = 4;
+    }
+
+    message ObsoleteUpdateEventBusDeviceConnected {
+        string busId                      = 1;
+        google.protobuf.Int32Value userId = 2;
+        int64 deviceId                    = 3;
+    }
+
+    message ObsoleteUpdateEventBusDeviceDisconnected {
+        string busId                      = 1;
+        google.protobuf.Int32Value userId = 2;
+        int64 deviceId                    = 3;
+    }
+
+    message ObsoleteUpdateEventBusDisposed {
+        string busId = 1;
+    }
+
+    message ObsoleteUpdateForceReloadState {
+        message ObsoleteForceReloadField {
+            oneof field {
+                google.protobuf.Empty reloadDialogs  = 1;
+                google.protobuf.Empty reloadContacts = 2;
+                ObsoletePeersList reloadHistory              = 3;
+            }
+        }
+        repeated ObsoleteForceReloadField fields = 1;
+    }
+
+    message ObsoleteUpdateIncomingCall {
+        int64 callId = 1;
+        string busId = 2;
+        ObsoletePeer peer = 3;
+        google.protobuf.StringValue displayName = 4;
+        google.protobuf.Int32Value attemptIndex = 5;
+        ObsoleteOutPeer outPeer = 6;
+    }
+
+    message ObsoleteUpdateCallHandled {
+        int64 callId = 1;
+        google.protobuf.Int32Value attemptIndex = 2;
+    }
+
+    message ObsoleteUpdateCallDisposed {
+        enum ObsoleteDisposalReason {
+            OBSOLETE_DISPOSAL_REASON_UNKNOWN = 0;
+            OBSOLETE_DISPOSAL_REASON_REJECTED = 1;
+            OBSOLETE_DISPOSAL_REASON_BUSY = 2;
+            OBSOLETE_DISPOSAL_REASON_ENDED = 3;
+            OBSOLETE_DISPOSAL_REASON_ANSWER_TIMEOUT = 4;
+        }
+        int64 callId = 1;
+        google.protobuf.Int32Value attemptIndex = 2;
+        ObsoleteDisposalReason reason = 3;
+    }
+
+    int64 date                                               = 1;
+    oneof updatebox {
+        ObsoleteUpdateTyping typing                                    = 2;
+        ObsoleteUpdateUserLastSeen userLastSeen                        = 3;
+        ObsoleteUpdateGroupOnline groupOnline                          = 4;
+        ObsoleteUpdateEventBusMessage busMessage                       = 5;
+        ObsoleteUpdateEventBusDeviceConnected busDeviceConnected       = 6;
+        ObsoleteUpdateEventBusDeviceDisconnected busDeviceDisconnected = 7;
+        ObsoleteUpdateEventBusDisposed busDisposed                     = 8;
+        ObsoleteUpdateForceReloadState forceReload                     = 9;
+        ObsoleteUpdateIncomingCall incomingCall                        = 10;
+        ObsoleteUpdateCallHandled callHandled                          = 11;
+        ObsoleteUpdateCallDisposed callDisposed                        = 12;
+    }
+}
+
+// message EventBusUpdate {
+//   oneof update {
+//     google.protobuf.BytesValue obsoleteUpdate = 1;
+//   }
+// }
+
+message ServiceUpdate {
+    oneof update {
+        google.protobuf.BytesValue obsoleteUpdate = 1;
+    }
+}
+
+enum ObsoleteTypingType {
+    OBSOLETE_TYPINGTYPE_UNKNOWN = 0;
+    OBSOLETE_TYPINGTYPE_TEXT = 1;
+}
+
+message ObsoleteWeakUpdateCommand {
+    message ObsoleteMyTyping {
+        ObsoletePeer peer       = 1;
+        ObsoleteTypingType type = 2;
+        bool start      = 3;
+    }
+
+    message ObsoleteMyOnline {
+        bool online = 1;
+    }
+
+    oneof command {
+        ObsoletePeersList subscribeToOnlines             = 1;
+        ObsoletePeersList unsubscribeFromOnlines         = 2;
+        google.protobuf.Empty dropOnlineSubscriptions    = 3;
+        ObsoleteMyTyping myTyping                        = 7;
+        ObsoletePeersList subscribeToTypings             = 8;
+        ObsoletePeersList unsubscribeFromTypings         = 9;
+        google.protobuf.Empty dropTypingSubscriptions    = 10;
+        google.protobuf.Empty subscribeToEventBusUpdates = 11;
+        ObsoleteMyOnline myOnline                        = 12;
+    }
+}
