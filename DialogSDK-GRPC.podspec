@@ -41,7 +41,7 @@ Pod::Spec.new do |s|
         --grpc_out=#{dir} \
         -I #{protoc_dir} \
         -I #{src} \
-        --proto_path=#{src}
+        #{src}/*.proto
     CMD
 
 #s.prepare_command = <<-CMD
