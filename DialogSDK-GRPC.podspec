@@ -31,9 +31,9 @@ Pod::Spec.new do |s|
   s.prepare_command = <<-CMD
     mkdir -p #{dir}
 
-    cp -r #{api_import}/scalapb #{src}
-    cp -r #{api_import}/google/api #{src}
-    cp -r #{api_import}/google/protobuf #{src}
+#cp -r #{api_import}/scalapb #{src}
+#cp -r #{api_import}/google/api #{src}
+#cp -r #{api_import}/google/protobuf #{src}
 
     #{protoc} \
         --plugin=protoc-gen-grpc=#{plugin} \
@@ -41,7 +41,8 @@ Pod::Spec.new do |s|
         --grpc_out=#{dir} \
         -I #{protoc_dir} \
         -I #{api_import} \
-        #{src}/*.proto
+        #{src}/obsolete.proto \
+        #{src}/registration.proto
     CMD
 
 #s.prepare_command = <<-CMD
