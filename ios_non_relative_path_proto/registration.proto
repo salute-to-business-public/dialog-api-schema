@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package dialog;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+option objc_class_prefix = "API";
+option swift_prefix="API";
+
+message RequestRegisterDevice {
+    bytes client_pk = 1;
+    int32 app_id = 2;
+    string app_title = 3;
+    string device_title = 4;
+}
+
+message ResponseDeviceRequest {
+    bytes server_pk = 1;
+    int64 auth_id = 2;
+    string token = 3;
+}
+
+message RequestExchangeAuthIdForToken {
+    int64 auth_id = 1;
+    bytes signature = 2;
+}
+
+service Registration {
+    rpc ExchangeAuthIdForToken (RequestExchangeAuthIdForToken) returns (ResponseDeviceRequest) {}
+    rpc RegisterDevice (RequestRegisterDevice) returns (ResponseDeviceRequest) {}
+}
