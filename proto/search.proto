@@ -228,7 +228,7 @@ message SearchPredicate {
     repeated string values = 2 [(dlg).log = "visible"];
 }
 
-message RequestUsersBySearchPredicates {
+message RequestLoadUserSearchByPredicatesResults {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     repeated SearchPredicate predicates = 1 [(dlg).log = "visible"];
     int32 group_id = 2 [(dlg).log = "visible"];
@@ -238,7 +238,7 @@ message RequestUsersBySearchPredicates {
 }
 
 
-message ResponseSearchUsers {
+message ResponseLoadUserSearchByPredicatesResults {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
     repeated int32 users = 1 [(dlg).log = "visible"];
 }
@@ -292,7 +292,7 @@ service Search {
         };
     }
 
-    rpc LoadUserSearchByPredicatesResults (RequestUsersBySearchPredicates) returns (ResponseSearchUsers) {
+    rpc LoadUserSearchByPredicatesResults (RequestLoadUserSearchByPredicatesResults) returns (ResponseLoadUserSearchByPredicatesResults) {
         option (google.api.http) = {
             post: "/v1/grpc/Search/LoadUserSearchByPredicatesResults"
             body: "*"
