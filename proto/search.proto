@@ -222,6 +222,31 @@ message ResponseFieldAutocomplete {
     repeated string field_value = 2 [(dlg).log = "visible"];
 }
 
+// Predicate for searching in custom profile
+message SearchPredicate {
+    string key = 1 [(dlg).log = "visible"];
+    repeated string values = 2 [(dlg).log = "visible"];
+}
+
+message RequestUsersSearchPredicates {
+    repeated SearchPredicate predicates = 1 [(dlg).log = "visible"];
+    int64 offset = 2 [(dlg).log = "visible"];
+    int64 limit = 3 [(dlg).log = "visible"];
+}
+
+
+message RequestConcreteUsersSearchPredicates {
+    repeated SearchPredicate predicates = 1 [(dlg).log = "visible"];
+    int32 conversation_id = 2 [(dlg).log = "visible"];
+    google.protobuf.StringValue query = 3 [(dlg).log = "visible"];
+}
+
+
+message ResponseSearchUsers {
+    repeated int32 users = 1 [(dlg).log = "visible"];
+}
+
+
 service Search {
     /// Search among groups/users/contacts
     rpc PeerSearch (RequestPeerSearch) returns (ResponsePeerSearch) {
@@ -269,4 +294,21 @@ service Search {
             body: "*"
         };
     }
+
+    rpc LoadUserSearchPredicatesResults (RequestUsersSearchPredicates) returns (ResponseSearchUsers) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/LoadUserSearchPredicatesResults"
+            body: "*"
+        };
+    }
+
+
+    rpc ConcreteUsersPredicates (RequestConcreteUsersSearchPredicates) returns (ResponseSearchUsers) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/ConcreteUsersPredicates"
+            body: "*"
+        };
+    }
+
+
 }
