@@ -11,6 +11,7 @@ import "peers.proto";
 import "media_and_files.proto";
 import "users.proto";
 import "scalapb/scalapb.proto";
+import "search.proto";
 
 option (scalapb.options) = {
     package_name: "im.dlg.grpc.services"
@@ -463,11 +464,6 @@ message MessageReaction {
     string code = 2 [(dlg).log="visible"]; /// Reaction EMOJI code
 }
 
-// Predicate for searching in custom profile
-message SearchPredicate {
-    string key = 1 [(dlg).log = "visible"];
-    repeated string values = 2 [(dlg).log = "visible"];
-}
 
 // Sending plain message
 message RequestSendMessage {
@@ -482,6 +478,8 @@ message RequestSendMessage {
     /// If current message is a reply on some other
     ReferencedMessages reply = 9 [(dlg).log="visible"];
     repeated SearchPredicate predicates = 10 [(dlg).log = "visible"];
+    repeated int32 white_list = 11 [(dlg).log = "visible"];
+    repeated int32 black_list = 12 [(dlg).log = "visible"];
 }
 
 // Changing Message content
