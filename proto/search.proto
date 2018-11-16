@@ -240,7 +240,7 @@ message RequestLoadUserSearchByPredicatesResults {
 
 message ResponseLoadUserSearchByPredicatesResults {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    repeated int32 users = 1 [(dlg).log = "visible"];
+    map<int32, bool> users = 1 [(dlg).log = "visible"];
 }
 
 
