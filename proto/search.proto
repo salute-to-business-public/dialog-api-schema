@@ -229,21 +229,17 @@ message SearchPredicate {
 }
 
 message RequestUsersBySearchPredicates {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     repeated SearchPredicate predicates = 1 [(dlg).log = "visible"];
-    int32 conversation_id = 2 [(dlg).log = "visible"];
+    int32 group_id = 2 [(dlg).log = "visible"];
     int64 offset = 3 [(dlg).log = "visible"];
     int64 limit = 4 [(dlg).log = "visible"];
-}
-
-
-message RequestConcreteUsersBySearchPredicates {
-    repeated SearchPredicate predicates = 1 [(dlg).log = "visible"];
-    int32 conversation_id = 2 [(dlg).log = "visible"];
-    google.protobuf.StringValue query = 3 [(dlg).log = "visible"];
+    google.protobuf.StringValue query = 5 [(dlg).log = "visible"];
 }
 
 
 message ResponseSearchUsers {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
     repeated int32 users = 1 [(dlg).log = "visible"];
 }
 
@@ -298,18 +294,9 @@ service Search {
 
     rpc LoadUserSearchByPredicatesResults (RequestUsersBySearchPredicates) returns (ResponseSearchUsers) {
         option (google.api.http) = {
-            post: "/v1/grpc/Search/LoadUserSearchPredicatesResults"
+            post: "/v1/grpc/Search/LoadUserSearchByPredicatesResults"
             body: "*"
         };
     }
-
-
-    rpc ConcreteUsersByPredicates (RequestConcreteUsersBySearchPredicates) returns (ResponseSearchUsers) {
-        option (google.api.http) = {
-            post: "/v1/grpc/Search/ConcreteUsersPredicates"
-            body: "*"
-        };
-    }
-
 
 }
