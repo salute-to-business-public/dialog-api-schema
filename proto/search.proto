@@ -227,6 +227,9 @@ message RequestLoadUserSearchByPredicatesResults {
     repeated SearchPredicate predicates = 1 [(dlg).log = "visible"];
     int32 group_id = 2 [(dlg).log = "visible"];
     google.protobuf.StringValue query = 3 [(dlg).log = "visible"];
+    int64 limit = 4 [(dlg).log = "visible"];
+    repeated int32 white_list = 5 [(dlg).log = "visible"];
+    repeated int32 black_list = 6 [(dlg).log = "visible"];
 }
 
 message UserMatch {
