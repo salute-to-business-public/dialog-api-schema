@@ -226,9 +226,8 @@ message RequestLoadUserSearchByPredicatesResults {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     repeated SearchPredicate predicates = 1 [(dlg).log = "visible"];
     int32 group_id = 2 [(dlg).log = "visible"];
-    int64 limit = 3 [(dlg).log = "visible"];
-    TargetAudience audience = 4 [(dlg).log = "visible"];
-
+    google.protobuf.StringValue query = 3 [(dlg).log = "visible"];
+    int64 limit = 4 [(dlg).log = "visible"];
 }
 
 message UserMatch {

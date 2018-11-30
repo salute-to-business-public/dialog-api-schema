@@ -469,14 +469,6 @@ message SearchPredicate {
     repeated string values = 2 [(dlg).log = "visible"];
 }
 
-message TargetAudience {
-
-    repeated SearchPredicate predicates = 1 [(dlg).log = "visible"];
-    repeated int32 white_list = 2 [(dlg).log = "visible"];
-    repeated int32 black_list = 3 [(dlg).log = "visible"];
-
-}
-
 // Sending plain message
 message RequestSendMessage {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
@@ -489,7 +481,9 @@ message RequestSendMessage {
     ReferencedMessages forward = 8 [(dlg).log="visible"];
     /// If current message is a reply on some other
     ReferencedMessages reply = 9 [(dlg).log="visible"];
-    TargetAudience audience = 10 [(dlg).log = "visible"];
+    repeated SearchPredicate predicates = 10 [(dlg).log = "visible"];
+    repeated int32 white_list = 11 [(dlg).log = "visible"];
+    repeated int32 black_list = 12 [(dlg).log = "visible"];
 }
 
 // Changing Message content
