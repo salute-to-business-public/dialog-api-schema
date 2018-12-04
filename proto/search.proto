@@ -227,14 +227,18 @@ message RequestLoadUserSearchByPredicatesResults {
     repeated SearchPredicate predicates = 1 [(dlg).log = "visible"];
     int32 group_id = 2 [(dlg).log = "visible"];
     google.protobuf.StringValue query = 3 [(dlg).log = "visible"];
-    int64 offset = 4 [(dlg).log = "visible"];
-    int64 limit = 5 [(dlg).log = "visible"];
+    int32 limit = 4 [(dlg).log = "visible"];
 }
 
+message UserMatch {
+    int32 user_id = 1 [(dlg).log = "visible"];
+    bool match_predicates = 2 [(dlg).log = "visible"];
+}
 
 message ResponseLoadUserSearchByPredicatesResults {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    map<int32, bool> users = 1 [(dlg).log = "visible"];
+    repeated UserMatch users = 1 [(dlg).log = "visible"];
+    int32 result_count = 2 [(dlg).log = "visible"];
 }
 
 
