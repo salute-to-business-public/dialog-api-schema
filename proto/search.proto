@@ -241,6 +241,18 @@ message ResponseLoadUserSearchByPredicatesResults {
     int32 result_count = 2 [(dlg).log = "visible"];
 }
 
+message RequestLoadUserSearchByPredicatesCount {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated SearchPredicate predicates = 1 [(dlg).log = "visible"];
+    int32 group_id = 2 [(dlg).log = "visible"];
+}
+
+
+message ResponseLoadUserSearchByPredicatesCount {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    int32 result_count = 1 [(dlg).log = "visible"];
+}
+
 
 service Search {
     /// Search among groups/users/contacts
@@ -293,6 +305,13 @@ service Search {
     rpc LoadUserSearchByPredicatesResults (RequestLoadUserSearchByPredicatesResults) returns (ResponseLoadUserSearchByPredicatesResults) {
         option (google.api.http) = {
             post: "/v1/grpc/Search/LoadUserSearchByPredicatesResults"
+            body: "*"
+        };
+    }
+
+    rpc LoadUserSearchByPredicatesCount (RequestLoadUserSearchByPredicatesCount) returns (ResponseLoadUserSearchByPredicatesCount) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/LoadUserSearchByPredicatesCount"
             body: "*"
         };
     }
