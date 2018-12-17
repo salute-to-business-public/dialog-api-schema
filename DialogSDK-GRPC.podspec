@@ -35,8 +35,8 @@ Pod::Spec.new do |s|
 
     #{protoc} \
         --plugin=#{plugin} \
-        --swift_out=#{dir}\
-        --swiftgrpc_out=#{dir} \
+        --swift_out=Visibility=Public:#{dir}\
+        --swiftgrpc_out=Client=true,Server=false,Visibility=Public:#{dir} \
         -I #{api_import} \
         -I #{src} \
         -I #{protoc_dir} \
