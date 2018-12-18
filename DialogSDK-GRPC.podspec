@@ -35,6 +35,7 @@ Pod::Spec.new do |s|
 
     #{protoc} \
         --plugin=#{plugin} \
+        --plugin=#{dependencies}/Proto/protoc-gen-swift \
         --swift_out=Visibility=Public:#{dir}\
         --swiftgrpc_out=Client=true,Server=false,Visibility=Public:#{dir} \
         -I #{api_import} \
