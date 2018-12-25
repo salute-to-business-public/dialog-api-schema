@@ -7,17 +7,29 @@ PHP_GEN_PATH   := $(PROJECT_PATH)/php
 DOCS_PATH      := $(PROJECT_PATH)/docs
 SWAGGER_PATH   := $(PROJECT_PATH)/swagger
 HTTP_GW_PATH   := $(PROJECT_PATH)/http_gateway
-PYTHON_PATH    := $(PROJECT_PATH)/python
+PYTHON2_PATH    := $(PROJECT_PATH)/python2
+PYTHON3_PATH   := $(PROJECT_PATH)/python3
 
-python:
-	mkdir -p $(PYTHON_PATH)
+python2:
+	mkdir -p $(PYTHON2_PATH)
 	docker run --name py_grpc_builder -d -i -t \
 	-v $(PROJECT_PATH):/project \
 	-v $(GOPATH):/go \
-	-v $(PYTHON_PATH):/out \
+	-v $(PYTHON2_PATH):/out \
 	-w /project \
 	python:latest bash
-	docker exec -it -w /project py_grpc_builder bash scripts/py.sh
+	docker exec -it -w /project py_grpc_builder bash scripts/py2.sh
+	docker rm -f py_grpc_builder
+
+python3:
+	mkdir -p $(PYTHON3_PATH)
+	docker run --name py_grpc_builder -d -i -t \
+	-v $(PROJECT_PATH):/project \
+	-v $(GOPATH):/go \
+	-v $(PYTHON3_PATH):/out \
+	-w /project \
+	python:latest bash
+	docker exec -it -w /project py_grpc_builder bash scripts/py3.sh
 	docker rm -f py_grpc_builder
 
 java:
