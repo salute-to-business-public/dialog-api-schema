@@ -7,7 +7,8 @@ PHP_GEN_PATH   := $(PROJECT_PATH)/php
 DOCS_PATH      := $(PROJECT_PATH)/docs
 SWAGGER_PATH   := $(PROJECT_PATH)/swagger
 HTTP_GW_PATH   := $(PROJECT_PATH)/http_gateway
-PYTHON2_PATH    := $(PROJECT_PATH)/python2
+GOLANG_PATH    := $(PROJECT_PATH)/golang
+PYTHON2_PATH   := $(PROJECT_PATH)/python2
 PYTHON3_PATH   := $(PROJECT_PATH)/python3
 
 python2:
@@ -64,20 +65,15 @@ swagger:
 	--swagger_out=logtostderr=true:$(SWAGGER_PATH) \
 	$(PROTO_PATH)/*.proto
 
-gateway:
-	mkdir -p $(HTTP_GW_PATH)
+golang:
+	mkdir -p $(GOLANG_PATH)
 	@protoc -I$(PROTO_PATH) \
 	-Iinclude \
 	-I$(GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-	--grpc-gateway_out=logtostderr=true:$(HTTP_GW_PATH) \
-	$(PROTO_PATH)/*.proto
-	@protoc -I$(PROTO_PATH) \
-	-Iinclude \
-	-I$(GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-	--go_out=\
+	--gogoslick_out=\
 	Mgoogle/protobuf/descriptor.proto=github.com/golang/protobuf/protoc-gen-go/descriptor,\
 	Mscalapb/scalapb.proto=github.com/gogo/protobuf/types,\
-	plugins=grpc:$(HTTP_GW_PATH) \
+	plugins=grpc:$(GOLANG_PATH) \
 	$(PROTO_PATH)/*.proto
 
 docs:
