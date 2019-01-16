@@ -8,11 +8,7 @@ python/
 .gradle/
 build/
 gradle.properties
-
-# PHP
 /php/
 /vendor/
-
-# JS
 /js/
 node_modules/
