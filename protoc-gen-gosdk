@@ -16,12 +16,18 @@ def gen_idented_code(code):
 
 initialization = """
 func (d *DialogSDK) initializeContext() error {
-    res, err := d.registration.RegisterDevice(context.Background(), &RequestRegisterDevice{})
+    ctx, cancel := context.WithCancel(context.Background())
+    res, err := d.registration.RegisterDevice(ctx, &RequestRegisterDevice{})
     if err != nil {
         return err
     }
-    d.internalContext = metadata.AppendToOutgoingContext(context.Background(), "x-auth-ticket", res.Token)
+    d.internalContext = metadata.AppendToOutgoingContext(ctx, "x-auth-ticket", res.Token)
+    d.cancel = cancel
     return nil
+}
+func (d *DialogSDK) Close() {
+    d.cancel()
+    d.conn.Close()
 }
 """
 
@@ -36,12 +42,13 @@ def gen_header():
     ]) + initialization
 
 def gen_sdk_struct(services):
-    struct = ["type DialogSDK struct {", "internalContext context.Context"]
+    struct = ["type DialogSDK struct {", "internalContext context.Context", "cancel context.CancelFunc", "conn *grpc.ClientConn"]
     constructor = ["func NewDialogSDK(cc *grpc.ClientConn) (d *DialogSDK, err error) {", "d = &DialogSDK{}"]
     for service in services:
         struct.append("%s %sClient" % (service.name.lower(), service.name))
         constructor.append("d.%s = New%sClient(cc)" % (service.name.lower(), service.name))
     struct.append("}")
+    constructor.append("d.conn = cc")
     constructor.append("err = d.initializeContext()")
     constructor.append("return")
     constructor.append("}")
