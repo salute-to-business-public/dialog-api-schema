@@ -6,15 +6,23 @@ import context "golang.org/x/net/context"
 import . "github.com/golang/protobuf/ptypes/wrappers"
 import . "github.com/golang/protobuf/ptypes/empty"
 func (d *DialogSDK) initializeContext() error {
-    res, err := d.registration.RegisterDevice(context.Background(), &RequestRegisterDevice{})
+    ctx, cancel := context.WithCancel(context.Background())
+    res, err := d.registration.RegisterDevice(ctx, &RequestRegisterDevice{})
     if err != nil {
         return err
     }
-    d.internalContext = metadata.AppendToOutgoingContext(context.Background(), "x-auth-ticket", res.Token)
+    d.internalContext = metadata.AppendToOutgoingContext(ctx, "x-auth-ticket", res.Token)
+    d.cancel = cacnel
     return nil
+}
+func (d *DialogSDK) Close() {
+    d.cancel()
+    d.conn.Close()
 }
 type DialogSDK struct {
 	internalContext context.Context
+	cancel context.CancelFunc
+	conn *grpc.ClientConn
 	mediaandfiles MediaAndFilesClient
 	users UsersClient
 	authentication AuthenticationClient
@@ -64,6 +72,7 @@ func NewDialogSDK(cc *grpc.ClientConn) (d *DialogSDK, err error) {
 	d.webrtc = NewWebRTCClient(cc)
 	d.spaces = NewSpacesClient(cc)
 	d.sequenceandupdates = NewSequenceAndUpdatesClient(cc)
+	d.conn = cc
 	err = d.initializeContext()
 	return
 }
