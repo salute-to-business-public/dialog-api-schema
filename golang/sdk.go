@@ -12,7 +12,7 @@ func (d *DialogSDK) initializeContext() error {
         return err
     }
     d.internalContext = metadata.AppendToOutgoingContext(ctx, "x-auth-ticket", res.Token)
-    d.cancel = cacnel
+    d.cancel = cancel
     return nil
 }
 func (d *DialogSDK) Close() {
