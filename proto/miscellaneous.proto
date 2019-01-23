@@ -69,6 +69,7 @@ message Config {
     string custom_profile_schema = 8 [(dlg).log="visible"];
     ServicePeers service_peers = 9 [(dlg).log="visible"];
     repeated Any extensions = 3;
+    int64 client_keep_alive = 10 [(dlg).log = "visible"];
 }
 
 // Service peers
