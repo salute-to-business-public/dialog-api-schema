@@ -77,6 +77,28 @@ message User {
     Sex sex = 5 [(dlg).log="hidden"];
     Avatar avatar = 8 [(dlg).log="compact"];
     google.protobuf.BoolValue is_bot = 11 [(dlg).log="visible"];
+    enum Lifecycle {
+        MISSED = 0;
+        ACTIVE = 1;
+        DELETED = 2;
+        BLOCKED = 3;
+    }
+    Lifecycle status = 14;
+    UserStatus user_status = 15 [(dlg).log="visible"];
+    DataClock clock = 16;
+}
+
+message UserProfile {
+    User user = 1 [(dlg).log="visible"];
+    repeated ContactRecord contact_info = 2 [(dlg).log="compact"];
+    google.protobuf.StringValue about = 3 [(dlg).log="hidden"];
+    repeated string preferred_languages = 4 [(dlg).log="visible"];
+    /// Time Zone of user in TZ format
+    google.protobuf.StringValue time_zone = 5 [(dlg).log="visible"];
+    repeated BotCommand bot_commands = 6 [(dlg).log="visible"];
+    /// custom user profile info in JSON format
+    string custom_profile = 9;
+    google.protobuf.StringValue integration_token = 10;
 }
 
 // Full User representation - deprecated
