@@ -21,8 +21,8 @@ func (d *DialogSDK) Close() {
     d.conn.Close()
 }
 type DialogSDK struct {
-    Token string
-    internalContext context.Context
+  Token string
+  internalContext context.Context
 	cancel context.CancelFunc
 	conn *grpc.ClientConn
 	mediaandfiles MediaAndFilesClient
