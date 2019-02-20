@@ -68,24 +68,36 @@ message UserStatus {
 }
 
 // Main user object
-message User {
-    int32 id = 1 [(dlg).log="visible"]; /// User's id
-    int64 access_hash = 2 [(dlg).log="danger"];
-    string name = 3 [(dlg).log="hidden"];
-    google.protobuf.StringValue local_name = 4 [(dlg).log="hidden"];
-    google.protobuf.StringValue nick = 13 [(dlg).log="visible"];
-    Sex sex = 5 [(dlg).log="hidden"];
-    Avatar avatar = 8 [(dlg).log="compact"];
-    google.protobuf.BoolValue is_bot = 11 [(dlg).log="visible"];
+message UserData {
+    message Ext {
+        string key = 1;
+        oneof v {
+            string s = 2;
+            bool b = 3;
+        }
+    }
+    string name = 1 [(dlg).log="hidden"];
+    google.protobuf.StringValue nick = 2 [(dlg).log="visible"];
+    Sex sex = 3 [(dlg).log="hidden"];
+    Avatar avatar = 4 [(dlg).log="compact"];
+    google.protobuf.BoolValue is_bot = 5 [(dlg).log="visible"];
     enum Lifecycle {
         MISSED = 0;
         ACTIVE = 1;
         DELETED = 2;
         BLOCKED = 3;
+        BLOCKED_AND_DELETED = 4;
     }
-    Lifecycle status = 14;
-    UserStatus user_status = 15 [(dlg).log="visible"];
-    DataClock clock = 16;
+    Lifecycle status = 6;
+    UserStatus user_status = 7 [(dlg).log="visible"];
+    string time_zone = 8;
+    repeated Ext exts = 9;
+    DataClock clock = 10;
+}
+message User {
+    int32 id = 1 [(dlg).log = "visible"]; /// User's id
+    int64 access_hash = 2 [(dlg).log="danger"];
+    UserData data = 3; // required
 }
 
 message UserProfile {
@@ -133,6 +145,11 @@ message RequestEditUserLocalName {
     int32 uid = 1 [(dlg).log="visible"];
     int64 access_hash = 2 [(dlg).log="danger"];
     string name = 3 [(dlg).log="hidden"];
+}
+
+message UpdateUser {
+    int32 id = 1;
+    UserData data = 2;
 }
 
 // Update about avatar changed
