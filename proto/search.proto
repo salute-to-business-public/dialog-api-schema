@@ -228,6 +228,7 @@ message RequestLoadUserSearchByPredicatesResults {
     int32 group_id = 2 [(dlg).log = "visible"];
     google.protobuf.StringValue query = 3 [(dlg).log = "visible"];
     int32 limit = 4 [(dlg).log = "visible"];
+    repeated string required_fields = 5 [(dlg).log = "visible"];
 }
 
 message UserMatch {

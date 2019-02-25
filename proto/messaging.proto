@@ -473,7 +473,7 @@ message SearchPredicate {
 message RequestSendMessage {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     OutPeer peer = 1 [(dlg).log="visible"];
-    int64 rid = 3 [(dlg).log="visible"]; /// Id for deduplication
+    int64 deduplication_id = 3 [(dlg).log="visible"]; /// Id for message deduplication
     MessageContent message = 4 [(dlg).log="visible"];
     /// if not empty, then message will be send to this user only
     int32 is_only_for_user = 5 [(dlg).log="visible"];
@@ -559,23 +559,28 @@ message ResponseReactionsResponse {
     repeated MessageReaction reactions = 3;
 }
 
+message ResponseSendMessage {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    UUIDValue mid = 1 [(dlg).log="visible"]; /// Message id
+}
+
 // Update about plain message
 message UpdateMessage {
-    Peer peer = 1 [(dlg).log="visible"];
-    int32 sender_uid = 2 [(dlg).log="visible"];
-    int64 date = 3 [(dlg).log="visible"];
-    UUIDValue mid = 8 [(dlg).log="visible"]; /// Message id
-    MessageContent message = 5 [(dlg).log="visible"];
-    /// attributes to help reasoning about message
-    MessageAttributes attributes = 6 [(dlg).log="visible"];
-    oneof attach {
-        ReferencedMessages forward = 9 [(dlg).log="visible"];
-        ReferencedMessages reply = 10 [(dlg).log="visible"];
-    }
-    /// Message id of previos message from current conversation
-    UUIDValue previous_mid = 11 [(dlg).log="visible"];
-    /// counter of unreads message
-    google.protobuf.Int32Value counter = 12 [(dlg).log="visible"];
+     Peer peer = 1 [(dlg).log="visible"];
+     int32 sender_uid = 2 [(dlg).log="visible"];
+     int64 date = 3 [(dlg).log="visible"];
+     UUIDValue mid = 8 [(dlg).log="visible"]; /// Message id
+     MessageContent message = 5 [(dlg).log="visible"];
+     /// attributes to help reasoning about message
+     MessageAttributes attributes = 6 [(dlg).log="visible"];
+     oneof attach {
+         ReferencedMessages forward = 9 [(dlg).log="visible"];
+         ReferencedMessages reply = 10 [(dlg).log="visible"];
+     }
+     /// Message id of previos message from current conversation
+     UUIDValue previous_mid = 11 [(dlg).log="visible"];
+     /// counter of unreads message
+     google.protobuf.Int32Value counter = 12 [(dlg).log="visible"];
 }
 
 // Update about message change
@@ -943,7 +948,7 @@ service Messaging {
             body: "*"
         };
     }
-    rpc SendMessage (RequestSendMessage) returns (ResponseSeqDate) {
+    rpc SendMessage (RequestSendMessage) returns (ResponseSendMessage) {
         option (google.api.http) = {
             post: "/v1/grpc/Messaging/SendMessage"
             body: "*"
