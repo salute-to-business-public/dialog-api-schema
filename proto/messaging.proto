@@ -561,7 +561,9 @@ message ResponseReactionsResponse {
 
 message ResponseSendMessage {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    UUIDValue mid = 1 [(dlg).log="visible"]; /// Message id
+    UUIDValue message_id = 1 [(dlg).log="visible"]; /// Message id
+    int64 message_date = 2 [(dlg).log="visible"]; /// Message date from server
+    UUIDValue previous_message_id = 3 [(dlg).log="visible"]; /// Previous message id
 }
 
 // Update about plain message
