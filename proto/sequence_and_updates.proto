@@ -136,6 +136,7 @@ message UpdateSeqUpdate {
       UpdateMessageEditRejectedByHook updateMessageEditRejectedByHook = 93;
 
       UpdateUser updateUser = 94;
+      UpdateFeatureFlagChanged updateFeatureFlagChanged = 95;
     }
 }
 
