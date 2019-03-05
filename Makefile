@@ -1,4 +1,4 @@
-.PHONY: docs java swagger gateway python php golang
+.PHONY: docs java swagger gateway python2 python3 php golang
 
 PROJECT_PATH   := $(shell pwd)
 PROTO_PATH     := $(PROJECT_PATH)/proto
