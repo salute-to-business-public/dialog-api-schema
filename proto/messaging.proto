@@ -561,7 +561,11 @@ message ResponseReactionsResponse {
 
 message ResponseSendMessage {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    UUIDValue mid = 1 [(dlg).log="visible"]; /// Message id
+    UUIDValue message_id = 1 [(dlg).log="visible"]; /// Message id
+    int64 message_date = 2 [(dlg).log="visible"]; /// Message creation date from server
+    UUIDValue previous_message_id = 3 [(dlg).log="visible"]; /// Previous message id
+    int64 creator_user_id = 4 [(dlg).log="visible"]; // Message creator
+    int64 clock = 5 [(dlg).log="visible"]; // Clock of this message (initially equals the message_date field)
 }
 
 // Update about plain message

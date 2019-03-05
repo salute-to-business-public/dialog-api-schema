@@ -38,6 +38,26 @@ message RequestEditParameter {
     google.protobuf.StringValue value = 2 [(dlg).log="hidden"];
 }
 
+message FeatureFlag {
+    string key = 1 [(dlg).log="visible"];
+    string value = 2 [(dlg).log="visible"];
+    int64 clock = 3 [(dlg).log="visible"];
+}
+
+message RequestFeatureFlags {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 clock = 1;
+}
+
+message ResponseFeatureFlags {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated FeatureFlag feature_config = 1;
+}
+
+message UpdateFeatureFlagChanged {
+    FeatureFlag feature = 1 [(dlg).log="visible"];
+}
+
 // Update about parameter change
 message UpdateParameterChanged {
     string key = 1 [(dlg).log="visible"];
@@ -54,6 +74,12 @@ service ConfigSync {
     rpc EditParameter (RequestEditParameter) returns (ResponseSeq) {
         option (google.api.http) = {
             post: "/v1/grpc/ConfigSync/EditParameter"
+            body: "*"
+        };
+    }
+    rpc FeatureFlags (RequestFeatureFlags) returns (ResponseFeatureFlags) {
+        option (google.api.http) = {
+            post: "/v1/grpc/ConfigSync/FeatureFlags"
             body: "*"
         };
     }
