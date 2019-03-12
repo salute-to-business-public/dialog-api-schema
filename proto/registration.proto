@@ -9,6 +9,14 @@ option (scalapb.options) = {
     package_name: "im.dlg.grpc.services"
 };
 
+enum AuthorizationMethod {
+    nothing = 0;
+    login_password = 1;
+    phone = 2;
+    email = 3;
+    certificate = 4;
+}
+
 message RequestRegisterDevice {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     bytes client_pk = 1;
@@ -22,6 +30,7 @@ message ResponseDeviceRequest {
     bytes server_pk = 1;
     int64 auth_id = 2;
     string token = 3;
+    repeated AuthorizationMethod auth_method_seq = 4; /// Sequence of the required authorization methods
 }
 
 message RegisterDeprecatedDeviceRequest {}
