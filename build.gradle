@@ -1,13 +1,15 @@
+plugins {
+    id 'net.researchgate.release' version '2.8.0'
+    id "com.jfrog.bintray" version "1.8.4"
+}
+
 apply plugin: 'java'
 apply plugin: 'com.google.protobuf'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
-group = 'im.dlg'
-version = '0.0.6'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
 
 buildscript {
     repositories {
@@ -81,8 +83,11 @@ protobuf {
     }
 }
 
-//bintray
+// bintray
 apply plugin: 'com.jfrog.bintray'
+
+// Do on release stage!
+afterReleaseBuild.dependsOn bintrayUpload
 
 if (project.hasProperty("android")) { // Android libraries
     task sourcesJar(type: Jar) {
@@ -114,10 +119,10 @@ artifacts {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId group
-            artifactId 'java-api-schema'
-            version version
             from components.java
+            groupId group
+            artifactId artifactId
+            version version
         }
     }
 }
