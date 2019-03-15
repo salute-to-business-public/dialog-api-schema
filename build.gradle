@@ -45,13 +45,7 @@ repositories {
     mavenCentral()
     maven { url "https://maven.google.com" }
     maven { url "https://jitpack.io" }
-    maven {
-        url "http://dialog.bintray.com/maven"
-        credentials {
-            username bintrayUser
-            password bintrayPassword
-        }
-    }
+    maven { url "http://dialog.bintray.com/maven" }
 }
 
 dependencies {
