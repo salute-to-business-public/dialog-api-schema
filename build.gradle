@@ -112,6 +112,13 @@ artifacts {
     archives sourcesJar
 }
 
+release {
+    preCommitText = System.env.COMMIT_PREFIX != null ? System.env.COMMIT_PREFIX : ""
+    git {
+        requireBranch = 'chore/circle-ci'
+    }
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
