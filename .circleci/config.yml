@@ -18,14 +18,14 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: - v1-dependencies-{{ checksum "build.gradle" }}
+          key: v1-dependencies-{{ checksum "build.gradle" }}
       - run:
           name: Download Dependencies
           command: ./gradlew dependencies
       - save_cache:
           paths:
             - ~/.gradle
-          key: - v1-dependencies-{{ checksum "build.gradle" }}
+          key: v1-dependencies-{{ checksum "build.gradle" }}
   build:
     executor: build-executor
     environment:
@@ -33,7 +33,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: - v1-dependencies-{{ checksum "build.gradle" }}
+          key: v1-dependencies-{{ checksum "build.gradle" }}
       - run:
           name: Build
           command: ./gradlew build
@@ -44,7 +44,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: - v1-dependencies-{{ checksum "build.gradle" }}
+          key: v1-dependencies-{{ checksum "build.gradle" }}
       - run:
           name: Release
           command: ./gradlew release
