@@ -46,6 +46,13 @@ jobs:
       - run:
           name: Build
           command: ./gradlew build
+      - run:
+          name: Report build failure
+          when: on_fail
+          command: |
+            curl --header "Content-Type: application/json" --request POST \
+             --data '{"text":"❌ java-api-schema build failed: '${CIRCLE_BUILD_URL}'"}' \
+              $DIALOG_HOOK_URL
   release:
     executor: build-executor
     environment:
@@ -63,6 +70,19 @@ jobs:
       - run:
           name: Release
           command: echo -ne '\n\n' | ./gradlew release
+      - run:
+          name: Report build failure
+          when: on_fail
+          command: |
+            curl --header "Content-Type: application/json" --request POST \
+             --data '{"text":"❌ java-api-schema release failed: '${CIRCLE_BUILD_URL}'"}' \
+              $DIALOG_HOOK_URL
+      - run:
+          name: Report success
+          command: |
+            curl --header "Content-Type: application/json" --request POST \
+             --data '{"text":"java-api-schema release successful! Check it here: '${ARTIFACT_URL}' "}' \
+              $DIALOG_HOOK_URL
 workflows:
   version: 2
   java-build-release:
