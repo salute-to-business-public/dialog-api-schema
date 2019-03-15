@@ -67,6 +67,8 @@ ext {
     libraryDescription = 'Protocol schema for java apps'
     gitUrl = 'https://bitbucket.transmit.im/projects/DLG/repos/dialog-api-schema/browse'
     libraryVersion = version
+    bintrayUser = System.env.bintrayUser != null ? System.env.bintrayUser : ""
+    bintrayPassword = System.env.bintrayPassword != null ? System.env.bintrayPassword : ""
 }
 
 protobuf {
