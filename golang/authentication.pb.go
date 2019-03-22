@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type PhoneActivationType int32
 
@@ -1553,97 +1555,13 @@ func (m *ForceReloadField) GetForceReloadHistory() *ForceReloadHistory {
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*ForceReloadField) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _ForceReloadField_OneofMarshaler, _ForceReloadField_OneofUnmarshaler, _ForceReloadField_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ForceReloadField) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*ForceReloadField_ForceReloadDialogs)(nil),
 		(*ForceReloadField_ForceReloadContacts)(nil),
 		(*ForceReloadField_ForceReloadHistory)(nil),
 	}
-}
-
-func _ForceReloadField_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*ForceReloadField)
-	// body
-	switch x := m.Body.(type) {
-	case *ForceReloadField_ForceReloadDialogs:
-		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ForceReloadDialogs); err != nil {
-			return err
-		}
-	case *ForceReloadField_ForceReloadContacts:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ForceReloadContacts); err != nil {
-			return err
-		}
-	case *ForceReloadField_ForceReloadHistory:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ForceReloadHistory); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("ForceReloadField.Body has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _ForceReloadField_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*ForceReloadField)
-	switch tag {
-	case 1: // body.forceReloadDialogs
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ForceReloadDialogs)
-		err := b.DecodeMessage(msg)
-		m.Body = &ForceReloadField_ForceReloadDialogs{msg}
-		return true, err
-	case 2: // body.forceReloadContacts
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ForceReloadContacts)
-		err := b.DecodeMessage(msg)
-		m.Body = &ForceReloadField_ForceReloadContacts{msg}
-		return true, err
-	case 3: // body.forceReloadHistory
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ForceReloadHistory)
-		err := b.DecodeMessage(msg)
-		m.Body = &ForceReloadField_ForceReloadHistory{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _ForceReloadField_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*ForceReloadField)
-	// body
-	switch x := m.Body.(type) {
-	case *ForceReloadField_ForceReloadDialogs:
-		s := proto.Size(x.ForceReloadDialogs)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ForceReloadField_ForceReloadContacts:
-		s := proto.Size(x.ForceReloadContacts)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ForceReloadField_ForceReloadHistory:
-		s := proto.Size(x.ForceReloadHistory)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 // Tells the client to clear dialogs and load them again
@@ -2621,6 +2539,71 @@ type AuthenticationServer interface {
 	SendAuthCodeObsolete(context.Context, *RequestSendAuthCodeObsolete) (*ResponseSendAuthCodeObsolete, error)
 	/// Deprecated
 	SendAuthCallObsolete(context.Context, *RequestSendAuthCallObsolete) (*ResponseVoid, error)
+}
+
+// UnimplementedAuthenticationServer can be embedded to have forward compatible implementations.
+type UnimplementedAuthenticationServer struct {
+}
+
+func (*UnimplementedAuthenticationServer) StartPhoneAuth(ctx context.Context, req *RequestStartPhoneAuth) (*ResponseStartPhoneAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartPhoneAuth not implemented")
+}
+func (*UnimplementedAuthenticationServer) SendCodeByPhoneCall(ctx context.Context, req *RequestSendCodeByPhoneCall) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendCodeByPhoneCall not implemented")
+}
+func (*UnimplementedAuthenticationServer) StartEmailAuth(ctx context.Context, req *RequestStartEmailAuth) (*ResponseStartEmailAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartEmailAuth not implemented")
+}
+func (*UnimplementedAuthenticationServer) StartAnonymousAuth(ctx context.Context, req *RequestStartAnonymousAuth) (*ResponseAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartAnonymousAuth not implemented")
+}
+func (*UnimplementedAuthenticationServer) StartTokenAuth(ctx context.Context, req *RequestStartTokenAuth) (*ResponseAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartTokenAuth not implemented")
+}
+func (*UnimplementedAuthenticationServer) StartUsernameAuth(ctx context.Context, req *RequestStartUsernameAuth) (*ResponseStartUsernameAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartUsernameAuth not implemented")
+}
+func (*UnimplementedAuthenticationServer) ValidateCode(ctx context.Context, req *RequestValidateCode) (*ResponseAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidateCode not implemented")
+}
+func (*UnimplementedAuthenticationServer) ResendCode(ctx context.Context, req *RequestResendCode) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResendCode not implemented")
+}
+func (*UnimplementedAuthenticationServer) ValidatePassword(ctx context.Context, req *RequestValidatePassword) (*ResponseAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidatePassword not implemented")
+}
+func (*UnimplementedAuthenticationServer) GetOAuth2Params(ctx context.Context, req *RequestGetOAuth2Params) (*ResponseGetOAuth2Params, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOAuth2Params not implemented")
+}
+func (*UnimplementedAuthenticationServer) CompleteOAuth2(ctx context.Context, req *RequestCompleteOAuth2) (*ResponseAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CompleteOAuth2 not implemented")
+}
+func (*UnimplementedAuthenticationServer) SignUp(ctx context.Context, req *RequestSignUp) (*ResponseAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignUp not implemented")
+}
+func (*UnimplementedAuthenticationServer) GetAuthSessions(ctx context.Context, req *RequestGetAuthSessions) (*ResponseGetAuthSessions, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAuthSessions not implemented")
+}
+func (*UnimplementedAuthenticationServer) TerminateSession(ctx context.Context, req *RequestTerminateSession) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TerminateSession not implemented")
+}
+func (*UnimplementedAuthenticationServer) TerminateAllSessions(ctx context.Context, req *RequestTerminateAllSessions) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TerminateAllSessions not implemented")
+}
+func (*UnimplementedAuthenticationServer) SignOut(ctx context.Context, req *RequestSignOut) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignOut not implemented")
+}
+func (*UnimplementedAuthenticationServer) SignInObsolete(ctx context.Context, req *RequestSignInObsolete) (*ResponseAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignInObsolete not implemented")
+}
+func (*UnimplementedAuthenticationServer) SignUpObsolete(ctx context.Context, req *RequestSignUpObsolete) (*ResponseAuth, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignUpObsolete not implemented")
+}
+func (*UnimplementedAuthenticationServer) SendAuthCodeObsolete(ctx context.Context, req *RequestSendAuthCodeObsolete) (*ResponseSendAuthCodeObsolete, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendAuthCodeObsolete not implemented")
+}
+func (*UnimplementedAuthenticationServer) SendAuthCallObsolete(ctx context.Context, req *RequestSendAuthCallObsolete) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendAuthCallObsolete not implemented")
 }
 
 func RegisterAuthenticationServer(s *grpc.Server, srv AuthenticationServer) {

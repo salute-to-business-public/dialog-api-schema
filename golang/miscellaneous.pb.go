@@ -21,7 +21,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type RtcpMuxPolicy int32
 
@@ -1098,9 +1098,9 @@ func (m *RecursiveMapValue_Value) GetArrayRec() *RecursiveMapValue_Array {
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*RecursiveMapValue_Value) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _RecursiveMapValue_Value_OneofMarshaler, _RecursiveMapValue_Value_OneofUnmarshaler, _RecursiveMapValue_Value_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*RecursiveMapValue_Value) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*RecursiveMapValue_Value_D)(nil),
 		(*RecursiveMapValue_Value_I32)(nil),
 		(*RecursiveMapValue_Value_I64)(nil),
@@ -1108,144 +1108,6 @@ func (*RecursiveMapValue_Value) XXX_OneofFuncs() (func(msg proto.Message, b *pro
 		(*RecursiveMapValue_Value_Rec)(nil),
 		(*RecursiveMapValue_Value_ArrayRec)(nil),
 	}
-}
-
-func _RecursiveMapValue_Value_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*RecursiveMapValue_Value)
-	// value
-	switch x := m.Value.(type) {
-	case *RecursiveMapValue_Value_D:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.D); err != nil {
-			return err
-		}
-	case *RecursiveMapValue_Value_I32:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.I32); err != nil {
-			return err
-		}
-	case *RecursiveMapValue_Value_I64:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.I64); err != nil {
-			return err
-		}
-	case *RecursiveMapValue_Value_Str:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Str); err != nil {
-			return err
-		}
-	case *RecursiveMapValue_Value_Rec:
-		b.EncodeVarint(6<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Rec); err != nil {
-			return err
-		}
-	case *RecursiveMapValue_Value_ArrayRec:
-		b.EncodeVarint(7<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ArrayRec); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("RecursiveMapValue_Value.Value has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _RecursiveMapValue_Value_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*RecursiveMapValue_Value)
-	switch tag {
-	case 2: // value.d
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(wrappers.DoubleValue)
-		err := b.DecodeMessage(msg)
-		m.Value = &RecursiveMapValue_Value_D{msg}
-		return true, err
-	case 3: // value.i32
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(wrappers.Int32Value)
-		err := b.DecodeMessage(msg)
-		m.Value = &RecursiveMapValue_Value_I32{msg}
-		return true, err
-	case 4: // value.i64
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(wrappers.Int64Value)
-		err := b.DecodeMessage(msg)
-		m.Value = &RecursiveMapValue_Value_I64{msg}
-		return true, err
-	case 5: // value.str
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(wrappers.StringValue)
-		err := b.DecodeMessage(msg)
-		m.Value = &RecursiveMapValue_Value_Str{msg}
-		return true, err
-	case 6: // value.rec
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RecursiveMapValue)
-		err := b.DecodeMessage(msg)
-		m.Value = &RecursiveMapValue_Value_Rec{msg}
-		return true, err
-	case 7: // value.array_rec
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RecursiveMapValue_Array)
-		err := b.DecodeMessage(msg)
-		m.Value = &RecursiveMapValue_Value_ArrayRec{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _RecursiveMapValue_Value_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*RecursiveMapValue_Value)
-	// value
-	switch x := m.Value.(type) {
-	case *RecursiveMapValue_Value_D:
-		s := proto.Size(x.D)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RecursiveMapValue_Value_I32:
-		s := proto.Size(x.I32)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RecursiveMapValue_Value_I64:
-		s := proto.Size(x.I64)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RecursiveMapValue_Value_Str:
-		s := proto.Size(x.Str)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RecursiveMapValue_Value_Rec:
-		s := proto.Size(x.Rec)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *RecursiveMapValue_Value_ArrayRec:
-		s := proto.Size(x.ArrayRec)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type RecursiveMapValue_Array struct {

@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type SearchPeerType int32
 
@@ -405,116 +407,14 @@ func (m *SimpleSearchCondition) GetUserProfile() *SimpleUserProfileSearchConditi
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*SimpleSearchCondition) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _SimpleSearchCondition_OneofMarshaler, _SimpleSearchCondition_OneofUnmarshaler, _SimpleSearchCondition_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*SimpleSearchCondition) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*SimpleSearchCondition_Contact)(nil),
 		(*SimpleSearchCondition_Message)(nil),
 		(*SimpleSearchCondition_Peer)(nil),
 		(*SimpleSearchCondition_UserProfile)(nil),
 	}
-}
-
-func _SimpleSearchCondition_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*SimpleSearchCondition)
-	// criterion
-	switch x := m.Criterion.(type) {
-	case *SimpleSearchCondition_Contact:
-		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Contact); err != nil {
-			return err
-		}
-	case *SimpleSearchCondition_Message:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Message); err != nil {
-			return err
-		}
-	case *SimpleSearchCondition_Peer:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Peer); err != nil {
-			return err
-		}
-	case *SimpleSearchCondition_UserProfile:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.UserProfile); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("SimpleSearchCondition.Criterion has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _SimpleSearchCondition_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*SimpleSearchCondition)
-	switch tag {
-	case 1: // criterion.contact
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SimpleContactSearchCondition)
-		err := b.DecodeMessage(msg)
-		m.Criterion = &SimpleSearchCondition_Contact{msg}
-		return true, err
-	case 2: // criterion.message
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SimpleMessageSearchCondition)
-		err := b.DecodeMessage(msg)
-		m.Criterion = &SimpleSearchCondition_Message{msg}
-		return true, err
-	case 3: // criterion.peer
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SimplePeerSearchCondition)
-		err := b.DecodeMessage(msg)
-		m.Criterion = &SimpleSearchCondition_Peer{msg}
-		return true, err
-	case 4: // criterion.userProfile
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SimpleUserProfileSearchCondition)
-		err := b.DecodeMessage(msg)
-		m.Criterion = &SimpleSearchCondition_UserProfile{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _SimpleSearchCondition_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*SimpleSearchCondition)
-	// criterion
-	switch x := m.Criterion.(type) {
-	case *SimpleSearchCondition_Contact:
-		s := proto.Size(x.Contact)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *SimpleSearchCondition_Message:
-		s := proto.Size(x.Message)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *SimpleSearchCondition_Peer:
-		s := proto.Size(x.Peer)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *SimpleSearchCondition_UserProfile:
-		s := proto.Size(x.UserProfile)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type SearchCondition struct {
@@ -659,9 +559,9 @@ func (m *SearchCondition) GetSearchSenderIdConfition() *SearchSenderIdConfition 
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*SearchCondition) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _SearchCondition_OneofMarshaler, _SearchCondition_OneofUnmarshaler, _SearchCondition_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*SearchCondition) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*SearchCondition_SearchPeerTypeCondition)(nil),
 		(*SearchCondition_SearchPieceText)(nil),
 		(*SearchCondition_SearchAndCondition)(nil),
@@ -670,162 +570,6 @@ func (*SearchCondition) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffe
 		(*SearchCondition_SearchPeerContentType)(nil),
 		(*SearchCondition_SearchSenderIdConfition)(nil),
 	}
-}
-
-func _SearchCondition_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*SearchCondition)
-	// body
-	switch x := m.Body.(type) {
-	case *SearchCondition_SearchPeerTypeCondition:
-		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SearchPeerTypeCondition); err != nil {
-			return err
-		}
-	case *SearchCondition_SearchPieceText:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SearchPieceText); err != nil {
-			return err
-		}
-	case *SearchCondition_SearchAndCondition:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SearchAndCondition); err != nil {
-			return err
-		}
-	case *SearchCondition_SearchOrCondition:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SearchOrCondition); err != nil {
-			return err
-		}
-	case *SearchCondition_SearchPeerCondition:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SearchPeerCondition); err != nil {
-			return err
-		}
-	case *SearchCondition_SearchPeerContentType:
-		b.EncodeVarint(6<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SearchPeerContentType); err != nil {
-			return err
-		}
-	case *SearchCondition_SearchSenderIdConfition:
-		b.EncodeVarint(7<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SearchSenderIdConfition); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("SearchCondition.Body has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _SearchCondition_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*SearchCondition)
-	switch tag {
-	case 1: // body.searchPeerTypeCondition
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SearchPeerTypeCondition)
-		err := b.DecodeMessage(msg)
-		m.Body = &SearchCondition_SearchPeerTypeCondition{msg}
-		return true, err
-	case 2: // body.searchPieceText
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SearchPieceText)
-		err := b.DecodeMessage(msg)
-		m.Body = &SearchCondition_SearchPieceText{msg}
-		return true, err
-	case 3: // body.searchAndCondition
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SearchAndCondition)
-		err := b.DecodeMessage(msg)
-		m.Body = &SearchCondition_SearchAndCondition{msg}
-		return true, err
-	case 4: // body.searchOrCondition
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SearchOrCondition)
-		err := b.DecodeMessage(msg)
-		m.Body = &SearchCondition_SearchOrCondition{msg}
-		return true, err
-	case 5: // body.searchPeerCondition
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SearchPeerCondition)
-		err := b.DecodeMessage(msg)
-		m.Body = &SearchCondition_SearchPeerCondition{msg}
-		return true, err
-	case 6: // body.searchPeerContentType
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SearchPeerContentType)
-		err := b.DecodeMessage(msg)
-		m.Body = &SearchCondition_SearchPeerContentType{msg}
-		return true, err
-	case 7: // body.searchSenderIdConfition
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SearchSenderIdConfition)
-		err := b.DecodeMessage(msg)
-		m.Body = &SearchCondition_SearchSenderIdConfition{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _SearchCondition_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*SearchCondition)
-	// body
-	switch x := m.Body.(type) {
-	case *SearchCondition_SearchPeerTypeCondition:
-		s := proto.Size(x.SearchPeerTypeCondition)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *SearchCondition_SearchPieceText:
-		s := proto.Size(x.SearchPieceText)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *SearchCondition_SearchAndCondition:
-		s := proto.Size(x.SearchAndCondition)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *SearchCondition_SearchOrCondition:
-		s := proto.Size(x.SearchOrCondition)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *SearchCondition_SearchPeerCondition:
-		s := proto.Size(x.SearchPeerCondition)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *SearchCondition_SearchPeerContentType:
-		s := proto.Size(x.SearchPeerContentType)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *SearchCondition_SearchSenderIdConfition:
-		s := proto.Size(x.SearchSenderIdConfition)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 // Search peer type condition
@@ -2462,6 +2206,38 @@ type SearchServer interface {
 	AutocompleteSuggestions(context.Context, *RequestFieldAutocomplete) (*ResponseFieldAutocomplete, error)
 	LoadUserSearchByPredicatesResults(context.Context, *RequestLoadUserSearchByPredicatesResults) (*ResponseLoadUserSearchByPredicatesResults, error)
 	LoadUserSearchByPredicatesCount(context.Context, *RequestLoadUserSearchByPredicatesCount) (*ResponseLoadUserSearchByPredicatesCount, error)
+}
+
+// UnimplementedSearchServer can be embedded to have forward compatible implementations.
+type UnimplementedSearchServer struct {
+}
+
+func (*UnimplementedSearchServer) PeerSearch(ctx context.Context, req *RequestPeerSearch) (*ResponsePeerSearch, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PeerSearch not implemented")
+}
+func (*UnimplementedSearchServer) ResolvePeer(ctx context.Context, req *RequestResolvePeer) (*ResponseResolvePeer, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResolvePeer not implemented")
+}
+func (*UnimplementedSearchServer) MessageSearch(ctx context.Context, req *RequestMessageSearch) (*ResponseMessageSearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MessageSearch not implemented")
+}
+func (*UnimplementedSearchServer) MessageSearchMore(ctx context.Context, req *RequestMessageSearchMore) (*ResponseMessageSearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MessageSearchMore not implemented")
+}
+func (*UnimplementedSearchServer) SimpleSearch(ctx context.Context, req *RequestSimpleSearch) (*ResponseMessageSearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SimpleSearch not implemented")
+}
+func (*UnimplementedSearchServer) SimpleSearchMore(ctx context.Context, req *RequestSimpleSearchMore) (*ResponseMessageSearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SimpleSearchMore not implemented")
+}
+func (*UnimplementedSearchServer) AutocompleteSuggestions(ctx context.Context, req *RequestFieldAutocomplete) (*ResponseFieldAutocomplete, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AutocompleteSuggestions not implemented")
+}
+func (*UnimplementedSearchServer) LoadUserSearchByPredicatesResults(ctx context.Context, req *RequestLoadUserSearchByPredicatesResults) (*ResponseLoadUserSearchByPredicatesResults, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadUserSearchByPredicatesResults not implemented")
+}
+func (*UnimplementedSearchServer) LoadUserSearchByPredicatesCount(ctx context.Context, req *RequestLoadUserSearchByPredicatesCount) (*ResponseLoadUserSearchByPredicatesCount, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadUserSearchByPredicatesCount not implemented")
 }
 
 func RegisterSearchServer(s *grpc.Server, srv SearchServer) {

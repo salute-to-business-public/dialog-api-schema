@@ -12,6 +12,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -24,7 +26,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type Space struct {
 	Id        *UUIDValue           `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -168,97 +170,13 @@ func (m *Space) GetClock() *DataClock {
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*Space) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _Space_OneofMarshaler, _Space_OneofUnmarshaler, _Space_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*Space) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*Space_General_)(nil),
 		(*Space_Public_)(nil),
 		(*Space_Private_)(nil),
 	}
-}
-
-func _Space_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*Space)
-	// space_type
-	switch x := m.SpaceType.(type) {
-	case *Space_General_:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.General); err != nil {
-			return err
-		}
-	case *Space_Public_:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Public); err != nil {
-			return err
-		}
-	case *Space_Private_:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Private); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("Space.SpaceType has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _Space_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*Space)
-	switch tag {
-	case 3: // space_type.general
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(Space_General)
-		err := b.DecodeMessage(msg)
-		m.SpaceType = &Space_General_{msg}
-		return true, err
-	case 4: // space_type.public
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(Space_Public)
-		err := b.DecodeMessage(msg)
-		m.SpaceType = &Space_Public_{msg}
-		return true, err
-	case 5: // space_type.private
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(Space_Private)
-		err := b.DecodeMessage(msg)
-		m.SpaceType = &Space_Private_{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _Space_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*Space)
-	// space_type
-	switch x := m.SpaceType.(type) {
-	case *Space_General_:
-		s := proto.Size(x.General)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *Space_Public_:
-		s := proto.Size(x.Public)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *Space_Private_:
-		s := proto.Size(x.Private)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type Space_General struct {
@@ -1714,6 +1632,50 @@ type SpacesServer interface {
 	Leave(context.Context, *RequestSpaceLeave) (*ResponseSpaceMember, error)
 	GetSpaceInviteUrl(context.Context, *RequestGetSpaceInviteUrl) (*ResponseSpaceInviteUrl, error)
 	RevokeSpaceInviteUrl(context.Context, *RequestRevokeSpaceInviteUrl) (*ResponseSpaceInviteUrl, error)
+}
+
+// UnimplementedSpacesServer can be embedded to have forward compatible implementations.
+type UnimplementedSpacesServer struct {
+}
+
+func (*UnimplementedSpacesServer) CreateSpace(ctx context.Context, req *RequestCreateSpace) (*ResponseSpace, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSpace not implemented")
+}
+func (*UnimplementedSpacesServer) DeleteSpace(ctx context.Context, req *RequestDeleteSpace) (*ResponseSpace, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSpace not implemented")
+}
+func (*UnimplementedSpacesServer) SetTitle(ctx context.Context, req *RequestSetTitle) (*ResponseSpace, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetTitle not implemented")
+}
+func (*UnimplementedSpacesServer) SetShortname(ctx context.Context, req *RequestSetShortname) (*ResponseSpace, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetShortname not implemented")
+}
+func (*UnimplementedSpacesServer) SetAbout(ctx context.Context, req *RequestSetAbout) (*ResponseSpace, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetAbout not implemented")
+}
+func (*UnimplementedSpacesServer) SetAvatar(ctx context.Context, req *RequestSetAvatar) (*ResponseSpace, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetAvatar not implemented")
+}
+func (*UnimplementedSpacesServer) LoadSpaces(ctx context.Context, req *RequestLoadSpaces) (*ResponseLoadSpaces, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadSpaces not implemented")
+}
+func (*UnimplementedSpacesServer) LoadSpaceMembers(req *RequestStreamSpaceMembers, srv Spaces_LoadSpaceMembersServer) error {
+	return status.Errorf(codes.Unimplemented, "method LoadSpaceMembers not implemented")
+}
+func (*UnimplementedSpacesServer) Invite(ctx context.Context, req *RequestSpaceInvite) (*ResponseSpaceMember, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Invite not implemented")
+}
+func (*UnimplementedSpacesServer) Kick(ctx context.Context, req *RequestSpaceKick) (*ResponseSpaceMember, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Kick not implemented")
+}
+func (*UnimplementedSpacesServer) Leave(ctx context.Context, req *RequestSpaceLeave) (*ResponseSpaceMember, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Leave not implemented")
+}
+func (*UnimplementedSpacesServer) GetSpaceInviteUrl(ctx context.Context, req *RequestGetSpaceInviteUrl) (*ResponseSpaceInviteUrl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSpaceInviteUrl not implemented")
+}
+func (*UnimplementedSpacesServer) RevokeSpaceInviteUrl(ctx context.Context, req *RequestRevokeSpaceInviteUrl) (*ResponseSpaceInviteUrl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeSpaceInviteUrl not implemented")
 }
 
 func RegisterSpacesServer(s *grpc.Server, srv SpacesServer) {
