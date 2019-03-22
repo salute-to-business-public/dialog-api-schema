@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type Colors int32
 
@@ -483,78 +485,12 @@ func (m *Color) GetPredefined() *PredefinedColor {
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*Color) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _Color_OneofMarshaler, _Color_OneofUnmarshaler, _Color_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*Color) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*Color_Rgb)(nil),
 		(*Color_Predefined)(nil),
 	}
-}
-
-func _Color_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*Color)
-	// body
-	switch x := m.Body.(type) {
-	case *Color_Rgb:
-		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Rgb); err != nil {
-			return err
-		}
-	case *Color_Predefined:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Predefined); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("Color.Body has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _Color_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*Color)
-	switch tag {
-	case 1: // body.rgb
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RgbColor)
-		err := b.DecodeMessage(msg)
-		m.Body = &Color_Rgb{msg}
-		return true, err
-	case 2: // body.predefined
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(PredefinedColor)
-		err := b.DecodeMessage(msg)
-		m.Body = &Color_Predefined{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _Color_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*Color)
-	// body
-	switch x := m.Body.(type) {
-	case *Color_Rgb:
-		s := proto.Size(x.Rgb)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *Color_Predefined:
-		s := proto.Size(x.Predefined)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 // RGB Color
@@ -1545,6 +1481,29 @@ type MediaAndFilesServer interface {
 	CommitFileUpload(context.Context, *RequestCommitFileUpload) (*ResponseCommitFileUpload, error)
 	/// Get url for uploading chunk of file
 	GetFileUploadPartUrl(context.Context, *RequestGetFileUploadPartUrl) (*ResponseGetFileUploadPartUrl, error)
+}
+
+// UnimplementedMediaAndFilesServer can be embedded to have forward compatible implementations.
+type UnimplementedMediaAndFilesServer struct {
+}
+
+func (*UnimplementedMediaAndFilesServer) GetFileUrl(ctx context.Context, req *RequestGetFileUrl) (*ResponseGetFileUrl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFileUrl not implemented")
+}
+func (*UnimplementedMediaAndFilesServer) GetFileUrls(ctx context.Context, req *RequestGetFileUrls) (*ResponseGetFileUrls, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFileUrls not implemented")
+}
+func (*UnimplementedMediaAndFilesServer) GetFileUrlBuilder(ctx context.Context, req *RequestGetFileUrlBuilder) (*ResponseGetFileUrlBuilder, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFileUrlBuilder not implemented")
+}
+func (*UnimplementedMediaAndFilesServer) GetFileUploadUrl(ctx context.Context, req *RequestGetFileUploadUrl) (*ResponseGetFileUploadUrl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFileUploadUrl not implemented")
+}
+func (*UnimplementedMediaAndFilesServer) CommitFileUpload(ctx context.Context, req *RequestCommitFileUpload) (*ResponseCommitFileUpload, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CommitFileUpload not implemented")
+}
+func (*UnimplementedMediaAndFilesServer) GetFileUploadPartUrl(ctx context.Context, req *RequestGetFileUploadPartUrl) (*ResponseGetFileUploadPartUrl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFileUploadPartUrl not implemented")
 }
 
 func RegisterMediaAndFilesServer(s *grpc.Server, srv MediaAndFilesServer) {

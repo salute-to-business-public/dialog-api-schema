@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Phone for import
 type PhoneToImport struct {
@@ -1016,6 +1018,29 @@ type ContactsServer interface {
 	AddContact(context.Context, *RequestAddContact) (*ResponseSeq, error)
 	/// Search contacts by query string
 	SearchContacts(context.Context, *RequestSearchContacts) (*ResponseSearchContacts, error)
+}
+
+// UnimplementedContactsServer can be embedded to have forward compatible implementations.
+type UnimplementedContactsServer struct {
+}
+
+func (*UnimplementedContactsServer) ImportContacts(ctx context.Context, req *RequestImportContacts) (*ResponseImportContacts, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ImportContacts not implemented")
+}
+func (*UnimplementedContactsServer) DeferredImportContacts(ctx context.Context, req *RequestDeferredImportContacts) (*ResponseDeferredImportContacts, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeferredImportContacts not implemented")
+}
+func (*UnimplementedContactsServer) GetContacts(ctx context.Context, req *RequestGetContacts) (*ResponseGetContacts, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetContacts not implemented")
+}
+func (*UnimplementedContactsServer) RemoveContact(ctx context.Context, req *RequestRemoveContact) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveContact not implemented")
+}
+func (*UnimplementedContactsServer) AddContact(ctx context.Context, req *RequestAddContact) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddContact not implemented")
+}
+func (*UnimplementedContactsServer) SearchContacts(ctx context.Context, req *RequestSearchContacts) (*ResponseSearchContacts, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchContacts not implemented")
 }
 
 func RegisterContactsServer(s *grpc.Server, srv ContactsServer) {

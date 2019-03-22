@@ -10,6 +10,8 @@ import (
 	proto "github.com/golang/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -22,7 +24,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Joining Event Bus
 type RequestJoinEventBus struct {
@@ -562,6 +564,20 @@ type EventBusServer interface {
 	JoinEventBus(context.Context, *RequestJoinEventBus) (*ResponseJoinEventBus, error)
 	KeepAliveEventBus(context.Context, *RequestKeepAliveEventBus) (*ResponseVoid, error)
 	PostToEventBus(context.Context, *RequestPostToEventBus) (*ResponseVoid, error)
+}
+
+// UnimplementedEventBusServer can be embedded to have forward compatible implementations.
+type UnimplementedEventBusServer struct {
+}
+
+func (*UnimplementedEventBusServer) JoinEventBus(ctx context.Context, req *RequestJoinEventBus) (*ResponseJoinEventBus, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method JoinEventBus not implemented")
+}
+func (*UnimplementedEventBusServer) KeepAliveEventBus(ctx context.Context, req *RequestKeepAliveEventBus) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KeepAliveEventBus not implemented")
+}
+func (*UnimplementedEventBusServer) PostToEventBus(ctx context.Context, req *RequestPostToEventBus) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostToEventBus not implemented")
 }
 
 func RegisterEventBusServer(s *grpc.Server, srv EventBusServer) {

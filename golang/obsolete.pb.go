@@ -12,6 +12,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -24,7 +26,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type ObsoleteTypingType int32
 
@@ -395,59 +397,11 @@ func (m *ObsoleteSeqUpdateBox) GetObsoleteUpdate() *wrappers.BytesValue {
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*ObsoleteSeqUpdateBox) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _ObsoleteSeqUpdateBox_OneofMarshaler, _ObsoleteSeqUpdateBox_OneofUnmarshaler, _ObsoleteSeqUpdateBox_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ObsoleteSeqUpdateBox) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*ObsoleteSeqUpdateBox_ObsoleteUpdate)(nil),
 	}
-}
-
-func _ObsoleteSeqUpdateBox_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*ObsoleteSeqUpdateBox)
-	// updatebox
-	switch x := m.Updatebox.(type) {
-	case *ObsoleteSeqUpdateBox_ObsoleteUpdate:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ObsoleteUpdate); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("ObsoleteSeqUpdateBox.Updatebox has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _ObsoleteSeqUpdateBox_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*ObsoleteSeqUpdateBox)
-	switch tag {
-	case 3: // updatebox.obsoleteUpdate
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(wrappers.BytesValue)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteSeqUpdateBox_ObsoleteUpdate{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _ObsoleteSeqUpdateBox_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*ObsoleteSeqUpdateBox)
-	// updatebox
-	switch x := m.Updatebox.(type) {
-	case *ObsoleteSeqUpdateBox_ObsoleteUpdate:
-		s := proto.Size(x.ObsoleteUpdate)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type ObsoleteWeakUpdateBox struct {
@@ -656,9 +610,9 @@ func (m *ObsoleteWeakUpdateBox) GetCallDisposed() *ObsoleteWeakUpdateBox_Obsolet
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*ObsoleteWeakUpdateBox) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _ObsoleteWeakUpdateBox_OneofMarshaler, _ObsoleteWeakUpdateBox_OneofUnmarshaler, _ObsoleteWeakUpdateBox_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ObsoleteWeakUpdateBox) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*ObsoleteWeakUpdateBox_Typing)(nil),
 		(*ObsoleteWeakUpdateBox_UserLastSeen)(nil),
 		(*ObsoleteWeakUpdateBox_GroupOnline)(nil),
@@ -671,234 +625,6 @@ func (*ObsoleteWeakUpdateBox) XXX_OneofFuncs() (func(msg proto.Message, b *proto
 		(*ObsoleteWeakUpdateBox_CallHandled)(nil),
 		(*ObsoleteWeakUpdateBox_CallDisposed)(nil),
 	}
-}
-
-func _ObsoleteWeakUpdateBox_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*ObsoleteWeakUpdateBox)
-	// updatebox
-	switch x := m.Updatebox.(type) {
-	case *ObsoleteWeakUpdateBox_Typing:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Typing); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_UserLastSeen:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.UserLastSeen); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_GroupOnline:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.GroupOnline); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_BusMessage:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.BusMessage); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_BusDeviceConnected:
-		b.EncodeVarint(6<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.BusDeviceConnected); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_BusDeviceDisconnected:
-		b.EncodeVarint(7<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.BusDeviceDisconnected); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_BusDisposed:
-		b.EncodeVarint(8<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.BusDisposed); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_ForceReload:
-		b.EncodeVarint(9<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ForceReload); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_IncomingCall:
-		b.EncodeVarint(10<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.IncomingCall); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_CallHandled:
-		b.EncodeVarint(11<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.CallHandled); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_CallDisposed:
-		b.EncodeVarint(12<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.CallDisposed); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("ObsoleteWeakUpdateBox.Updatebox has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _ObsoleteWeakUpdateBox_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*ObsoleteWeakUpdateBox)
-	switch tag {
-	case 2: // updatebox.typing
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateTyping)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_Typing{msg}
-		return true, err
-	case 3: // updatebox.userLastSeen
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateUserLastSeen)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_UserLastSeen{msg}
-		return true, err
-	case 4: // updatebox.groupOnline
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateGroupOnline)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_GroupOnline{msg}
-		return true, err
-	case 5: // updatebox.busMessage
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateEventBusMessage)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_BusMessage{msg}
-		return true, err
-	case 6: // updatebox.busDeviceConnected
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateEventBusDeviceConnected)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_BusDeviceConnected{msg}
-		return true, err
-	case 7: // updatebox.busDeviceDisconnected
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateEventBusDeviceDisconnected)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_BusDeviceDisconnected{msg}
-		return true, err
-	case 8: // updatebox.busDisposed
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateEventBusDisposed)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_BusDisposed{msg}
-		return true, err
-	case 9: // updatebox.forceReload
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_ForceReload{msg}
-		return true, err
-	case 10: // updatebox.incomingCall
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateIncomingCall)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_IncomingCall{msg}
-		return true, err
-	case 11: // updatebox.callHandled
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateCallHandled)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_CallHandled{msg}
-		return true, err
-	case 12: // updatebox.callDisposed
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateBox_ObsoleteUpdateCallDisposed)
-		err := b.DecodeMessage(msg)
-		m.Updatebox = &ObsoleteWeakUpdateBox_CallDisposed{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _ObsoleteWeakUpdateBox_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*ObsoleteWeakUpdateBox)
-	// updatebox
-	switch x := m.Updatebox.(type) {
-	case *ObsoleteWeakUpdateBox_Typing:
-		s := proto.Size(x.Typing)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_UserLastSeen:
-		s := proto.Size(x.UserLastSeen)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_GroupOnline:
-		s := proto.Size(x.GroupOnline)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_BusMessage:
-		s := proto.Size(x.BusMessage)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_BusDeviceConnected:
-		s := proto.Size(x.BusDeviceConnected)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_BusDeviceDisconnected:
-		s := proto.Size(x.BusDeviceDisconnected)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_BusDisposed:
-		s := proto.Size(x.BusDisposed)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_ForceReload:
-		s := proto.Size(x.ForceReload)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_IncomingCall:
-		s := proto.Size(x.IncomingCall)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_CallHandled:
-		s := proto.Size(x.CallHandled)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_CallDisposed:
-		s := proto.Size(x.CallDisposed)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type ObsoleteWeakUpdateBox_ObsoleteUpdateTyping struct {
@@ -1651,97 +1377,13 @@ func (m *ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloa
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_OneofMarshaler, _ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_OneofUnmarshaler, _ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadDialogs)(nil),
 		(*ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadContacts)(nil),
 		(*ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadHistory)(nil),
 	}
-}
-
-func _ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField)
-	// field
-	switch x := m.Field.(type) {
-	case *ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadDialogs:
-		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ReloadDialogs); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadContacts:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ReloadContacts); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadHistory:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ReloadHistory); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField.Field has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField)
-	switch tag {
-	case 1: // field.reloadDialogs
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(empty.Empty)
-		err := b.DecodeMessage(msg)
-		m.Field = &ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadDialogs{msg}
-		return true, err
-	case 2: // field.reloadContacts
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(empty.Empty)
-		err := b.DecodeMessage(msg)
-		m.Field = &ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadContacts{msg}
-		return true, err
-	case 3: // field.reloadHistory
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoletePeersList)
-		err := b.DecodeMessage(msg)
-		m.Field = &ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadHistory{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField)
-	// field
-	switch x := m.Field.(type) {
-	case *ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadDialogs:
-		s := proto.Size(x.ReloadDialogs)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadContacts:
-		s := proto.Size(x.ReloadContacts)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateBox_ObsoleteUpdateForceReloadState_ObsoleteForceReloadField_ReloadHistory:
-		s := proto.Size(x.ReloadHistory)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type ObsoleteServiceUpdate struct {
@@ -1802,59 +1444,11 @@ func (m *ObsoleteServiceUpdate) GetObsoleteUpdate() *wrappers.BytesValue {
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*ObsoleteServiceUpdate) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _ObsoleteServiceUpdate_OneofMarshaler, _ObsoleteServiceUpdate_OneofUnmarshaler, _ObsoleteServiceUpdate_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ObsoleteServiceUpdate) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*ObsoleteServiceUpdate_ObsoleteUpdate)(nil),
 	}
-}
-
-func _ObsoleteServiceUpdate_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*ObsoleteServiceUpdate)
-	// update
-	switch x := m.Update.(type) {
-	case *ObsoleteServiceUpdate_ObsoleteUpdate:
-		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ObsoleteUpdate); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("ObsoleteServiceUpdate.Update has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _ObsoleteServiceUpdate_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*ObsoleteServiceUpdate)
-	switch tag {
-	case 1: // update.obsoleteUpdate
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(wrappers.BytesValue)
-		err := b.DecodeMessage(msg)
-		m.Update = &ObsoleteServiceUpdate_ObsoleteUpdate{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _ObsoleteServiceUpdate_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*ObsoleteServiceUpdate)
-	// update
-	switch x := m.Update.(type) {
-	case *ObsoleteServiceUpdate_ObsoleteUpdate:
-		s := proto.Size(x.ObsoleteUpdate)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type ObsoleteWeakUpdateCommand struct {
@@ -2027,9 +1621,9 @@ func (m *ObsoleteWeakUpdateCommand) GetMyOnline() *ObsoleteWeakUpdateCommand_Obs
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*ObsoleteWeakUpdateCommand) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _ObsoleteWeakUpdateCommand_OneofMarshaler, _ObsoleteWeakUpdateCommand_OneofUnmarshaler, _ObsoleteWeakUpdateCommand_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ObsoleteWeakUpdateCommand) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*ObsoleteWeakUpdateCommand_SubscribeToOnlines)(nil),
 		(*ObsoleteWeakUpdateCommand_UnsubscribeFromOnlines)(nil),
 		(*ObsoleteWeakUpdateCommand_DropOnlineSubscriptions)(nil),
@@ -2040,198 +1634,6 @@ func (*ObsoleteWeakUpdateCommand) XXX_OneofFuncs() (func(msg proto.Message, b *p
 		(*ObsoleteWeakUpdateCommand_SubscribeToEventBusUpdates)(nil),
 		(*ObsoleteWeakUpdateCommand_MyOnline)(nil),
 	}
-}
-
-func _ObsoleteWeakUpdateCommand_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*ObsoleteWeakUpdateCommand)
-	// command
-	switch x := m.Command.(type) {
-	case *ObsoleteWeakUpdateCommand_SubscribeToOnlines:
-		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SubscribeToOnlines); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateCommand_UnsubscribeFromOnlines:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.UnsubscribeFromOnlines); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateCommand_DropOnlineSubscriptions:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DropOnlineSubscriptions); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateCommand_MyTyping:
-		b.EncodeVarint(7<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.MyTyping); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateCommand_SubscribeToTypings:
-		b.EncodeVarint(8<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SubscribeToTypings); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateCommand_UnsubscribeFromTypings:
-		b.EncodeVarint(9<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.UnsubscribeFromTypings); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateCommand_DropTypingSubscriptions:
-		b.EncodeVarint(10<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DropTypingSubscriptions); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateCommand_SubscribeToEventBusUpdates:
-		b.EncodeVarint(11<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SubscribeToEventBusUpdates); err != nil {
-			return err
-		}
-	case *ObsoleteWeakUpdateCommand_MyOnline:
-		b.EncodeVarint(12<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.MyOnline); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("ObsoleteWeakUpdateCommand.Command has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _ObsoleteWeakUpdateCommand_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*ObsoleteWeakUpdateCommand)
-	switch tag {
-	case 1: // command.subscribeToOnlines
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoletePeersList)
-		err := b.DecodeMessage(msg)
-		m.Command = &ObsoleteWeakUpdateCommand_SubscribeToOnlines{msg}
-		return true, err
-	case 2: // command.unsubscribeFromOnlines
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoletePeersList)
-		err := b.DecodeMessage(msg)
-		m.Command = &ObsoleteWeakUpdateCommand_UnsubscribeFromOnlines{msg}
-		return true, err
-	case 3: // command.dropOnlineSubscriptions
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(empty.Empty)
-		err := b.DecodeMessage(msg)
-		m.Command = &ObsoleteWeakUpdateCommand_DropOnlineSubscriptions{msg}
-		return true, err
-	case 7: // command.myTyping
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateCommand_ObsoleteMyTyping)
-		err := b.DecodeMessage(msg)
-		m.Command = &ObsoleteWeakUpdateCommand_MyTyping{msg}
-		return true, err
-	case 8: // command.subscribeToTypings
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoletePeersList)
-		err := b.DecodeMessage(msg)
-		m.Command = &ObsoleteWeakUpdateCommand_SubscribeToTypings{msg}
-		return true, err
-	case 9: // command.unsubscribeFromTypings
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoletePeersList)
-		err := b.DecodeMessage(msg)
-		m.Command = &ObsoleteWeakUpdateCommand_UnsubscribeFromTypings{msg}
-		return true, err
-	case 10: // command.dropTypingSubscriptions
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(empty.Empty)
-		err := b.DecodeMessage(msg)
-		m.Command = &ObsoleteWeakUpdateCommand_DropTypingSubscriptions{msg}
-		return true, err
-	case 11: // command.subscribeToEventBusUpdates
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(empty.Empty)
-		err := b.DecodeMessage(msg)
-		m.Command = &ObsoleteWeakUpdateCommand_SubscribeToEventBusUpdates{msg}
-		return true, err
-	case 12: // command.myOnline
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ObsoleteWeakUpdateCommand_ObsoleteMyOnline)
-		err := b.DecodeMessage(msg)
-		m.Command = &ObsoleteWeakUpdateCommand_MyOnline{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _ObsoleteWeakUpdateCommand_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*ObsoleteWeakUpdateCommand)
-	// command
-	switch x := m.Command.(type) {
-	case *ObsoleteWeakUpdateCommand_SubscribeToOnlines:
-		s := proto.Size(x.SubscribeToOnlines)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateCommand_UnsubscribeFromOnlines:
-		s := proto.Size(x.UnsubscribeFromOnlines)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateCommand_DropOnlineSubscriptions:
-		s := proto.Size(x.DropOnlineSubscriptions)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateCommand_MyTyping:
-		s := proto.Size(x.MyTyping)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateCommand_SubscribeToTypings:
-		s := proto.Size(x.SubscribeToTypings)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateCommand_UnsubscribeFromTypings:
-		s := proto.Size(x.UnsubscribeFromTypings)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateCommand_DropTypingSubscriptions:
-		s := proto.Size(x.DropTypingSubscriptions)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateCommand_SubscribeToEventBusUpdates:
-		s := proto.Size(x.SubscribeToEventBusUpdates)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *ObsoleteWeakUpdateCommand_MyOnline:
-		s := proto.Size(x.MyOnline)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type ObsoleteWeakUpdateCommand_ObsoleteMyTyping struct {
@@ -2582,6 +1984,20 @@ type ObsoleteServer interface {
 	Obsolete(context.Context, *wrappers.BytesValue) (*wrappers.BytesValue, error)
 	SeqUpdates(*empty.Empty, Obsolete_SeqUpdatesServer) error
 	WeakUpdates(Obsolete_WeakUpdatesServer) error
+}
+
+// UnimplementedObsoleteServer can be embedded to have forward compatible implementations.
+type UnimplementedObsoleteServer struct {
+}
+
+func (*UnimplementedObsoleteServer) Obsolete(ctx context.Context, req *wrappers.BytesValue) (*wrappers.BytesValue, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Obsolete not implemented")
+}
+func (*UnimplementedObsoleteServer) SeqUpdates(req *empty.Empty, srv Obsolete_SeqUpdatesServer) error {
+	return status.Errorf(codes.Unimplemented, "method SeqUpdates not implemented")
+}
+func (*UnimplementedObsoleteServer) WeakUpdates(srv Obsolete_WeakUpdatesServer) error {
+	return status.Errorf(codes.Unimplemented, "method WeakUpdates not implemented")
 }
 
 func RegisterObsoleteServer(s *grpc.Server, srv ObsoleteServer) {

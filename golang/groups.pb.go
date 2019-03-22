@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type GroupType int32
 
@@ -4109,6 +4111,74 @@ type GroupsServer interface {
 	JoinGroup(context.Context, *RequestJoinGroup) (*ResponseJoinGroup, error)
 	JoinGroupByPeer(context.Context, *RequestJoinGroupByPeer) (*ResponseVoid, error)
 	MakeUserAdminObsolete(context.Context, *RequestMakeUserAdminObsolete) (*ResponseMakeUserAdminObsolete, error)
+}
+
+// UnimplementedGroupsServer can be embedded to have forward compatible implementations.
+type UnimplementedGroupsServer struct {
+}
+
+func (*UnimplementedGroupsServer) LoadFullGroups(ctx context.Context, req *RequestLoadFullGroups) (*ResponseLoadFullGroups, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadFullGroups not implemented")
+}
+func (*UnimplementedGroupsServer) LoadMembers(ctx context.Context, req *RequestLoadMembers) (*ResponseLoadMembers, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadMembers not implemented")
+}
+func (*UnimplementedGroupsServer) CreateGroup(ctx context.Context, req *RequestCreateGroup) (*ResponseCreateGroup, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateGroup not implemented")
+}
+func (*UnimplementedGroupsServer) EditGroupTitle(ctx context.Context, req *RequestEditGroupTitle) (*ResponseSeqDateMid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditGroupTitle not implemented")
+}
+func (*UnimplementedGroupsServer) SetGroupShortname(ctx context.Context, req *RequestSetGroupShortname) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetGroupShortname not implemented")
+}
+func (*UnimplementedGroupsServer) EditGroupAvatar(ctx context.Context, req *RequestEditGroupAvatar) (*ResponseEditGroupAvatar, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditGroupAvatar not implemented")
+}
+func (*UnimplementedGroupsServer) RemoveGroupAvatar(ctx context.Context, req *RequestRemoveGroupAvatar) (*ResponseSeqDateMid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveGroupAvatar not implemented")
+}
+func (*UnimplementedGroupsServer) EditGroupTopic(ctx context.Context, req *RequestEditGroupTopic) (*ResponseSeqDate, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditGroupTopic not implemented")
+}
+func (*UnimplementedGroupsServer) EditGroupAbout(ctx context.Context, req *RequestEditGroupAbout) (*ResponseSeqDate, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditGroupAbout not implemented")
+}
+func (*UnimplementedGroupsServer) InviteUser(ctx context.Context, req *RequestInviteUser) (*ResponseSeqDateMid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InviteUser not implemented")
+}
+func (*UnimplementedGroupsServer) LeaveGroup(ctx context.Context, req *RequestLeaveGroup) (*ResponseSeqDateMid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LeaveGroup not implemented")
+}
+func (*UnimplementedGroupsServer) KickUser(ctx context.Context, req *RequestKickUser) (*ResponseSeqDateMid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KickUser not implemented")
+}
+func (*UnimplementedGroupsServer) MakeUserAdmin(ctx context.Context, req *RequestMakeUserAdmin) (*ResponseSeqDate, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MakeUserAdmin not implemented")
+}
+func (*UnimplementedGroupsServer) GetGroupMemberPermissions(ctx context.Context, req *RequestGetGroupMemberPermissions) (*ResponseGetGroupMemberPermissions, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupMemberPermissions not implemented")
+}
+func (*UnimplementedGroupsServer) TransferOwnership(ctx context.Context, req *RequestTransferOwnership) (*ResponseSeqDate, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TransferOwnership not implemented")
+}
+func (*UnimplementedGroupsServer) GetGroupInviteUrl(ctx context.Context, req *RequestGetGroupInviteUrl) (*ResponseInviteUrl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupInviteUrl not implemented")
+}
+func (*UnimplementedGroupsServer) GetGroupInviteUrlBase(ctx context.Context, req *RequestGetGroupInviteUrlBase) (*ResponseGetGroupInviteUrlBase, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupInviteUrlBase not implemented")
+}
+func (*UnimplementedGroupsServer) RevokeInviteUrl(ctx context.Context, req *RequestRevokeInviteUrl) (*ResponseInviteUrl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeInviteUrl not implemented")
+}
+func (*UnimplementedGroupsServer) JoinGroup(ctx context.Context, req *RequestJoinGroup) (*ResponseJoinGroup, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method JoinGroup not implemented")
+}
+func (*UnimplementedGroupsServer) JoinGroupByPeer(ctx context.Context, req *RequestJoinGroupByPeer) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method JoinGroupByPeer not implemented")
+}
+func (*UnimplementedGroupsServer) MakeUserAdminObsolete(ctx context.Context, req *RequestMakeUserAdminObsolete) (*ResponseMakeUserAdminObsolete, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MakeUserAdminObsolete not implemented")
 }
 
 func RegisterGroupsServer(s *grpc.Server, srv GroupsServer) {

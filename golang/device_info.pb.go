@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type PlatformType int32
 
@@ -291,6 +293,14 @@ func (c *deviceInfoClient) NotifyAboutDeviceInfo(ctx context.Context, in *Reques
 type DeviceInfoServer interface {
 	/// Set info about current device
 	NotifyAboutDeviceInfo(context.Context, *RequestNotifyAboutDeviceInfo) (*ResponseVoid, error)
+}
+
+// UnimplementedDeviceInfoServer can be embedded to have forward compatible implementations.
+type UnimplementedDeviceInfoServer struct {
+}
+
+func (*UnimplementedDeviceInfoServer) NotifyAboutDeviceInfo(ctx context.Context, req *RequestNotifyAboutDeviceInfo) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyAboutDeviceInfo not implemented")
 }
 
 func RegisterDeviceInfoServer(s *grpc.Server, srv DeviceInfoServer) {

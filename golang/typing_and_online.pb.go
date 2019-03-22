@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type TypingType int32
 
@@ -899,6 +901,26 @@ type TypingAndOnlineServer interface {
 	SetOnline(context.Context, *RequestSetOnline) (*ResponseVoid, error)
 	PauseNotifications(context.Context, *RequestPauseNotifications) (*ResponseVoid, error)
 	RestoreNotifications(context.Context, *RequestRestoreNotifications) (*ResponseVoid, error)
+}
+
+// UnimplementedTypingAndOnlineServer can be embedded to have forward compatible implementations.
+type UnimplementedTypingAndOnlineServer struct {
+}
+
+func (*UnimplementedTypingAndOnlineServer) Typing(ctx context.Context, req *RequestTyping) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Typing not implemented")
+}
+func (*UnimplementedTypingAndOnlineServer) StopTyping(ctx context.Context, req *RequestStopTyping) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StopTyping not implemented")
+}
+func (*UnimplementedTypingAndOnlineServer) SetOnline(ctx context.Context, req *RequestSetOnline) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetOnline not implemented")
+}
+func (*UnimplementedTypingAndOnlineServer) PauseNotifications(ctx context.Context, req *RequestPauseNotifications) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PauseNotifications not implemented")
+}
+func (*UnimplementedTypingAndOnlineServer) RestoreNotifications(ctx context.Context, req *RequestRestoreNotifications) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RestoreNotifications not implemented")
 }
 
 func RegisterTypingAndOnlineServer(s *grpc.Server, srv TypingAndOnlineServer) {

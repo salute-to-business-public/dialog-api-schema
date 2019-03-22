@@ -10,6 +10,8 @@ import (
 	proto "github.com/golang/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -22,7 +24,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Registering push token on server
 type RequestRegisterGooglePush struct {
@@ -542,6 +544,35 @@ type PushServer interface {
 	UnregisterApplePushKit(context.Context, *RequestUnregisterApplePushKit) (*ResponseVoid, error)
 	RegisterApplePushToken(context.Context, *RequestRegisterApplePushToken) (*ResponseVoid, error)
 	UnregisterApplePushToken(context.Context, *RequestUnregisterApplePushToken) (*ResponseVoid, error)
+}
+
+// UnimplementedPushServer can be embedded to have forward compatible implementations.
+type UnimplementedPushServer struct {
+}
+
+func (*UnimplementedPushServer) RegisterGooglePush(ctx context.Context, req *RequestRegisterGooglePush) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterGooglePush not implemented")
+}
+func (*UnimplementedPushServer) UnregisterGooglePush(ctx context.Context, req *RequestUnregisterGooglePush) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnregisterGooglePush not implemented")
+}
+func (*UnimplementedPushServer) RegisterApplePush(ctx context.Context, req *RequestRegisterApplePush) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterApplePush not implemented")
+}
+func (*UnimplementedPushServer) UnregisterApplePush(ctx context.Context, req *RequestUnregisterApplePush) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnregisterApplePush not implemented")
+}
+func (*UnimplementedPushServer) RegisterApplePushKit(ctx context.Context, req *RequestRegisterApplePushKit) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterApplePushKit not implemented")
+}
+func (*UnimplementedPushServer) UnregisterApplePushKit(ctx context.Context, req *RequestUnregisterApplePushKit) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnregisterApplePushKit not implemented")
+}
+func (*UnimplementedPushServer) RegisterApplePushToken(ctx context.Context, req *RequestRegisterApplePushToken) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterApplePushToken not implemented")
+}
+func (*UnimplementedPushServer) UnregisterApplePushToken(ctx context.Context, req *RequestUnregisterApplePushToken) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnregisterApplePushToken not implemented")
 }
 
 func RegisterPushServer(s *grpc.Server, srv PushServer) {
