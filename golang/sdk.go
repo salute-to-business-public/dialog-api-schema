@@ -12,6 +12,7 @@ func (d *DialogSDK) initializeContext() error {
         return err
     }
     d.internalContext = metadata.AppendToOutgoingContext(ctx, "x-auth-ticket", res.Token)
+    d.Token = res.Token
     d.cancel = cancel
     return nil
 }
@@ -20,6 +21,7 @@ func (d *DialogSDK) Close() {
     d.conn.Close()
 }
 type DialogSDK struct {
+	Token string
 	internalContext context.Context
 	cancel context.CancelFunc
 	conn *grpc.ClientConn
