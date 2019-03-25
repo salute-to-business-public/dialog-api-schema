@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type CallDisposedReason int32
 
@@ -1489,9 +1491,9 @@ func (m *WebRTCSignaling) GetCallNameChanged() *CallNameChanged {
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*WebRTCSignaling) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _WebRTCSignaling_OneofMarshaler, _WebRTCSignaling_OneofUnmarshaler, _WebRTCSignaling_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*WebRTCSignaling) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*WebRTCSignaling_AdvertiseSelf)(nil),
 		(*WebRTCSignaling_AdvertiseMaster)(nil),
 		(*WebRTCSignaling_AdvertisePeer)(nil),
@@ -1510,342 +1512,6 @@ func (*WebRTCSignaling) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffe
 		(*WebRTCSignaling_CallStats)(nil),
 		(*WebRTCSignaling_CallNameChanged)(nil),
 	}
-}
-
-func _WebRTCSignaling_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*WebRTCSignaling)
-	// body
-	switch x := m.Body.(type) {
-	case *WebRTCSignaling_AdvertiseSelf:
-		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.AdvertiseSelf); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_AdvertiseMaster:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.AdvertiseMaster); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_AdvertisePeer:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.AdvertisePeer); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_Candidate:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Candidate); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_GotICECandidate:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.GotICECandidate); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_RemovedICECandidates:
-		b.EncodeVarint(6<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.RemovedICECandidates); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_Offer:
-		b.EncodeVarint(7<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Offer); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_Answer:
-		b.EncodeVarint(8<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.Answer); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_NeedOffer:
-		b.EncodeVarint(9<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.NeedOffer); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_NegotinationSuccessful:
-		b.EncodeVarint(10<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.NegotinationSuccessful); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_EnableConnection:
-		b.EncodeVarint(11<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.EnableConnection); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_OnRenegotiationNeeded:
-		b.EncodeVarint(12<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.OnRenegotiationNeeded); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_CloseSession:
-		b.EncodeVarint(13<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.CloseSession); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_NeedDisconnect:
-		b.EncodeVarint(14<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.NeedDisconnect); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_DTMF:
-		b.EncodeVarint(15<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DTMF); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_CallStats:
-		b.EncodeVarint(16<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.CallStats); err != nil {
-			return err
-		}
-	case *WebRTCSignaling_CallNameChanged:
-		b.EncodeVarint(17<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.CallNameChanged); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("WebRTCSignaling.Body has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _WebRTCSignaling_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*WebRTCSignaling)
-	switch tag {
-	case 1: // body.advertiseSelf
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(AdvertiseSelf)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_AdvertiseSelf{msg}
-		return true, err
-	case 2: // body.advertiseMaster
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(AdvertiseMaster)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_AdvertiseMaster{msg}
-		return true, err
-	case 3: // body.advertisePeer
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(AdvertisePeer)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_AdvertisePeer{msg}
-		return true, err
-	case 4: // body.candidate
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(Candidate)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_Candidate{msg}
-		return true, err
-	case 5: // body.gotICECandidate
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(GotICECandidate)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_GotICECandidate{msg}
-		return true, err
-	case 6: // body.removedICECandidates
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(RemovedICECandidates)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_RemovedICECandidates{msg}
-		return true, err
-	case 7: // body.offer
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(Offer)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_Offer{msg}
-		return true, err
-	case 8: // body.answer
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(Answer)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_Answer{msg}
-		return true, err
-	case 9: // body.needOffer
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(NeedOffer)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_NeedOffer{msg}
-		return true, err
-	case 10: // body.negotinationSuccessful
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(NegotinationSuccessful)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_NegotinationSuccessful{msg}
-		return true, err
-	case 11: // body.enableConnection
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EnableConnection)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_EnableConnection{msg}
-		return true, err
-	case 12: // body.onRenegotiationNeeded
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(OnRenegotiationNeeded)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_OnRenegotiationNeeded{msg}
-		return true, err
-	case 13: // body.closeSession
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(CloseSession)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_CloseSession{msg}
-		return true, err
-	case 14: // body.needDisconnect
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(NeedDisconnect)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_NeedDisconnect{msg}
-		return true, err
-	case 15: // body.dTMF
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(DTMF)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_DTMF{msg}
-		return true, err
-	case 16: // body.callStats
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(CallStats)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_CallStats{msg}
-		return true, err
-	case 17: // body.callNameChanged
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(CallNameChanged)
-		err := b.DecodeMessage(msg)
-		m.Body = &WebRTCSignaling_CallNameChanged{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _WebRTCSignaling_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*WebRTCSignaling)
-	// body
-	switch x := m.Body.(type) {
-	case *WebRTCSignaling_AdvertiseSelf:
-		s := proto.Size(x.AdvertiseSelf)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_AdvertiseMaster:
-		s := proto.Size(x.AdvertiseMaster)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_AdvertisePeer:
-		s := proto.Size(x.AdvertisePeer)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_Candidate:
-		s := proto.Size(x.Candidate)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_GotICECandidate:
-		s := proto.Size(x.GotICECandidate)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_RemovedICECandidates:
-		s := proto.Size(x.RemovedICECandidates)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_Offer:
-		s := proto.Size(x.Offer)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_Answer:
-		s := proto.Size(x.Answer)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_NeedOffer:
-		s := proto.Size(x.NeedOffer)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_NegotinationSuccessful:
-		s := proto.Size(x.NegotinationSuccessful)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_EnableConnection:
-		s := proto.Size(x.EnableConnection)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_OnRenegotiationNeeded:
-		s := proto.Size(x.OnRenegotiationNeeded)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_CloseSession:
-		s := proto.Size(x.CloseSession)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_NeedDisconnect:
-		s := proto.Size(x.NeedDisconnect)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_DTMF:
-		s := proto.Size(x.DTMF)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_CallStats:
-		s := proto.Size(x.CallStats)
-		n += 2 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *WebRTCSignaling_CallNameChanged:
-		s := proto.Size(x.CallNameChanged)
-		n += 2 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 // Advertizing self to a master mode
@@ -3315,6 +2981,32 @@ type WebRTCServer interface {
 	RejectCall(context.Context, *RequestRejectCall) (*ResponseVoid, error)
 	ChangeCallDisplayName(context.Context, *RequestChangeCallDisplayName) (*ResponseVoid, error)
 	DeleteCall(context.Context, *RequestDeleteCall) (*ResponseVoid, error)
+}
+
+// UnimplementedWebRTCServer can be embedded to have forward compatible implementations.
+type UnimplementedWebRTCServer struct {
+}
+
+func (*UnimplementedWebRTCServer) GetCallInfo(ctx context.Context, req *RequestGetCallInfo) (*ResponseGetCallInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCallInfo not implemented")
+}
+func (*UnimplementedWebRTCServer) LoadCalls(ctx context.Context, req *RequestLoadCalls) (*ResponseLoadCalls, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadCalls not implemented")
+}
+func (*UnimplementedWebRTCServer) DoCall(ctx context.Context, req *RequestDoCall) (*ResponseDoCall, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DoCall not implemented")
+}
+func (*UnimplementedWebRTCServer) JoinCall(ctx context.Context, req *RequestJoinCall) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method JoinCall not implemented")
+}
+func (*UnimplementedWebRTCServer) RejectCall(ctx context.Context, req *RequestRejectCall) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RejectCall not implemented")
+}
+func (*UnimplementedWebRTCServer) ChangeCallDisplayName(ctx context.Context, req *RequestChangeCallDisplayName) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeCallDisplayName not implemented")
+}
+func (*UnimplementedWebRTCServer) DeleteCall(ctx context.Context, req *RequestDeleteCall) (*ResponseVoid, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCall not implemented")
 }
 
 func RegisterWebRTCServer(s *grpc.Server, srv WebRTCServer) {

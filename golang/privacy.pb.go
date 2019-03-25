@@ -10,6 +10,8 @@ import (
 	proto "github.com/golang/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -22,7 +24,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Block User
 type RequestBlockUser struct {
@@ -356,6 +358,20 @@ type PrivacyServer interface {
 	BlockUser(context.Context, *RequestBlockUser) (*ResponseSeq, error)
 	UnblockUser(context.Context, *RequestUnblockUser) (*ResponseSeq, error)
 	LoadBlockedUsers(context.Context, *RequestLoadBlockedUsers) (*ResponseLoadBlockedUsers, error)
+}
+
+// UnimplementedPrivacyServer can be embedded to have forward compatible implementations.
+type UnimplementedPrivacyServer struct {
+}
+
+func (*UnimplementedPrivacyServer) BlockUser(ctx context.Context, req *RequestBlockUser) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BlockUser not implemented")
+}
+func (*UnimplementedPrivacyServer) UnblockUser(ctx context.Context, req *RequestUnblockUser) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnblockUser not implemented")
+}
+func (*UnimplementedPrivacyServer) LoadBlockedUsers(ctx context.Context, req *RequestLoadBlockedUsers) (*ResponseLoadBlockedUsers, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadBlockedUsers not implemented")
 }
 
 func RegisterPrivacyServer(s *grpc.Server, srv PrivacyServer) {

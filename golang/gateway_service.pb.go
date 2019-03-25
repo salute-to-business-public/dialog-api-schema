@@ -20,7 +20,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type GetDifferenceCommand struct {
 	Seq                  *wrappers.Int32Value `protobuf:"bytes,1,opt,name=seq,proto3" json:"seq,omitempty"`
@@ -135,59 +135,11 @@ func (m *ServiceUpdate) GetObsoleteUpdate() *wrappers.BytesValue {
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*ServiceUpdate) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _ServiceUpdate_OneofMarshaler, _ServiceUpdate_OneofUnmarshaler, _ServiceUpdate_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ServiceUpdate) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*ServiceUpdate_ObsoleteUpdate)(nil),
 	}
-}
-
-func _ServiceUpdate_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*ServiceUpdate)
-	// update
-	switch x := m.Update.(type) {
-	case *ServiceUpdate_ObsoleteUpdate:
-		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ObsoleteUpdate); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("ServiceUpdate.Update has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _ServiceUpdate_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*ServiceUpdate)
-	switch tag {
-	case 1: // update.obsoleteUpdate
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(wrappers.BytesValue)
-		err := b.DecodeMessage(msg)
-		m.Update = &ServiceUpdate_ObsoleteUpdate{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _ServiceUpdate_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*ServiceUpdate)
-	// update
-	switch x := m.Update.(type) {
-	case *ServiceUpdate_ObsoleteUpdate:
-		s := proto.Size(x.ObsoleteUpdate)
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 func init() {

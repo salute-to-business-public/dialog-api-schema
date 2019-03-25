@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Descriptor of a Sticker
 type StickerDescriptor struct {
@@ -912,6 +914,32 @@ type StickersServer interface {
 	AddStickerCollection(context.Context, *RequestAddStickerCollection) (*ResponseSeq, error)
 	RemoveStickerCollection(context.Context, *RequestRemoveStickerCollection) (*ResponseSeq, error)
 	LoadStickerCollection(context.Context, *RequestLoadStickerCollection) (*ResponseLoadStickerCollection, error)
+}
+
+// UnimplementedStickersServer can be embedded to have forward compatible implementations.
+type UnimplementedStickersServer struct {
+}
+
+func (*UnimplementedStickersServer) LoadOwnStickers(ctx context.Context, req *RequestLoadOwnStickers) (*ResponseLoadOwnStickers, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadOwnStickers not implemented")
+}
+func (*UnimplementedStickersServer) LoadAcesssibleStickers(ctx context.Context, req *RequestLoadAcesssibleStickers) (*ResponseLoadAcesssibleStickers, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadAcesssibleStickers not implemented")
+}
+func (*UnimplementedStickersServer) AddStickerPackReference(ctx context.Context, req *RequestAddStickerPackReference) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddStickerPackReference not implemented")
+}
+func (*UnimplementedStickersServer) RemoveStickerPackReference(ctx context.Context, req *RequestRemoveStickerPackReference) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveStickerPackReference not implemented")
+}
+func (*UnimplementedStickersServer) AddStickerCollection(ctx context.Context, req *RequestAddStickerCollection) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddStickerCollection not implemented")
+}
+func (*UnimplementedStickersServer) RemoveStickerCollection(ctx context.Context, req *RequestRemoveStickerCollection) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveStickerCollection not implemented")
+}
+func (*UnimplementedStickersServer) LoadStickerCollection(ctx context.Context, req *RequestLoadStickerCollection) (*ResponseLoadStickerCollection, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadStickerCollection not implemented")
 }
 
 func RegisterStickersServer(s *grpc.Server, srv StickersServer) {

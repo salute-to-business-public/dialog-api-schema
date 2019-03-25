@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type Sex int32
 
@@ -480,73 +482,12 @@ func (m *UserData_Ext) GetB() bool {
 	return false
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*UserData_Ext) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _UserData_Ext_OneofMarshaler, _UserData_Ext_OneofUnmarshaler, _UserData_Ext_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*UserData_Ext) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*UserData_Ext_S)(nil),
 		(*UserData_Ext_B)(nil),
 	}
-}
-
-func _UserData_Ext_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*UserData_Ext)
-	// v
-	switch x := m.V.(type) {
-	case *UserData_Ext_S:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		b.EncodeStringBytes(x.S)
-	case *UserData_Ext_B:
-		t := uint64(0)
-		if x.B {
-			t = 1
-		}
-		b.EncodeVarint(3<<3 | proto.WireVarint)
-		b.EncodeVarint(t)
-	case nil:
-	default:
-		return fmt.Errorf("UserData_Ext.V has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _UserData_Ext_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*UserData_Ext)
-	switch tag {
-	case 2: // v.s
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeStringBytes()
-		m.V = &UserData_Ext_S{x}
-		return true, err
-	case 3: // v.b
-		if wire != proto.WireVarint {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeVarint()
-		m.V = &UserData_Ext_B{x != 0}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _UserData_Ext_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*UserData_Ext)
-	// v
-	switch x := m.V.(type) {
-	case *UserData_Ext_S:
-		n += 1 // tag and wire
-		n += proto.SizeVarint(uint64(len(x.S)))
-		n += len(x.S)
-	case *UserData_Ext_B:
-		n += 1 // tag and wire
-		n += 1
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type User struct {
@@ -1925,6 +1866,17 @@ type UsersServer interface {
 	EditUserLocalName(context.Context, *RequestEditUserLocalName) (*ResponseSeq, error)
 	/// Deprecated
 	LoadFullUsers(context.Context, *RequestLoadFullUsers) (*ResponseLoadFullUsers, error)
+}
+
+// UnimplementedUsersServer can be embedded to have forward compatible implementations.
+type UnimplementedUsersServer struct {
+}
+
+func (*UnimplementedUsersServer) EditUserLocalName(ctx context.Context, req *RequestEditUserLocalName) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditUserLocalName not implemented")
+}
+func (*UnimplementedUsersServer) LoadFullUsers(ctx context.Context, req *RequestLoadFullUsers) (*ResponseLoadFullUsers, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoadFullUsers not implemented")
 }
 
 func RegisterUsersServer(s *grpc.Server, srv UsersServer) {

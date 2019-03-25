@@ -3,6 +3,8 @@ dialog api schema
 
 Dialog gRPC API Schema.
 
+java-api-schema [![CircleCI](https://circleci.com/gh/dialogs/api-schema/tree/master.svg?style=svg)](https://circleci.com/gh/dialogs/api-schema/tree/master) 
+
 [Chat](https://dlg.im/@botsfordialog)
 
 [API documentation](https://dialogs.github.io/api-schema/)

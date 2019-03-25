@@ -11,6 +11,8 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -23,7 +25,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Changing account's name
 type RequestEditName struct {
@@ -736,6 +738,44 @@ type ProfileServer interface {
 	EditSex(context.Context, *RequestEditSex) (*ResponseSeq, error)
 	EditCustomProfile(context.Context, *RequestEditCustomProfile) (*ResponseSeq, error)
 	ChangeUserStatus(context.Context, *RequestChangeUserStatus) (*ResponseSeq, error)
+}
+
+// UnimplementedProfileServer can be embedded to have forward compatible implementations.
+type UnimplementedProfileServer struct {
+}
+
+func (*UnimplementedProfileServer) EditName(ctx context.Context, req *RequestEditName) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditName not implemented")
+}
+func (*UnimplementedProfileServer) EditNickName(ctx context.Context, req *RequestEditNickName) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditNickName not implemented")
+}
+func (*UnimplementedProfileServer) CheckNickName(ctx context.Context, req *RequestCheckNickName) (*ResponseBool, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckNickName not implemented")
+}
+func (*UnimplementedProfileServer) EditAbout(ctx context.Context, req *RequestEditAbout) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditAbout not implemented")
+}
+func (*UnimplementedProfileServer) EditAvatar(ctx context.Context, req *RequestEditAvatar) (*ResponseEditAvatar, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditAvatar not implemented")
+}
+func (*UnimplementedProfileServer) RemoveAvatar(ctx context.Context, req *RequestRemoveAvatar) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveAvatar not implemented")
+}
+func (*UnimplementedProfileServer) EditMyTimeZone(ctx context.Context, req *RequestEditMyTimeZone) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditMyTimeZone not implemented")
+}
+func (*UnimplementedProfileServer) EditMyPreferredLanguages(ctx context.Context, req *RequestEditMyPreferredLanguages) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditMyPreferredLanguages not implemented")
+}
+func (*UnimplementedProfileServer) EditSex(ctx context.Context, req *RequestEditSex) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditSex not implemented")
+}
+func (*UnimplementedProfileServer) EditCustomProfile(ctx context.Context, req *RequestEditCustomProfile) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditCustomProfile not implemented")
+}
+func (*UnimplementedProfileServer) ChangeUserStatus(ctx context.Context, req *RequestChangeUserStatus) (*ResponseSeq, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeUserStatus not implemented")
 }
 
 func RegisterProfileServer(s *grpc.Server, srv ProfileServer) {

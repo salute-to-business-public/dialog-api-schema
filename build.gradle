@@ -1,14 +1,3 @@
-apply plugin: 'java'
-apply plugin: 'com.google.protobuf'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-
-group = 'im.dlg'
-version = '0.0.6'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-
 buildscript {
     repositories {
         jcenter()
@@ -20,6 +9,19 @@ buildscript {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.5'
     }
 }
+
+plugins {
+    id 'net.researchgate.release' version '2.8.0'
+    id "com.jfrog.bintray" version "1.8.4"
+}
+
+apply plugin: 'java'
+apply plugin: 'com.google.protobuf'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 sourceSets {
     main {
@@ -43,13 +45,7 @@ repositories {
     mavenCentral()
     maven { url "https://maven.google.com" }
     maven { url "https://jitpack.io" }
-    maven {
-        url "http://dialog.bintray.com/maven"
-        credentials {
-            username bintrayUser
-            password bintrayPassword
-        }
-    }
+    maven { url "http://dialog.bintray.com/maven" }
 }
 
 dependencies {
@@ -65,6 +61,8 @@ ext {
     libraryDescription = 'Protocol schema for java apps'
     gitUrl = 'https://bitbucket.transmit.im/projects/DLG/repos/dialog-api-schema/browse'
     libraryVersion = version
+    bintrayUser = System.env.bintrayUser != null ? System.env.bintrayUser : ""
+    bintrayPassword = System.env.bintrayPassword != null ? System.env.bintrayPassword : ""
 }
 
 protobuf {
@@ -81,24 +79,15 @@ protobuf {
     }
 }
 
-//bintray
+// bintray
 apply plugin: 'com.jfrog.bintray'
 
-if (project.hasProperty("android")) { // Android libraries
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.srcDirs
-    }
+// Do on release stage!
+afterReleaseBuild.dependsOn bintrayUpload
 
-    task javadoc(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }
-} else { // Java libraries
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -111,13 +100,17 @@ artifacts {
     archives sourcesJar
 }
 
+release {
+    preCommitText = System.env.COMMIT_PREFIX != null ? System.env.COMMIT_PREFIX : ""
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId group
-            artifactId 'java-api-schema'
-            version version
             from components.java
+            groupId group
+            artifactId artifactId
+            version version
         }
     }
 }

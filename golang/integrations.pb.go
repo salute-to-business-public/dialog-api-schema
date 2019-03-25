@@ -10,6 +10,8 @@ import (
 	proto "github.com/golang/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -22,7 +24,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Group token response
 type ResponseIntegrationToken struct {
@@ -239,6 +241,17 @@ type IntegrationsServer interface {
 	GetIntegrationToken(context.Context, *RequestGetIntegrationToken) (*ResponseIntegrationToken, error)
 	/// Revoke token
 	RevokeIntegrationToken(context.Context, *RequestRevokeIntegrationToken) (*ResponseIntegrationToken, error)
+}
+
+// UnimplementedIntegrationsServer can be embedded to have forward compatible implementations.
+type UnimplementedIntegrationsServer struct {
+}
+
+func (*UnimplementedIntegrationsServer) GetIntegrationToken(ctx context.Context, req *RequestGetIntegrationToken) (*ResponseIntegrationToken, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIntegrationToken not implemented")
+}
+func (*UnimplementedIntegrationsServer) RevokeIntegrationToken(ctx context.Context, req *RequestRevokeIntegrationToken) (*ResponseIntegrationToken, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeIntegrationToken not implemented")
 }
 
 func RegisterIntegrationsServer(s *grpc.Server, srv IntegrationsServer) {
