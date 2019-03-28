@@ -7,11 +7,8 @@ version: 2.1
 git_config: &git_config
   name: configure git bot
   command: |
-    if [ -z "$CIRCLE_PR_USERNAME" -a "$CIRCLE_USERNAME" != "dialog-bot" -a -n "$CIRCLE_USERNAME" ]
-    then
       git config user.name "$GITHUB_BOT_USERNAME"
       git config user.email "$GITHUB_BOT_EMAIL"
-    fi
 
 executors:
   build-executor:
