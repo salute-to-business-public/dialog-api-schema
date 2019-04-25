@@ -93,6 +93,7 @@ message UserData {
     string time_zone = 8 [(dlg).log="visible"];
     repeated Ext exts = 9 [(dlg).log="hidden"];
     DataClock clock = 10 [(dlg).log="visible"];
+    repeated string locales = 11;
 }
 message User {
     int32 id = 1 [(dlg).log = "visible"]; /// User's id
