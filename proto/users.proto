@@ -58,6 +58,7 @@ enum UserStatusType {
     USERSTATUSTYPE_AWAY = 2;
     USERSTATUSTYPE_DONOTDISTURB = 3;
     USERSTATUSTYPE_INVISIBLE = 4;
+    USERSTATUSTYPE_BUSY = 5;
 }
 
 // User's status
@@ -65,6 +66,7 @@ message UserStatus {
     UserStatusType type = 1 [(dlg).log="visible"];
     /// Text supplied by user
     google.protobuf.StringValue text = 2 [(dlg).log="visible"];
+    int64 clock = 3 [(dlg).log="visible"];
 }
 
 // Main user object
