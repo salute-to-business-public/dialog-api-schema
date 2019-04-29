@@ -91,6 +91,7 @@ message ObsoleteWeakUpdateBox {
   message ObsoleteUpdateGroupOnline {
     int32 groupId = 1;
     int32 count   = 2;
+    int64 clock   = 3;
   }
 
   message ObsoleteUpdateEventBusMessage {
