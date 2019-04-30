@@ -791,6 +791,8 @@ message Dialog {
     PinnedMessages pinned_messages = 14 [(dlg).log="visible"];
     /// last message in this dialog
     HistoryMessage history_message = 15 [(dlg).log="visible"];
+    int64 last_receive = 16 [(dlg).log="visible"];
+    int64 last_read = 17 [(dlg).log="visible"];
 }
 
 enum DialogsFilter {
