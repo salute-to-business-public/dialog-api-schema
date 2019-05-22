@@ -29,6 +29,7 @@ enum GroupType {
     GROUPTYPE_UNKNOWN = 0;
     GROUPTYPE_GROUP = 1;
     GROUPTYPE_CHANNEL = 2;
+    GROUPTYPE_CHILD_GROUP = 3;
 }
 
 // Group information
@@ -58,6 +59,7 @@ message Group {
     google.protobuf.StringValue about = 18 [(dlg).log="hidden"];
     /// Group short name
     google.protobuf.StringValue shortname = 19 [(dlg).log="visible"];
+    repeated ThreadReference threads = 28 [(dlg).log="visible"];
 }
 
 // Goup Full information - Deprecated
@@ -520,6 +522,11 @@ message UpdateGroupShortnameChanged {
     int32 group_id = 1 [(dlg).log="visible"];
     string shortname = 2 [(dlg).log="visible"];
     int32 uid = 3 [(dlg).log="visible"];
+}
+
+message ThreadReference {
+    UUIDValue messageId = 1 [(dlg).log="visible"];
+    OutPeer peer = 2 [(dlg).log="visible"];
 }
 
 service Groups {
