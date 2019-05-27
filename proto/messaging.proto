@@ -587,6 +587,7 @@ message UpdateMessage {
      google.protobuf.Int32Value counter = 12 [(dlg).log="visible"];
      /// date of my own read
      google.protobuf.Int64Value my_read_date = 13 [(dlg).log="visible"];
+     int64 random_id = 14 [(dlg).log="visible"];
 }
 
 // Update about message change
@@ -725,7 +726,7 @@ message HistoryMessage {
     UUIDValue mid = 10 [(dlg).log="visible"];
     UUIDValue prev_mid = 17;
     int64 date = 3 [(dlg).log="visible"];
-    MessageContent message = 5 [(dlg).log="visible"];
+    MessageContent message = 5 [(dlg).log="hidden"];
     MessageState state = 6 [(dlg).log="visible"];
     repeated MessageReaction reactions = 7 [(dlg).log="visible"];
     MessageAttributes attribute = 8 [(dlg).log="visible"];
@@ -734,6 +735,7 @@ message HistoryMessage {
         ReferencedMessages reply = 14;
     }
     google.protobuf.Int64Value edited_at = 16 [(dlg).log="visible"];
+    int64 random_id = 18 [(dlg).log="visible"];
 }
 
 enum ListLoadMode {
@@ -800,6 +802,8 @@ message Dialog {
     PinnedMessages pinned_messages = 14 [(dlg).log="visible"];
     /// last message in this dialog
     HistoryMessage history_message = 15 [(dlg).log="visible"];
+    int64 last_receive = 16 [(dlg).log="visible"];
+    int64 last_read = 17 [(dlg).log="visible"];
 }
 
 enum DialogsFilter {
@@ -839,24 +843,31 @@ message DialogData {
 message DialogIndex {
     /// The peer for the conversation
     Peer peer = 1 [(dlg).log="visible"];
-    /// Deprecated since sdk 2.0. When dialog was changed last time
-    int64 timestamp = 2 [(dlg).log="visible"];
+    /// Last message date of a dialog
+    int64 last_message_date = 2 [(dlg).log="visible"];
     DialogData data = 3 [(dlg).log="visible"];
 }
 
 // Compound info of a one of the dialogs in dialog list SDK 2.0
+//
 // peer
-// myReadDate date of the last own read
-// isFavourite Is dialog favourite
-// historyMessage Optional last message
-// clock When this dialog was changed last time
+// unread_count count of the unread messages in dialog
+// my_read_date date of the last own read
+// last_message_date date of the last message
+// receive_date date of the last received message
+// read_date date of the last read message
+// entry_clock shared clock across all datas which required for making a dialog entry
+// data data related to dialog itself
 message DialogListEntry {
     Peer peer = 1 [(dlg).log="visible"]; /// Peer of conversation
-    /// counter of unread messages
     int32 unread_count = 2 [(dlg).log="visible"];
     int64 my_read_date = 3 [(dlg).log="visible"];
-    HistoryMessage history_message = 4 [(dlg).log="visible"];
-    DialogData data = 5 [(dlg).log="visible"];
+    int64 last_message_date = 4 [(dlg).log="visible"];
+    int64 receive_date = 5 [(dlg).log="visible"];
+    int64 read_date = 6 [(dlg).log="visible"];
+    int64 entry_clock = 7 [(dlg).log="visible"];
+
+    DialogData data = 8 [(dlg).log="visible"];
 }
 
 /**
@@ -873,22 +884,39 @@ message ResponseFetchDialogIndex {
 }
 
 // Loading compound difference (all dialogs after from_clock) as DialogListEntries
+// Use it to request difference in dialog list
 message RequestDialogListDifference {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
 
-    message HistoryClock {
-        Peer peer = 1 [(dlg).log="visible"];
-        int64 from_clock = 2 [(dlg).log="visible"];
-    }
-
+    /// Shared clock across all states which required for making a dialog entry (e.g. max clock among those dates)
+    /// Conceptually you have to set this to sync all including datas after reconnect or authorization
     int64 from_clock = 1 [(dlg).log="visible"];
-    repeated HistoryClock from_clocks = 2 [(dlg).log="visible"];
 }
 
 /// Contains dialogs that was change after from_clock
 message ResponseDialogListDifference {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    repeated DialogListEntry entries = 1;
+    repeated DialogListEntry entries = 1 [(dlg).log="visible"];
+
+    /// Start and the end of the compound history data interval
+    int64 clock = 2 [(dlg).log="visible"];
+    int64 prev_clock = 3 [(dlg).log="visible"];
+}
+
+// Use it to receive messages for visible dialogs after FetchDialogsIndex
+message RequestGetLastConversationMessages {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated Peer peers = 1 [(dlg).log="visible"];
+}
+
+message ResponseGetLastConversationMessages {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    message Pair {
+        Peer peer = 1 [(dlg).log="visible"];
+        HistoryMessage message = 2 [(dlg).log="visible"];
+    }
+
+    repeated Pair messages = 1 [(dlg).log="visible"];
 }
 
 // Loading archived messages - deprecated
@@ -1098,7 +1126,15 @@ service Messaging {
     /// Load dialogs by peers
     rpc DialogListDifference (RequestDialogListDifference) returns (ResponseDialogListDifference) {
         option (google.api.http) = {
-            post: "/v1/grpc/Messaging/RequestLoadDialogEntries"
+            post: "/v1/grpc/Messaging/DialogListDifference"
+            body: "*"
+        };
+    }
+
+    /// Load last messages of the given conversations
+    rpc GetLastConversationMessages (RequestGetLastConversationMessages) returns (ResponseGetLastConversationMessages) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Messaging/GetLastConversationMessages"
             body: "*"
         };
     }
