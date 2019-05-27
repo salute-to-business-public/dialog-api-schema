@@ -29,7 +29,7 @@ enum GroupType {
     GROUPTYPE_UNKNOWN = 0;
     GROUPTYPE_GROUP = 1;
     GROUPTYPE_CHANNEL = 2;
-    GROUPTYPE_CHILD_GROUP = 3;
+    GROUPTYPE_THREAD = 4;
 }
 
 // Group information
@@ -526,7 +526,7 @@ message UpdateGroupShortnameChanged {
 }
 
 message ThreadReference {
-    UUIDValue messageId = 1 [(dlg).log="visible"];
+    UUIDValue message_id = 1 [(dlg).log="visible"];
     OutPeer peer = 2 [(dlg).log="visible"];
 }
 

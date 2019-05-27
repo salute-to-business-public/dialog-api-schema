@@ -694,10 +694,15 @@ message UpdateMessageEditRejectedByHook {
     google.protobuf.StringValue reason = 5 [(dlg).log="visible"];
 }
 
-//Update about new thread inside group
+// Update about new thread inside group
 message UpdateThreadCreated {
     Peer peer = 1 [(dlg).log="visible"];              // peer representing thread
-    UUIDValue startMessage = 2 [(dlg).log="visible"]; // messageId from parent group where thread starts
+    UUIDValue start_message = 2 [(dlg).log="visible"]; // messageId from parent group where thread starts
+}
+
+// Update about thread converted to group
+message UpdateThreadLifted {
+    GroupOutPeer peer = 1 [(dlg).log="visible"];
 }
 
 enum MessageState {
