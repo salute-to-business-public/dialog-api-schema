@@ -140,6 +140,7 @@ message UpdateSeqUpdate {
       UpdateFeatureFlagChanged updateFeatureFlagChanged = 95;
 
       UpdateThreadCreated updateThreadCreated = 96;
+      UpdateThreadLifted updateThreadLifted = 97;
     }
 }
 
