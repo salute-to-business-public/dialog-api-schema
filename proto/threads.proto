@@ -19,15 +19,17 @@ option (scalapb.options) = {
 
 // Create a threaded conversation inside a group
 message RequestCreateThread {
+    enum JoinPolicy {
+        INVITE_ONLY = 0;
+        THREAD_MEMBERS = 1;
+    }
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     int64 random_id = 1 [(dlg).log="visible"]; // random request id for query deduplication
     GroupOutPeer parent_group_peer = 2 [(dlg).log="visible"]; // parent group where thread is created
-    UUIDValue start_message = 3 [(dlg).log="visible"]; // message from where thread starts
-    bool allow_join = 4; // allow group members to see and join thread
-    repeated UserOutPeer members = 5 [(dlg).log="visible"]; /// members
-
-    // Optimizations drops some info from response to decrease traffic and latency
-    repeated UpdateOptimization optimizations = 6 [(dlg).log="visible"];
+    UUIDValue start_message_id = 3 [(dlg).log="visible"]; // message from where thread starts
+    string title = 4; //thread title
+    JoinPolicy join_policy = 5; // thread join policy: for all group members or invite only
+    repeated UserOutPeer members = 6 [(dlg).log="visible"]; /// members
 }
 
 // Thread creation response
@@ -44,11 +46,7 @@ message RequestLiftThread {
     int64 random_id = 1 [(dlg).log="visible"]; // Id for query deduplication
     GroupOutPeer parent_group_peer = 2 [(dlg).log="visible"]; // parent group where thread is created
     GroupOutPeer thread_group_peer = 3 [(dlg).log="visible"]; // group representing thread about to be lifted
-    string title = 4; // lifted group title
-    repeated UserOutPeer users = 5; // participants of lifted group
-
-    // Optimizations drops some info from response to decrease traffic and latency
-    repeated UpdateOptimization optimizations = 6 [(dlg).log="visible"];
+    google.protobuf.StringValue title = 4; // lifted group title
 }
 
 // Thread lift response
