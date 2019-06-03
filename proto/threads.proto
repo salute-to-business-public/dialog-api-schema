@@ -42,7 +42,7 @@ message ResponseCreateThread {
 
 // Converts thread into a group
 message RequestLiftThread {
-    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     int64 random_id = 1 [(dlg).log="visible"]; // Id for query deduplication
     GroupOutPeer parent_group_peer = 2 [(dlg).log="visible"]; // parent group where thread is created
     GroupOutPeer thread_group_peer = 3 [(dlg).log="visible"]; // group representing thread about to be lifted
