@@ -17,6 +17,11 @@ option (scalapb.options) = {
     package_name: "im.dlg.grpc.services"
 };
 
+message ThreadReference {
+    UUIDValue message_id = 1 [(dlg).log="visible"];
+    OutPeer peer = 2 [(dlg).log="visible"];
+}
+
 // Create a threaded conversation inside a group
 message RequestCreateThread {
     enum JoinPolicy {
@@ -56,6 +61,24 @@ message ResponseLiftThread {
     GroupOutPeer peer = 2; // group peer
 }
 
+// Load group threads available for user
+message RequestLoadGroupThreads {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer group = 1 [(dlg).log="compact"];
+}
+
+message ResponseLoadGroupThreads {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated ThreadReference threads = 1 [(dlg).log="visible"];
+}
+
+// Join public thread
+message RequestJoinThread {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    GroupOutPeer parent_group_peer = 2 [(dlg).log="visible"]; // parent group where thread is created
+    GroupOutPeer thread_group_peer = 3 [(dlg).log="visible"]; // group representing thread about to be joined
+}
+
 service Threads {
     rpc CreateThread (RequestCreateThread) returns (ResponseCreateThread) {
         option (google.api.http) = {
@@ -66,6 +89,18 @@ service Threads {
     rpc LiftThread (RequestLiftThread) returns (ResponseLiftThread) {
         option (google.api.http) = {
             post: "/v1/grpc/Threads/LiftThread"
+            body: "*"
+        };
+    }
+    rpc LoadGroupThreads (RequestLoadGroupThreads) returns (ResponseLoadGroupThreads) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Threads/LoadGroupThreads"
+            body: "*"
+        };
+    }
+    rpc JoinThread (RequestJoinThread) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Threads/JoinThread"
             body: "*"
         };
     }
