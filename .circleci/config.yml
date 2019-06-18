@@ -80,11 +80,50 @@ jobs:
             curl --header "Content-Type: application/json" --request POST \
              --data '{"text":"java-api-schema release successful! Check it here: '${ARTIFACT_URL}' "}' \
               $DIALOG_HOOK_URL
+  python_release:
+    machine:
+        image: ubuntu-1604:201903-01
+    steps:
+        - checkout
+        - run:
+            name: Make Python 3 bindings
+            command: |
+                pyenv global 3.7.0
+                make python3
+        - run:
+            name: Rename folders
+            command: |
+                mv python3 dialog_api
+                touch ./dialog_api/__init__.py
+        - run:
+            name: Install envsubst
+            command: |
+                sudo apt-get update && sudo apt-get -y install gettext-base
+        - run:
+            name: init .pypirc
+            command: |
+                echo -e "[pypi]" >> ~/.pypirc
+                echo -e "username: dialog_llc" >> ~/.pypirc
+                echo -e "password: $PYPI_PASSWORD" >> ~/.pypirc
+        - run:
+            name: Change setup.py
+            command: |
+                envsubst < setup_unfilled.py > setup.py
+        - run:
+            name: Install twine
+            command: |
+                python3 -m pip install --user twine
+                python3 -m pip install --upgrade setuptools wheel
+        - run:
+            name: Build & push package
+            command: |
+                python3 setup.py sdist bdist_wheel
+                python3 -m twine upload ./dist/*
 workflows:
   version: 2
   java-build-release:
     jobs:
-      - dependencies     
+      - dependencies
       - build:
           requires:
             - dependencies
@@ -94,3 +133,11 @@ workflows:
           filters:
             branches:
               only: master
+  python-build-release:
+    jobs:
+      - python_release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
