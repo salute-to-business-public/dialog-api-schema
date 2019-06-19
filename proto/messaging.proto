@@ -696,7 +696,7 @@ message UpdateMessageEditRejectedByHook {
 
 // Update about new thread inside group
 message UpdateThreadCreated {
-    Peer peer = 1 [(dlg).log="visible"];              // peer representing thread
+    GroupOutPeer peer = 1 [(dlg).log="visible"];       // peer representing thread
     UUIDValue start_message = 2 [(dlg).log="visible"]; // messageId from parent group where thread starts
 }
 
