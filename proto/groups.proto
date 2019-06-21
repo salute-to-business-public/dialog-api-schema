@@ -29,6 +29,7 @@ enum GroupType {
     GROUPTYPE_UNKNOWN = 0;
     GROUPTYPE_GROUP = 1;
     GROUPTYPE_CHANNEL = 2;
+    GROUPTYPE_THREAD = 4;
 }
 
 // Group information

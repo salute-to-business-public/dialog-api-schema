@@ -31,6 +31,7 @@ import "peers.proto";
 import "messaging.proto";
 import "users.proto";
 import "spaces.proto";
+import "threads.proto";
 import "scalapb/scalapb.proto";
 
 option (scalapb.options) = {
@@ -137,6 +138,9 @@ message UpdateSeqUpdate {
 
       UpdateUser updateUser = 94;
       UpdateFeatureFlagChanged updateFeatureFlagChanged = 95;
+
+      UpdateThreadCreated updateThreadCreated = 96;
+      UpdateThreadLifted updateThreadLifted = 97;
     }
 }
 
