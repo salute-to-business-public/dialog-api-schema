@@ -254,6 +254,15 @@ message ResponseLoadUserSearchByPredicatesCount {
     int32 result_count = 1 [(dlg).log = "visible"];
 }
 
+message RequestGetRecommendations {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+}
+
+message ResponseGetRecommendations {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated OutPeer peers = 1;
+}
+
 
 service Search {
     /// Search among groups/users/contacts
@@ -317,4 +326,10 @@ service Search {
         };
     }
 
+    rpc GetRecommendations (RequestGetRecommendations) returns (ResponseGetRecommendations) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/GetRecommendations"
+            body: "*"
+        };
+    }
 }
