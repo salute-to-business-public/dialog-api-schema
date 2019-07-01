@@ -473,7 +473,7 @@ message SearchPredicate {
 message RequestSendMessage {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     OutPeer peer = 1 [(dlg).log="visible"];
-    int64 rid = 3 [(dlg).log="visible"]; /// Id for deduplication
+    int64 deduplication_id = 3 [(dlg).log="visible"]; /// Id for message deduplication
     MessageContent message = 4 [(dlg).log="visible"];
     /// if not empty, then message will be send to this user only
     int32 is_only_for_user = 5 [(dlg).log="visible"];
@@ -559,23 +559,35 @@ message ResponseReactionsResponse {
     repeated MessageReaction reactions = 3;
 }
 
+message ResponseSendMessage {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    UUIDValue message_id = 1 [(dlg).log="visible"]; /// Message id
+    int64 message_date = 2 [(dlg).log="visible"]; /// Message creation date from server
+    UUIDValue previous_message_id = 3 [(dlg).log="visible"]; /// Previous message id
+    int64 creator_user_id = 4 [(dlg).log="visible"]; // Message creator
+    int64 clock = 5 [(dlg).log="visible"]; // Clock of this message (initially equals the message_date field)
+}
+
 // Update about plain message
 message UpdateMessage {
-    Peer peer = 1 [(dlg).log="visible"];
-    int32 sender_uid = 2 [(dlg).log="visible"];
-    int64 date = 3 [(dlg).log="visible"];
-    UUIDValue mid = 8 [(dlg).log="visible"]; /// Message id
-    MessageContent message = 5 [(dlg).log="visible"];
-    /// attributes to help reasoning about message
-    MessageAttributes attributes = 6 [(dlg).log="visible"];
-    oneof attach {
-        ReferencedMessages forward = 9 [(dlg).log="visible"];
-        ReferencedMessages reply = 10 [(dlg).log="visible"];
-    }
-    /// Message id of previos message from current conversation
-    UUIDValue previous_mid = 11 [(dlg).log="visible"];
-    /// counter of unreads message
-    google.protobuf.Int32Value counter = 12 [(dlg).log="visible"];
+     Peer peer = 1 [(dlg).log="visible"];
+     int32 sender_uid = 2 [(dlg).log="visible"];
+     int64 date = 3 [(dlg).log="visible"]; // message creation date
+     UUIDValue mid = 8 [(dlg).log="visible"]; /// Message id
+     MessageContent message = 5 [(dlg).log="visible"];
+     /// attributes to help reasoning about message
+     MessageAttributes attributes = 6 [(dlg).log="visible"];
+     oneof attach {
+         ReferencedMessages forward = 9 [(dlg).log="visible"];
+         ReferencedMessages reply = 10 [(dlg).log="visible"];
+     }
+     /// Message id of previos message from current conversation
+     UUIDValue previous_mid = 11 [(dlg).log="visible"];
+     /// counter of the unread messages
+     google.protobuf.Int32Value counter = 12 [(dlg).log="visible"];
+     /// date of my own read
+     google.protobuf.Int64Value my_read_date = 13 [(dlg).log="visible"];
+     int64 random_id = 14 [(dlg).log="visible"];
 }
 
 // Update about message change
@@ -597,6 +609,7 @@ message UpdateMessageSent {
     UUIDValue prev_mid = 5 [(dlg).log="visible"];
     /// counter of unread messages
     google.protobuf.Int32Value unread_counter = 6 [(dlg).log="visible"];
+    google.protobuf.Int64Value myReadDate = 7 [(dlg).log="visible"];
 }
 
 // Update about message received
@@ -681,6 +694,17 @@ message UpdateMessageEditRejectedByHook {
     google.protobuf.StringValue reason = 5 [(dlg).log="visible"];
 }
 
+// Update about new thread inside group
+message UpdateThreadCreated {
+    GroupOutPeer peer = 1 [(dlg).log="visible"];       // peer representing thread
+    UUIDValue start_message = 2 [(dlg).log="visible"]; // messageId from parent group where thread starts
+}
+
+// Update about thread converted to group
+message UpdateThreadLifted {
+    GroupOutPeer peer = 1 [(dlg).log="visible"];
+}
+
 enum MessageState {
     MESSAGESTATE_UNKNOWN = 0;
     MESSAGESTATE_SENT = 1;
@@ -688,7 +712,7 @@ enum MessageState {
     MESSAGESTATE_READ = 3;
 }
 
-// mids Referenced messge ids
+// mids Referenced message ids
 message ReferencedMessages {
     repeated UUIDValue mids = 1 [(dlg).log="compact"];
 }
@@ -702,7 +726,7 @@ message HistoryMessage {
     UUIDValue mid = 10 [(dlg).log="visible"];
     UUIDValue prev_mid = 17;
     int64 date = 3 [(dlg).log="visible"];
-    MessageContent message = 5 [(dlg).log="visible"];
+    MessageContent message = 5 [(dlg).log="hidden"];
     MessageState state = 6 [(dlg).log="visible"];
     repeated MessageReaction reactions = 7 [(dlg).log="visible"];
     MessageAttributes attribute = 8 [(dlg).log="visible"];
@@ -711,6 +735,7 @@ message HistoryMessage {
         ReferencedMessages reply = 14;
     }
     google.protobuf.Int64Value edited_at = 16 [(dlg).log="visible"];
+    int64 random_id = 18 [(dlg).log="visible"];
 }
 
 enum ListLoadMode {
@@ -777,6 +802,8 @@ message Dialog {
     PinnedMessages pinned_messages = 14 [(dlg).log="visible"];
     /// last message in this dialog
     HistoryMessage history_message = 15 [(dlg).log="visible"];
+    int64 last_receive = 16 [(dlg).log="visible"];
+    int64 last_read = 17 [(dlg).log="visible"];
 }
 
 enum DialogsFilter {
@@ -805,12 +832,42 @@ message ResponseLoadDialogs {
     repeated GroupOutPeer group_peers = 5;
 }
 
-// Dialog index from history. Used in client side pagination
+// Data related to dialog entity
+message DialogData {
+    bool is_favourite = 2 [(dlg).log="visible"];
+    int64 created_at = 3 [(dlg).log="visible"];
+    /// When dialog was changed last time
+    int64 clock = 4 [(dlg).log="visible"];
+}
+
 message DialogIndex {
     /// The peer for the conversation
     Peer peer = 1 [(dlg).log="visible"];
-    /// The timestamp for the top message
-    int64 timestamp = 2 [(dlg).log="visible"];
+    /// Last message date of a dialog
+    int64 last_message_date = 2 [(dlg).log="visible"];
+    DialogData data = 3 [(dlg).log="visible"];
+}
+
+// Compound info of a one of the dialogs in dialog list SDK 2.0
+//
+// peer
+// unread_count count of the unread messages in dialog
+// my_read_date date of the last own read
+// last_message_date date of the last message
+// receive_date date of the last received message
+// read_date date of the last read message
+// entry_clock shared clock across all datas which required for making a dialog entry
+// data data related to dialog itself
+message DialogListEntry {
+    Peer peer = 1 [(dlg).log="visible"]; /// Peer of conversation
+    int32 unread_count = 2 [(dlg).log="visible"];
+    int64 my_read_date = 3 [(dlg).log="visible"];
+    int64 last_message_date = 4 [(dlg).log="visible"];
+    int64 receive_date = 5 [(dlg).log="visible"];
+    int64 read_date = 6 [(dlg).log="visible"];
+    int64 entry_clock = 7 [(dlg).log="visible"];
+
+    DialogData data = 8 [(dlg).log="visible"];
 }
 
 /**
@@ -824,6 +881,42 @@ message RequestFetchDialogIndex {
 message ResponseFetchDialogIndex {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
     repeated DialogIndex dialog_indices = 1;
+}
+
+// Loading compound difference (all dialogs after from_clock) as DialogListEntries
+// Use it to request difference in dialog list
+message RequestDialogListDifference {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+
+    /// Shared clock across all states which required for making a dialog entry (e.g. max clock among those dates)
+    /// Conceptually you have to set this to sync all including datas after reconnect or authorization
+    int64 from_clock = 1 [(dlg).log="visible"];
+}
+
+/// Contains dialogs that was change after from_clock
+message ResponseDialogListDifference {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated DialogListEntry entries = 1 [(dlg).log="visible"];
+
+    /// Start and the end of the compound history data interval
+    int64 clock = 2 [(dlg).log="visible"];
+    int64 prev_clock = 3 [(dlg).log="visible"];
+}
+
+// Use it to receive messages for visible dialogs after FetchDialogsIndex
+message RequestGetLastConversationMessages {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    repeated Peer peers = 1 [(dlg).log="visible"];
+}
+
+message ResponseGetLastConversationMessages {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    message Pair {
+        Peer peer = 1 [(dlg).log="visible"];
+        HistoryMessage message = 2 [(dlg).log="visible"];
+    }
+
+    repeated Pair messages = 1 [(dlg).log="visible"];
 }
 
 // Loading archived messages - deprecated
@@ -943,7 +1036,7 @@ service Messaging {
             body: "*"
         };
     }
-    rpc SendMessage (RequestSendMessage) returns (ResponseSeqDate) {
+    rpc SendMessage (RequestSendMessage) returns (ResponseSendMessage) {
         option (google.api.http) = {
             post: "/v1/grpc/Messaging/SendMessage"
             body: "*"
@@ -1030,6 +1123,22 @@ service Messaging {
             body: "*"
         };
     }
+    /// Load dialogs by peers
+    rpc DialogListDifference (RequestDialogListDifference) returns (ResponseDialogListDifference) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Messaging/DialogListDifference"
+            body: "*"
+        };
+    }
+
+    /// Load last messages of the given conversations
+    rpc GetLastConversationMessages (RequestGetLastConversationMessages) returns (ResponseGetLastConversationMessages) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Messaging/GetLastConversationMessages"
+            body: "*"
+        };
+    }
+
     /// deprecated
     rpc LoadArchived (RequestLoadArchived) returns (ResponseLoadArchived) {
         option (google.api.http) = {

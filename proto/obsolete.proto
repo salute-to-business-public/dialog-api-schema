@@ -6,6 +6,7 @@ import "scalapb/scalapb.proto";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
+import "sequence_and_updates.proto";
 
 option (scalapb.options) = {
     package_name: "im.dlg.grpc.services"
@@ -90,6 +91,7 @@ message ObsoleteWeakUpdateBox {
   message ObsoleteUpdateGroupOnline {
     int32 groupId = 1;
     int32 count   = 2;
+    int64 clock   = 3;
   }
 
   message ObsoleteUpdateEventBusMessage {
@@ -167,6 +169,8 @@ message ObsoleteWeakUpdateBox {
     ObsoleteUpdateCallHandled callHandled                          = 11;
     ObsoleteUpdateCallDisposed callDisposed                        = 12;
   }
+
+  UpdateSeqUpdate update_any = 13;
 }
 
 // message EventBusUpdate {

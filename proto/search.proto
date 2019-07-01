@@ -54,6 +54,10 @@ message SimpleUserProfileSearchCondition {
     string query_string = 1;
 }
 
+message SimpleGroupSearchCondition {
+    string query_string = 1;
+}
+
 message criterion {
 }
 
@@ -63,6 +67,7 @@ message SimpleSearchCondition {
         SimpleMessageSearchCondition message = 2;
         SimplePeerSearchCondition peer = 3;
         SimpleUserProfileSearchCondition userProfile = 4;
+        SimpleGroupSearchCondition group = 5;
     }
 }
 
@@ -228,6 +233,7 @@ message RequestLoadUserSearchByPredicatesResults {
     int32 group_id = 2 [(dlg).log = "visible"];
     google.protobuf.StringValue query = 3 [(dlg).log = "visible"];
     int32 limit = 4 [(dlg).log = "visible"];
+    repeated string required_fields = 5 [(dlg).log = "visible"];
 }
 
 message UserMatch {
@@ -251,6 +257,15 @@ message RequestLoadUserSearchByPredicatesCount {
 message ResponseLoadUserSearchByPredicatesCount {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
     int32 result_count = 1 [(dlg).log = "visible"];
+}
+
+message RequestGetRecommendations {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+}
+
+message ResponseGetRecommendations {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated OutPeer peers = 1;
 }
 
 
@@ -316,4 +331,10 @@ service Search {
         };
     }
 
+    rpc GetRecommendations (RequestGetRecommendations) returns (ResponseGetRecommendations) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/GetRecommendations"
+            body: "*"
+        };
+    }
 }

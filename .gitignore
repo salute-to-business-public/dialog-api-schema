@@ -3,16 +3,12 @@ target/
 project/target/
 scalafmt/
 http_gateway/
-python/
+python2/
+python3/
 .idea
 .gradle/
 build/
-gradle.properties
-
-# PHP
 /php/
 /vendor/
-
-# JS
 /js/
 node_modules/
