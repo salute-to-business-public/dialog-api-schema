@@ -3,6 +3,7 @@ syntax = "proto3";
 package dialog;
 
 
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "google/api/annotations.proto";
 import "definitions.proto";
@@ -117,6 +118,22 @@ message UpdateGroupOnline {
     int32 count = 2 [(dlg).log="visible"];
 }
 
+// Request for last user online timestamp
+message RequestGetUserLastPresence {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    UserOutPeer user_out_peer = 1 [(dlg).log="visible"];
+}
+
+// Response for RequestGetUserLastPresence
+message ResponseUserLastPresence {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    message UserNotFoundError {}
+    oneof payload {
+        google.protobuf.Timestamp last_online_at = 1;
+        UserNotFoundError not_found_error = 2;
+    }
+}
+
 service TypingAndOnline {
     rpc Typing (RequestTyping) returns (ResponseVoid) {
         option (google.api.http) = {
@@ -145,6 +162,12 @@ service TypingAndOnline {
     rpc RestoreNotifications (RequestRestoreNotifications) returns (ResponseVoid) {
         option (google.api.http) = {
             post: "/v1/grpc/TypingAndOnline/RestoreNotifications"
+            body: "*"
+        };
+    }
+    rpc GetUserLastPresence (RequestGetUserLastPresence) returns (ResponseUserLastPresence) {
+        option (google.api.http) = {
+            post: "/v1/grpc/TypingAndOnline/GetUserLastPresence"
             body: "*"
         };
     }
