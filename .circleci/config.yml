@@ -90,6 +90,7 @@ jobs:
         - run:
             name: Make Python 3 bindings
             command: |
+                export GOPATH=$HOME/.go_project
                 pyenv global 3.7.0
                 make python3
         - run:
