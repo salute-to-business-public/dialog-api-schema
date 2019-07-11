@@ -138,9 +138,9 @@ message UpdateSeqUpdate {
 
       UpdateUser updateUser = 94;
       UpdateFeatureFlagChanged updateFeatureFlagChanged = 95;
-
       UpdateThreadCreated updateThreadCreated = 96;
       UpdateThreadLifted updateThreadLifted = 97;
+      UpdateGroup updateGroup = 98;
     }
 }
 
