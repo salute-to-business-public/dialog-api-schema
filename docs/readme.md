@@ -1,5 +1,5 @@
 # Protocol Documentation
-<a name="top"/>
+<a name="top"></a>
 
 ## Table of Contents
 
@@ -9,6 +9,7 @@
     - [ForceReloadDialogs](#dialog.ForceReloadDialogs)
     - [ForceReloadField](#dialog.ForceReloadField)
     - [ForceReloadHistory](#dialog.ForceReloadHistory)
+    - [RequestChangePassword](#dialog.RequestChangePassword)
     - [RequestCompleteOAuth2](#dialog.RequestCompleteOAuth2)
     - [RequestGetAuthSessions](#dialog.RequestGetAuthSessions)
     - [RequestGetOAuth2Params](#dialog.RequestGetOAuth2Params)
@@ -38,6 +39,7 @@
     - [ResponseStartUsernameAuth](#dialog.ResponseStartUsernameAuth)
     - [UpdateForceReloadState](#dialog.UpdateForceReloadState)
   
+    - [AuthExtraInfoType](#dialog.AuthExtraInfoType)
     - [AuthHolder](#dialog.AuthHolder)
     - [EmailActivationType](#dialog.EmailActivationType)
     - [PhoneActivationType](#dialog.PhoneActivationType)
@@ -46,11 +48,32 @@
     - [Authentication](#dialog.Authentication)
   
 
+- [clickroad.proto](#clickroad.proto)
+    - [RequestTrackEvent](#clickroad.RequestTrackEvent)
+    - [ResponseTrackEvent](#clickroad.ResponseTrackEvent)
+    - [TrackContext](#clickroad.TrackContext)
+    - [TrackContext.ContextEntry](#clickroad.TrackContext.ContextEntry)
+    - [TrackError](#clickroad.TrackError)
+    - [TrackEvent](#clickroad.TrackEvent)
+    - [TrackMetric](#clickroad.TrackMetric)
+    - [TrackScreenView](#clickroad.TrackScreenView)
+    - [TrackSocial](#clickroad.TrackSocial)
+    - [TrackTiming](#clickroad.TrackTiming)
+  
+  
+  
+    - [ClickRoad](#clickroad.ClickRoad)
+  
+
 - [config_sync.proto](#config_sync.proto)
+    - [FeatureFlag](#dialog.FeatureFlag)
     - [Parameter](#dialog.Parameter)
     - [RequestEditParameter](#dialog.RequestEditParameter)
+    - [RequestFeatureFlags](#dialog.RequestFeatureFlags)
     - [RequestGetParameters](#dialog.RequestGetParameters)
+    - [ResponseFeatureFlags](#dialog.ResponseFeatureFlags)
     - [ResponseGetParameters](#dialog.ResponseGetParameters)
+    - [UpdateFeatureFlagChanged](#dialog.UpdateFeatureFlagChanged)
     - [UpdateParameterChanged](#dialog.UpdateParameterChanged)
   
   
@@ -134,14 +157,24 @@
     - [EventBus](#dialog.EventBus)
   
 
+- [gateway_service.proto](#gateway_service.proto)
+    - [GetDifferenceCommand](#dialog.GetDifferenceCommand)
+    - [ServiceUpdate](#dialog.ServiceUpdate)
+  
+  
+  
+  
+
 - [groups.proto](#groups.proto)
     - [Group](#dialog.Group)
+    - [GroupData](#dialog.GroupData)
     - [GroupFull](#dialog.GroupFull)
     - [GroupMemberPermission](#dialog.GroupMemberPermission)
     - [Member](#dialog.Member)
     - [RequestCreateGroup](#dialog.RequestCreateGroup)
     - [RequestEditGroupAbout](#dialog.RequestEditGroupAbout)
     - [RequestEditGroupAvatar](#dialog.RequestEditGroupAvatar)
+    - [RequestEditGroupBasePermissions](#dialog.RequestEditGroupBasePermissions)
     - [RequestEditGroupTitle](#dialog.RequestEditGroupTitle)
     - [RequestEditGroupTopic](#dialog.RequestEditGroupTopic)
     - [RequestGetGroupInviteUrl](#dialog.RequestGetGroupInviteUrl)
@@ -169,10 +202,12 @@
     - [ResponseLoadFullGroups](#dialog.ResponseLoadFullGroups)
     - [ResponseLoadMembers](#dialog.ResponseLoadMembers)
     - [ResponseMakeUserAdminObsolete](#dialog.ResponseMakeUserAdminObsolete)
+    - [UpdateGroup](#dialog.UpdateGroup)
     - [UpdateGroupAboutChanged](#dialog.UpdateGroupAboutChanged)
     - [UpdateGroupAboutChangedObsolete](#dialog.UpdateGroupAboutChangedObsolete)
     - [UpdateGroupAvatarChanged](#dialog.UpdateGroupAvatarChanged)
     - [UpdateGroupAvatarChangedObsolete](#dialog.UpdateGroupAvatarChangedObsolete)
+    - [UpdateGroupBasePermissionsChanged](#dialog.UpdateGroupBasePermissionsChanged)
     - [UpdateGroupCanInviteMembersChanged](#dialog.UpdateGroupCanInviteMembersChanged)
     - [UpdateGroupCanSendMessagesChanged](#dialog.UpdateGroupCanSendMessagesChanged)
     - [UpdateGroupCanViewMembersChanged](#dialog.UpdateGroupCanViewMembersChanged)
@@ -249,8 +284,10 @@
     - [BinaryMessage](#dialog.BinaryMessage)
     - [DeletedMessage](#dialog.DeletedMessage)
     - [Dialog](#dialog.Dialog)
+    - [DialogData](#dialog.DialogData)
     - [DialogGroup](#dialog.DialogGroup)
     - [DialogIndex](#dialog.DialogIndex)
+    - [DialogListEntry](#dialog.DialogListEntry)
     - [DialogShort](#dialog.DialogShort)
     - [DocumentEx](#dialog.DocumentEx)
     - [DocumentExPhoto](#dialog.DocumentExPhoto)
@@ -282,9 +319,11 @@
     - [RequestClearChat](#dialog.RequestClearChat)
     - [RequestDeleteChat](#dialog.RequestDeleteChat)
     - [RequestDeleteMessageObsolete](#dialog.RequestDeleteMessageObsolete)
+    - [RequestDialogListDifference](#dialog.RequestDialogListDifference)
     - [RequestDoInteractiveMediaAction](#dialog.RequestDoInteractiveMediaAction)
     - [RequestFavouriteDialog](#dialog.RequestFavouriteDialog)
     - [RequestFetchDialogIndex](#dialog.RequestFetchDialogIndex)
+    - [RequestGetLastConversationMessages](#dialog.RequestGetLastConversationMessages)
     - [RequestHideDialog](#dialog.RequestHideDialog)
     - [RequestLoadArchived](#dialog.RequestLoadArchived)
     - [RequestLoadDialogs](#dialog.RequestLoadDialogs)
@@ -301,13 +340,18 @@
     - [RequestUnfavouriteDialog](#dialog.RequestUnfavouriteDialog)
     - [RequestUnpinMessage](#dialog.RequestUnpinMessage)
     - [RequestUpdateMessage](#dialog.RequestUpdateMessage)
+    - [ResponseDialogListDifference](#dialog.ResponseDialogListDifference)
     - [ResponseDialogsOrder](#dialog.ResponseDialogsOrder)
     - [ResponseFetchDialogIndex](#dialog.ResponseFetchDialogIndex)
+    - [ResponseGetLastConversationMessages](#dialog.ResponseGetLastConversationMessages)
+    - [ResponseGetLastConversationMessages.Pair](#dialog.ResponseGetLastConversationMessages.Pair)
     - [ResponseLoadArchived](#dialog.ResponseLoadArchived)
     - [ResponseLoadDialogs](#dialog.ResponseLoadDialogs)
     - [ResponseLoadGroupedDialogs](#dialog.ResponseLoadGroupedDialogs)
     - [ResponseLoadHistory](#dialog.ResponseLoadHistory)
     - [ResponseReactionsResponse](#dialog.ResponseReactionsResponse)
+    - [ResponseSendMessage](#dialog.ResponseSendMessage)
+    - [SearchPredicate](#dialog.SearchPredicate)
     - [ServiceEx](#dialog.ServiceEx)
     - [ServiceExChangedAbout](#dialog.ServiceExChangedAbout)
     - [ServiceExChangedAvatar](#dialog.ServiceExChangedAvatar)
@@ -343,12 +387,16 @@
     - [UpdateMessage](#dialog.UpdateMessage)
     - [UpdateMessageContentChanged](#dialog.UpdateMessageContentChanged)
     - [UpdateMessageDelete](#dialog.UpdateMessageDelete)
+    - [UpdateMessageEditRejectedByHook](#dialog.UpdateMessageEditRejectedByHook)
     - [UpdateMessageRead](#dialog.UpdateMessageRead)
     - [UpdateMessageReadByMe](#dialog.UpdateMessageReadByMe)
     - [UpdateMessageReceived](#dialog.UpdateMessageReceived)
+    - [UpdateMessageRejectedByHook](#dialog.UpdateMessageRejectedByHook)
     - [UpdateMessageSent](#dialog.UpdateMessageSent)
     - [UpdatePinnedMessagesChanged](#dialog.UpdatePinnedMessagesChanged)
     - [UpdateReactionsUpdate](#dialog.UpdateReactionsUpdate)
+    - [UpdateThreadCreated](#dialog.UpdateThreadCreated)
+    - [UpdateThreadLifted](#dialog.UpdateThreadLifted)
     - [WebpageMedia](#dialog.WebpageMedia)
   
     - [DialogsFilter](#dialog.DialogsFilter)
@@ -381,6 +429,7 @@
     - [UpdateConfig](#dialog.UpdateConfig)
   
     - [RtcpMuxPolicy](#dialog.RtcpMuxPolicy)
+    - [SupportedServerMethodsType](#dialog.SupportedServerMethodsType)
     - [UpdateOptimization](#dialog.UpdateOptimization)
   
   
@@ -401,6 +450,7 @@
     - [ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDisposed](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDisposed)
     - [ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusMessage](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusMessage)
     - [ObsoleteWeakUpdateBox.ObsoleteUpdateForceReloadState](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateForceReloadState)
+    - [ObsoleteWeakUpdateBox.ObsoleteUpdateForceReloadState.ObsoleteForceReloadField](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateForceReloadState.ObsoleteForceReloadField)
     - [ObsoleteWeakUpdateBox.ObsoleteUpdateGroupOnline](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateGroupOnline)
     - [ObsoleteWeakUpdateBox.ObsoleteUpdateIncomingCall](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateIncomingCall)
     - [ObsoleteWeakUpdateBox.ObsoleteUpdateTyping](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateTyping)
@@ -411,6 +461,7 @@
   
     - [ObsoletePeer.ObsoletePeerType](#dialog.ObsoletePeer.ObsoletePeerType)
     - [ObsoleteTypingType](#dialog.ObsoleteTypingType)
+    - [ObsoleteWeakUpdateBox.ObsoleteUpdateCallDisposed.ObsoleteDisposalReason](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateCallDisposed.ObsoleteDisposalReason)
   
   
     - [Obsolete](#dialog.Obsolete)
@@ -489,6 +540,7 @@
     - [RequestRegisterDevice](#dialog.RequestRegisterDevice)
     - [ResponseDeviceRequest](#dialog.ResponseDeviceRequest)
   
+    - [AuthorizationMethod](#dialog.AuthorizationMethod)
   
   
     - [Registration](#dialog.Registration)
@@ -498,12 +550,20 @@
     - [MessageSearchItem](#dialog.MessageSearchItem)
     - [MessageSearchResult](#dialog.MessageSearchResult)
     - [PeerSearchResult](#dialog.PeerSearchResult)
+    - [RequestFieldAutocomplete](#dialog.RequestFieldAutocomplete)
+    - [RequestGetRecommendations](#dialog.RequestGetRecommendations)
+    - [RequestLoadUserSearchByPredicatesCount](#dialog.RequestLoadUserSearchByPredicatesCount)
+    - [RequestLoadUserSearchByPredicatesResults](#dialog.RequestLoadUserSearchByPredicatesResults)
     - [RequestMessageSearch](#dialog.RequestMessageSearch)
     - [RequestMessageSearchMore](#dialog.RequestMessageSearchMore)
     - [RequestPeerSearch](#dialog.RequestPeerSearch)
     - [RequestResolvePeer](#dialog.RequestResolvePeer)
     - [RequestSimpleSearch](#dialog.RequestSimpleSearch)
     - [RequestSimpleSearchMore](#dialog.RequestSimpleSearchMore)
+    - [ResponseFieldAutocomplete](#dialog.ResponseFieldAutocomplete)
+    - [ResponseGetRecommendations](#dialog.ResponseGetRecommendations)
+    - [ResponseLoadUserSearchByPredicatesCount](#dialog.ResponseLoadUserSearchByPredicatesCount)
+    - [ResponseLoadUserSearchByPredicatesResults](#dialog.ResponseLoadUserSearchByPredicatesResults)
     - [ResponseMessageSearchResponse](#dialog.ResponseMessageSearchResponse)
     - [ResponsePeerSearch](#dialog.ResponsePeerSearch)
     - [ResponseResolvePeer](#dialog.ResponseResolvePeer)
@@ -516,10 +576,12 @@
     - [SearchPieceText](#dialog.SearchPieceText)
     - [SearchSenderIdConfition](#dialog.SearchSenderIdConfition)
     - [SimpleContactSearchCondition](#dialog.SimpleContactSearchCondition)
+    - [SimpleGroupSearchCondition](#dialog.SimpleGroupSearchCondition)
     - [SimpleMessageSearchCondition](#dialog.SimpleMessageSearchCondition)
     - [SimplePeerSearchCondition](#dialog.SimplePeerSearchCondition)
     - [SimpleSearchCondition](#dialog.SimpleSearchCondition)
     - [SimpleUserProfileSearchCondition](#dialog.SimpleUserProfileSearchCondition)
+    - [UserMatch](#dialog.UserMatch)
     - [criterion](#dialog.criterion)
   
     - [SearchContentType](#dialog.SearchContentType)
@@ -613,12 +675,31 @@
     - [Stickers](#dialog.Stickers)
   
 
+- [threads.proto](#threads.proto)
+    - [RequestCreateThread](#dialog.RequestCreateThread)
+    - [RequestJoinThread](#dialog.RequestJoinThread)
+    - [RequestLiftThread](#dialog.RequestLiftThread)
+    - [RequestLoadGroupThreads](#dialog.RequestLoadGroupThreads)
+    - [ResponseCreateThread](#dialog.ResponseCreateThread)
+    - [ResponseLiftThread](#dialog.ResponseLiftThread)
+    - [ResponseLoadGroupThreads](#dialog.ResponseLoadGroupThreads)
+    - [ThreadReference](#dialog.ThreadReference)
+  
+    - [RequestCreateThread.JoinPolicy](#dialog.RequestCreateThread.JoinPolicy)
+  
+  
+    - [Threads](#dialog.Threads)
+  
+
 - [typing_and_online.proto](#typing_and_online.proto)
+    - [RequestGetUserLastPresence](#dialog.RequestGetUserLastPresence)
     - [RequestPauseNotifications](#dialog.RequestPauseNotifications)
     - [RequestRestoreNotifications](#dialog.RequestRestoreNotifications)
     - [RequestSetOnline](#dialog.RequestSetOnline)
     - [RequestStopTyping](#dialog.RequestStopTyping)
     - [RequestTyping](#dialog.RequestTyping)
+    - [ResponseUserLastPresence](#dialog.ResponseUserLastPresence)
+    - [ResponseUserLastPresence.UserNotFoundError](#dialog.ResponseUserLastPresence.UserNotFoundError)
     - [UpdateGroupOnline](#dialog.UpdateGroupOnline)
     - [UpdatePauseNotifications](#dialog.UpdatePauseNotifications)
     - [UpdateRestoreNotifications](#dialog.UpdateRestoreNotifications)
@@ -641,7 +722,11 @@
     - [FullUser](#dialog.FullUser)
     - [RequestEditUserLocalName](#dialog.RequestEditUserLocalName)
     - [RequestLoadFullUsers](#dialog.RequestLoadFullUsers)
+    - [RequestLoadUserData](#dialog.RequestLoadUserData)
+    - [RequestLoadUserData.Claim](#dialog.RequestLoadUserData.Claim)
     - [ResponseLoadFullUsers](#dialog.ResponseLoadFullUsers)
+    - [ResponseLoadUserData](#dialog.ResponseLoadUserData)
+    - [UpdateUser](#dialog.UpdateUser)
     - [UpdateUserAboutChanged](#dialog.UpdateUserAboutChanged)
     - [UpdateUserAvatarChanged](#dialog.UpdateUserAvatarChanged)
     - [UpdateUserBotCommandsChanged](#dialog.UpdateUserBotCommandsChanged)
@@ -657,10 +742,14 @@
     - [UpdateUserStatusChanged](#dialog.UpdateUserStatusChanged)
     - [UpdateUserTimeZoneChanged](#dialog.UpdateUserTimeZoneChanged)
     - [User](#dialog.User)
+    - [UserData](#dialog.UserData)
+    - [UserData.Ext](#dialog.UserData.Ext)
+    - [UserProfile](#dialog.UserProfile)
     - [UserStatus](#dialog.UserStatus)
   
     - [ContactType](#dialog.ContactType)
     - [Sex](#dialog.Sex)
+    - [UserData.Lifecycle](#dialog.UserData.Lifecycle)
     - [UserStatusType](#dialog.UserStatusType)
   
   
@@ -722,14 +811,14 @@
 
 
 
-<a name="authentication.proto"/>
+<a name="authentication.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## authentication.proto
 
 
 
-<a name="dialog.AuthSession"/>
+<a name="dialog.AuthSession"></a>
 
 ### AuthSession
 Authentication session
@@ -752,7 +841,7 @@ Authentication session
 
 
 
-<a name="dialog.ForceReloadContacts"/>
+<a name="dialog.ForceReloadContacts"></a>
 
 ### ForceReloadContacts
 Tells the client to clear contacts and load them again
@@ -762,7 +851,7 @@ Tells the client to clear contacts and load them again
 
 
 
-<a name="dialog.ForceReloadDialogs"/>
+<a name="dialog.ForceReloadDialogs"></a>
 
 ### ForceReloadDialogs
 Tells the client to clear dialogs and load them again
@@ -772,7 +861,7 @@ Tells the client to clear dialogs and load them again
 
 
 
-<a name="dialog.ForceReloadField"/>
+<a name="dialog.ForceReloadField"></a>
 
 ### ForceReloadField
 Notification to force client to reload some entities from server
@@ -790,7 +879,7 @@ Just for old clients. Should be ignore.
 
 
 
-<a name="dialog.ForceReloadHistory"/>
+<a name="dialog.ForceReloadHistory"></a>
 
 ### ForceReloadHistory
 Tells the client to clear the specified conversation and load it again
@@ -806,7 +895,23 @@ peer the peer whose history should be reloaded
 
 
 
-<a name="dialog.RequestCompleteOAuth2"/>
+<a name="dialog.RequestChangePassword"></a>
+
+### RequestChangePassword
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| old_password | [string](#string) |  |  |
+| new_password | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestCompleteOAuth2"></a>
 
 ### RequestCompleteOAuth2
 Complete OAuth2 Authentication - deprecated
@@ -822,7 +927,7 @@ Complete OAuth2 Authentication - deprecated
 
 
 
-<a name="dialog.RequestGetAuthSessions"/>
+<a name="dialog.RequestGetAuthSessions"></a>
 
 ### RequestGetAuthSessions
 Getting of all active user&#39;s authentication sessions
@@ -832,7 +937,7 @@ Getting of all active user&#39;s authentication sessions
 
 
 
-<a name="dialog.RequestGetOAuth2Params"/>
+<a name="dialog.RequestGetOAuth2Params"></a>
 
 ### RequestGetOAuth2Params
 Loading OAuth2 Parameters - deprecated
@@ -848,7 +953,7 @@ Loading OAuth2 Parameters - deprecated
 
 
 
-<a name="dialog.RequestResendCode"/>
+<a name="dialog.RequestResendCode"></a>
 
 ### RequestResendCode
 Performs code resend
@@ -863,7 +968,7 @@ Performs code resend
 
 
 
-<a name="dialog.RequestSendAuthCallObsolete"/>
+<a name="dialog.RequestSendAuthCallObsolete"></a>
 
 ### RequestSendAuthCallObsolete
 Requesting Phone activation
@@ -881,7 +986,7 @@ Requesting Phone activation
 
 
 
-<a name="dialog.RequestSendAuthCodeObsolete"/>
+<a name="dialog.RequestSendAuthCodeObsolete"></a>
 
 ### RequestSendAuthCodeObsolete
 Sending SMS with activation code
@@ -898,7 +1003,7 @@ Sending SMS with activation code
 
 
 
-<a name="dialog.RequestSendCodeByPhoneCall"/>
+<a name="dialog.RequestSendCodeByPhoneCall"></a>
 
 ### RequestSendCodeByPhoneCall
 Dial phone and dictate auth code
@@ -913,7 +1018,7 @@ Dial phone and dictate auth code
 
 
 
-<a name="dialog.RequestSignInObsolete"/>
+<a name="dialog.RequestSignInObsolete"></a>
 
 ### RequestSignInObsolete
 Performing user signin - deprecated
@@ -934,7 +1039,7 @@ Performing user signin - deprecated
 
 
 
-<a name="dialog.RequestSignOut"/>
+<a name="dialog.RequestSignOut"></a>
 
 ### RequestSignOut
 SignOut current session
@@ -944,7 +1049,7 @@ SignOut current session
 
 
 
-<a name="dialog.RequestSignUp"/>
+<a name="dialog.RequestSignUp"></a>
 
 ### RequestSignUp
 Perform user SignUp
@@ -962,7 +1067,7 @@ Perform user SignUp
 
 
 
-<a name="dialog.RequestSignUpObsolete"/>
+<a name="dialog.RequestSignUpObsolete"></a>
 
 ### RequestSignUpObsolete
 Performing user signup. If user perform signup on already registered user it just override previous
@@ -986,7 +1091,7 @@ profile information
 
 
 
-<a name="dialog.RequestStartAnonymousAuth"/>
+<a name="dialog.RequestStartAnonymousAuth"></a>
 
 ### RequestStartAnonymousAuth
 Starting Anonymous login - deprecated
@@ -1007,7 +1112,7 @@ Starting Anonymous login - deprecated
 
 
 
-<a name="dialog.RequestStartEmailAuth"/>
+<a name="dialog.RequestStartEmailAuth"></a>
 
 ### RequestStartEmailAuth
 Start EMail Activation
@@ -1028,7 +1133,7 @@ Start EMail Activation
 
 
 
-<a name="dialog.RequestStartPhoneAuth"/>
+<a name="dialog.RequestStartPhoneAuth"></a>
 
 ### RequestStartPhoneAuth
 Start Phone Activation
@@ -1049,7 +1154,7 @@ Start Phone Activation
 
 
 
-<a name="dialog.RequestStartTokenAuth"/>
+<a name="dialog.RequestStartTokenAuth"></a>
 
 ### RequestStartTokenAuth
 Starting token-based login - to authorize bot
@@ -1070,7 +1175,7 @@ Starting token-based login - to authorize bot
 
 
 
-<a name="dialog.RequestStartUsernameAuth"/>
+<a name="dialog.RequestStartUsernameAuth"></a>
 
 ### RequestStartUsernameAuth
 Starting Login Authentication
@@ -1091,7 +1196,7 @@ Starting Login Authentication
 
 
 
-<a name="dialog.RequestTerminateAllSessions"/>
+<a name="dialog.RequestTerminateAllSessions"></a>
 
 ### RequestTerminateAllSessions
 SignOut on all exept current sessions
@@ -1101,7 +1206,7 @@ SignOut on all exept current sessions
 
 
 
-<a name="dialog.RequestTerminateSession"/>
+<a name="dialog.RequestTerminateSession"></a>
 
 ### RequestTerminateSession
 SignOut on specified user&#39;s session
@@ -1116,7 +1221,7 @@ SignOut on specified user&#39;s session
 
 
 
-<a name="dialog.RequestValidateCode"/>
+<a name="dialog.RequestValidateCode"></a>
 
 ### RequestValidateCode
 Performing user sign in.
@@ -1132,7 +1237,7 @@ Performing user sign in.
 
 
 
-<a name="dialog.RequestValidatePassword"/>
+<a name="dialog.RequestValidatePassword"></a>
 
 ### RequestValidatePassword
 Validation of account password
@@ -1148,7 +1253,7 @@ Validation of account password
 
 
 
-<a name="dialog.ResponseAuth"/>
+<a name="dialog.ResponseAuth"></a>
 
 ### ResponseAuth
 Authentication result
@@ -1159,13 +1264,14 @@ Authentication result
 | user | [User](#dialog.User) |  | Registered/authorized user |
 | config | [Config](#dialog.Config) |  | Config for that user |
 | config_hash | [google.protobuf.Int64Value](#google.protobuf.Int64Value) |  | Hash of config to later usage |
+| extra_info | [AuthExtraInfoType](#dialog.AuthExtraInfoType) | repeated |  |
 
 
 
 
 
 
-<a name="dialog.ResponseGetAuthSessions"/>
+<a name="dialog.ResponseGetAuthSessions"></a>
 
 ### ResponseGetAuthSessions
 
@@ -1180,7 +1286,7 @@ Authentication result
 
 
 
-<a name="dialog.ResponseGetOAuth2Params"/>
+<a name="dialog.ResponseGetOAuth2Params"></a>
 
 ### ResponseGetOAuth2Params
 Deprecated
@@ -1195,7 +1301,7 @@ Deprecated
 
 
 
-<a name="dialog.ResponseSendAuthCodeObsolete"/>
+<a name="dialog.ResponseSendAuthCodeObsolete"></a>
 
 ### ResponseSendAuthCodeObsolete
 
@@ -1211,7 +1317,7 @@ Deprecated
 
 
 
-<a name="dialog.ResponseStartEmailAuth"/>
+<a name="dialog.ResponseStartEmailAuth"></a>
 
 ### ResponseStartEmailAuth
 
@@ -1228,7 +1334,7 @@ Deprecated
 
 
 
-<a name="dialog.ResponseStartPhoneAuth"/>
+<a name="dialog.ResponseStartPhoneAuth"></a>
 
 ### ResponseStartPhoneAuth
 
@@ -1245,7 +1351,7 @@ Deprecated
 
 
 
-<a name="dialog.ResponseStartUsernameAuth"/>
+<a name="dialog.ResponseStartUsernameAuth"></a>
 
 ### ResponseStartUsernameAuth
 
@@ -1261,7 +1367,7 @@ Deprecated
 
 
 
-<a name="dialog.UpdateForceReloadState"/>
+<a name="dialog.UpdateForceReloadState"></a>
 
 ### UpdateForceReloadState
 This update is sent by the server to force a client to reload its data
@@ -1278,7 +1384,19 @@ This update is sent by the server to force a client to reload its data
  
 
 
-<a name="dialog.AuthHolder"/>
+<a name="dialog.AuthExtraInfoType"></a>
+
+### AuthExtraInfoType
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| NONE_EXTRA_INFO | 0 |  |
+| NEED_CHANGE_PASSWORD | 1 |  |
+
+
+
+<a name="dialog.AuthHolder"></a>
 
 ### AuthHolder
 Holder of session
@@ -1291,7 +1409,7 @@ Holder of session
 
 
 
-<a name="dialog.EmailActivationType"/>
+<a name="dialog.EmailActivationType"></a>
 
 ### EmailActivationType
 
@@ -1305,7 +1423,7 @@ Holder of session
 
 
 
-<a name="dialog.PhoneActivationType"/>
+<a name="dialog.PhoneActivationType"></a>
 
 ### PhoneActivationType
 
@@ -1322,46 +1440,259 @@ Holder of session
  
 
 
-<a name="dialog.Authentication"/>
+<a name="dialog.Authentication"></a>
 
 ### Authentication
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| StartPhoneAuth | [RequestStartPhoneAuth](#dialog.RequestStartPhoneAuth) | [ResponseStartPhoneAuth](#dialog.RequestStartPhoneAuth) | Start authorization by phone |
-| SendCodeByPhoneCall | [RequestSendCodeByPhoneCall](#dialog.RequestSendCodeByPhoneCall) | [ResponseVoid](#dialog.RequestSendCodeByPhoneCall) | Resend code by transaction hash |
-| StartEmailAuth | [RequestStartEmailAuth](#dialog.RequestStartEmailAuth) | [ResponseStartEmailAuth](#dialog.RequestStartEmailAuth) | Start email authorization process |
-| StartAnonymousAuth | [RequestStartAnonymousAuth](#dialog.RequestStartAnonymousAuth) | [ResponseAuth](#dialog.RequestStartAnonymousAuth) | Deprecated |
-| StartTokenAuth | [RequestStartTokenAuth](#dialog.RequestStartTokenAuth) | [ResponseAuth](#dialog.RequestStartTokenAuth) | Start token auth authorization (actual for bots) |
-| StartUsernameAuth | [RequestStartUsernameAuth](#dialog.RequestStartUsernameAuth) | [ResponseStartUsernameAuth](#dialog.RequestStartUsernameAuth) | Start login/password authorization process |
-| ValidateCode | [RequestValidateCode](#dialog.RequestValidateCode) | [ResponseAuth](#dialog.RequestValidateCode) | Validate code received by phone or email Returns error if user does not exist |
-| ResendCode | [RequestResendCode](#dialog.RequestResendCode) | [ResponseVoid](#dialog.RequestResendCode) | Resend code if you don&#39;t receive it with first attempt |
-| ValidatePassword | [RequestValidatePassword](#dialog.RequestValidatePassword) | [ResponseAuth](#dialog.RequestValidatePassword) | Validate your passwword |
-| GetOAuth2Params | [RequestGetOAuth2Params](#dialog.RequestGetOAuth2Params) | [ResponseGetOAuth2Params](#dialog.RequestGetOAuth2Params) | Deprecated |
-| CompleteOAuth2 | [RequestCompleteOAuth2](#dialog.RequestCompleteOAuth2) | [ResponseAuth](#dialog.RequestCompleteOAuth2) | Deprecated |
-| SignUp | [RequestSignUp](#dialog.RequestSignUp) | [ResponseAuth](#dialog.RequestSignUp) | Sign up existed user |
-| GetAuthSessions | [RequestGetAuthSessions](#dialog.RequestGetAuthSessions) | [ResponseGetAuthSessions](#dialog.RequestGetAuthSessions) | Returns all authorized user&#39;s sessions |
-| TerminateSession | [RequestTerminateSession](#dialog.RequestTerminateSession) | [ResponseVoid](#dialog.RequestTerminateSession) | Deprecated. Does not produce any effect. |
-| TerminateAllSessions | [RequestTerminateAllSessions](#dialog.RequestTerminateAllSessions) | [ResponseVoid](#dialog.RequestTerminateAllSessions) | Log out user |
-| SignOut | [RequestSignOut](#dialog.RequestSignOut) | [ResponseVoid](#dialog.RequestSignOut) | Log out current session |
-| SignInObsolete | [RequestSignInObsolete](#dialog.RequestSignInObsolete) | [ResponseAuth](#dialog.RequestSignInObsolete) | Deprecated |
-| SignUpObsolete | [RequestSignUpObsolete](#dialog.RequestSignUpObsolete) | [ResponseAuth](#dialog.RequestSignUpObsolete) | Deprecated |
-| SendAuthCodeObsolete | [RequestSendAuthCodeObsolete](#dialog.RequestSendAuthCodeObsolete) | [ResponseSendAuthCodeObsolete](#dialog.RequestSendAuthCodeObsolete) | Deprecated |
-| SendAuthCallObsolete | [RequestSendAuthCallObsolete](#dialog.RequestSendAuthCallObsolete) | [ResponseVoid](#dialog.RequestSendAuthCallObsolete) | Deprecated |
+| StartPhoneAuth | [RequestStartPhoneAuth](#dialog.RequestStartPhoneAuth) | [ResponseStartPhoneAuth](#dialog.ResponseStartPhoneAuth) | Start authorization by phone |
+| SendCodeByPhoneCall | [RequestSendCodeByPhoneCall](#dialog.RequestSendCodeByPhoneCall) | [ResponseVoid](#dialog.ResponseVoid) | Resend code by transaction hash |
+| StartEmailAuth | [RequestStartEmailAuth](#dialog.RequestStartEmailAuth) | [ResponseStartEmailAuth](#dialog.ResponseStartEmailAuth) | Start email authorization process |
+| StartAnonymousAuth | [RequestStartAnonymousAuth](#dialog.RequestStartAnonymousAuth) | [ResponseAuth](#dialog.ResponseAuth) | Deprecated |
+| StartTokenAuth | [RequestStartTokenAuth](#dialog.RequestStartTokenAuth) | [ResponseAuth](#dialog.ResponseAuth) | Start token auth authorization (actual for bots) |
+| StartUsernameAuth | [RequestStartUsernameAuth](#dialog.RequestStartUsernameAuth) | [ResponseStartUsernameAuth](#dialog.ResponseStartUsernameAuth) | Start login/password authorization process |
+| ValidateCode | [RequestValidateCode](#dialog.RequestValidateCode) | [ResponseAuth](#dialog.ResponseAuth) | Validate code received by phone or email Returns error if user does not exist |
+| ResendCode | [RequestResendCode](#dialog.RequestResendCode) | [ResponseVoid](#dialog.ResponseVoid) | Resend code if you don&#39;t receive it with first attempt |
+| ValidatePassword | [RequestValidatePassword](#dialog.RequestValidatePassword) | [ResponseAuth](#dialog.ResponseAuth) | Validate your passwword |
+| GetOAuth2Params | [RequestGetOAuth2Params](#dialog.RequestGetOAuth2Params) | [ResponseGetOAuth2Params](#dialog.ResponseGetOAuth2Params) | Deprecated |
+| CompleteOAuth2 | [RequestCompleteOAuth2](#dialog.RequestCompleteOAuth2) | [ResponseAuth](#dialog.ResponseAuth) | Deprecated |
+| SignUp | [RequestSignUp](#dialog.RequestSignUp) | [ResponseAuth](#dialog.ResponseAuth) | Sign up existed user |
+| GetAuthSessions | [RequestGetAuthSessions](#dialog.RequestGetAuthSessions) | [ResponseGetAuthSessions](#dialog.ResponseGetAuthSessions) | Returns all authorized user&#39;s sessions |
+| TerminateSession | [RequestTerminateSession](#dialog.RequestTerminateSession) | [ResponseVoid](#dialog.ResponseVoid) | Deprecated. Does not produce any effect. |
+| TerminateAllSessions | [RequestTerminateAllSessions](#dialog.RequestTerminateAllSessions) | [ResponseVoid](#dialog.ResponseVoid) | Log out user |
+| SignOut | [RequestSignOut](#dialog.RequestSignOut) | [ResponseVoid](#dialog.ResponseVoid) | Log out current session |
+| SignInObsolete | [RequestSignInObsolete](#dialog.RequestSignInObsolete) | [ResponseAuth](#dialog.ResponseAuth) | Deprecated |
+| SignUpObsolete | [RequestSignUpObsolete](#dialog.RequestSignUpObsolete) | [ResponseAuth](#dialog.ResponseAuth) | Deprecated |
+| SendAuthCodeObsolete | [RequestSendAuthCodeObsolete](#dialog.RequestSendAuthCodeObsolete) | [ResponseSendAuthCodeObsolete](#dialog.ResponseSendAuthCodeObsolete) | Deprecated |
+| SendAuthCallObsolete | [RequestSendAuthCallObsolete](#dialog.RequestSendAuthCallObsolete) | [ResponseVoid](#dialog.ResponseVoid) | Deprecated |
+| ChangePassword | [RequestChangePassword](#dialog.RequestChangePassword) | [ResponseVoid](#dialog.ResponseVoid) |  |
 
  
 
 
 
-<a name="config_sync.proto"/>
+<a name="clickroad.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## clickroad.proto
+
+
+
+<a name="clickroad.RequestTrackEvent"></a>
+
+### RequestTrackEvent
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| cid | [string](#string) |  |  |
+| metrics | [TrackMetric](#clickroad.TrackMetric) | repeated |  |
+
+
+
+
+
+
+<a name="clickroad.ResponseTrackEvent"></a>
+
+### ResponseTrackEvent
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| cid | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="clickroad.TrackContext"></a>
+
+### TrackContext
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| context | [TrackContext.ContextEntry](#clickroad.TrackContext.ContextEntry) | repeated |  |
+
+
+
+
+
+
+<a name="clickroad.TrackContext.ContextEntry"></a>
+
+### TrackContext.ContextEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| value | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="clickroad.TrackError"></a>
+
+### TrackError
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| message | [string](#string) |  |  |
+| fatal | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="clickroad.TrackEvent"></a>
+
+### TrackEvent
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category | [string](#string) |  |  |
+| action | [string](#string) |  |  |
+| label | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+| value | [google.protobuf.DoubleValue](#google.protobuf.DoubleValue) |  |  |
+
+
+
+
+
+
+<a name="clickroad.TrackMetric"></a>
+
+### TrackMetric
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| time | [google.protobuf.Timestamp](#google.protobuf.Timestamp) |  |  |
+| context | [TrackContext](#clickroad.TrackContext) |  |  |
+| screen_view | [TrackScreenView](#clickroad.TrackScreenView) |  |  |
+| event | [TrackEvent](#clickroad.TrackEvent) |  |  |
+| timing | [TrackTiming](#clickroad.TrackTiming) |  |  |
+| social | [TrackSocial](#clickroad.TrackSocial) |  |  |
+| error | [TrackError](#clickroad.TrackError) |  |  |
+
+
+
+
+
+
+<a name="clickroad.TrackScreenView"></a>
+
+### TrackScreenView
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+| source | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+| url | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+
+
+
+
+
+
+<a name="clickroad.TrackSocial"></a>
+
+### TrackSocial
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| network | [string](#string) |  |  |
+| action | [string](#string) |  |  |
+| target | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="clickroad.TrackTiming"></a>
+
+### TrackTiming
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category | [string](#string) |  |  |
+| variable | [string](#string) |  |  |
+| time | [int64](#int64) |  |  |
+| label | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+<a name="clickroad.ClickRoad"></a>
+
+### ClickRoad
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| TrackEvent | [RequestTrackEvent](#clickroad.RequestTrackEvent) | [ResponseTrackEvent](#clickroad.ResponseTrackEvent) |  |
+
+ 
+
+
+
+<a name="config_sync.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## config_sync.proto
 
 
 
-<a name="dialog.Parameter"/>
+<a name="dialog.FeatureFlag"></a>
+
+### FeatureFlag
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| value | [string](#string) |  |  |
+| clock | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="dialog.Parameter"></a>
 
 ### Parameter
 Syncing Parameter
@@ -1377,7 +1708,7 @@ Syncing Parameter
 
 
 
-<a name="dialog.RequestEditParameter"/>
+<a name="dialog.RequestEditParameter"></a>
 
 ### RequestEditParameter
 Change parameter value
@@ -1393,7 +1724,22 @@ Change parameter value
 
 
 
-<a name="dialog.RequestGetParameters"/>
+<a name="dialog.RequestFeatureFlags"></a>
+
+### RequestFeatureFlags
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clock | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestGetParameters"></a>
 
 ### RequestGetParameters
 Getting Parameters
@@ -1403,7 +1749,22 @@ Getting Parameters
 
 
 
-<a name="dialog.ResponseGetParameters"/>
+<a name="dialog.ResponseFeatureFlags"></a>
+
+### ResponseFeatureFlags
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| feature_config | [FeatureFlag](#dialog.FeatureFlag) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.ResponseGetParameters"></a>
 
 ### ResponseGetParameters
 
@@ -1418,7 +1779,22 @@ Getting Parameters
 
 
 
-<a name="dialog.UpdateParameterChanged"/>
+<a name="dialog.UpdateFeatureFlagChanged"></a>
+
+### UpdateFeatureFlagChanged
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| feature | [FeatureFlag](#dialog.FeatureFlag) |  |  |
+
+
+
+
+
+
+<a name="dialog.UpdateParameterChanged"></a>
 
 ### UpdateParameterChanged
 Update about parameter change
@@ -1440,28 +1816,29 @@ Update about parameter change
  
 
 
-<a name="dialog.ConfigSync"/>
+<a name="dialog.ConfigSync"></a>
 
 ### ConfigSync
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetParameters | [RequestGetParameters](#dialog.RequestGetParameters) | [ResponseGetParameters](#dialog.RequestGetParameters) |  |
-| EditParameter | [RequestEditParameter](#dialog.RequestEditParameter) | [ResponseSeq](#dialog.RequestEditParameter) |  |
+| GetParameters | [RequestGetParameters](#dialog.RequestGetParameters) | [ResponseGetParameters](#dialog.ResponseGetParameters) |  |
+| EditParameter | [RequestEditParameter](#dialog.RequestEditParameter) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| FeatureFlags | [RequestFeatureFlags](#dialog.RequestFeatureFlags) | [ResponseFeatureFlags](#dialog.ResponseFeatureFlags) |  |
 
  
 
 
 
-<a name="contacts.proto"/>
+<a name="contacts.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## contacts.proto
 
 
 
-<a name="dialog.EmailToImport"/>
+<a name="dialog.EmailToImport"></a>
 
 ### EmailToImport
 Email for import
@@ -1477,7 +1854,7 @@ Email for import
 
 
 
-<a name="dialog.PhoneToImport"/>
+<a name="dialog.PhoneToImport"></a>
 
 ### PhoneToImport
 Phone for import
@@ -1493,7 +1870,7 @@ Phone for import
 
 
 
-<a name="dialog.RequestAddContact"/>
+<a name="dialog.RequestAddContact"></a>
 
 ### RequestAddContact
 Adding contact to contact list
@@ -1509,7 +1886,7 @@ Adding contact to contact list
 
 
 
-<a name="dialog.RequestDeferredImportContacts"/>
+<a name="dialog.RequestDeferredImportContacts"></a>
 
 ### RequestDeferredImportContacts
 Importing phones and emails for building contact list
@@ -1527,7 +1904,7 @@ Maximum amount of items for import per method call equals to 100.
 
 
 
-<a name="dialog.RequestGetContacts"/>
+<a name="dialog.RequestGetContacts"></a>
 
 ### RequestGetContacts
 Getting current contact list
@@ -1546,7 +1923,7 @@ If the contact list was not changed, isNotChanged will be true.
 
 
 
-<a name="dialog.RequestImportContacts"/>
+<a name="dialog.RequestImportContacts"></a>
 
 ### RequestImportContacts
 Importing phones and emails for building contact list
@@ -1564,7 +1941,7 @@ Maximum amount of items for import per method call equals to 100.
 
 
 
-<a name="dialog.RequestRemoveContact"/>
+<a name="dialog.RequestRemoveContact"></a>
 
 ### RequestRemoveContact
 Removing contact from contact list
@@ -1580,7 +1957,7 @@ Removing contact from contact list
 
 
 
-<a name="dialog.RequestSearchContacts"/>
+<a name="dialog.RequestSearchContacts"></a>
 
 ### RequestSearchContacts
 Searching contacts by user&#39;s query
@@ -1596,7 +1973,7 @@ Searching contacts by user&#39;s query
 
 
 
-<a name="dialog.ResponseDeferredImportContacts"/>
+<a name="dialog.ResponseDeferredImportContacts"></a>
 
 ### ResponseDeferredImportContacts
 
@@ -1611,7 +1988,7 @@ Searching contacts by user&#39;s query
 
 
 
-<a name="dialog.ResponseGetContacts"/>
+<a name="dialog.ResponseGetContacts"></a>
 
 ### ResponseGetContacts
 
@@ -1628,7 +2005,7 @@ Searching contacts by user&#39;s query
 
 
 
-<a name="dialog.ResponseImportContacts"/>
+<a name="dialog.ResponseImportContacts"></a>
 
 ### ResponseImportContacts
 
@@ -1646,7 +2023,7 @@ Searching contacts by user&#39;s query
 
 
 
-<a name="dialog.ResponseSearchContacts"/>
+<a name="dialog.ResponseSearchContacts"></a>
 
 ### ResponseSearchContacts
 
@@ -1662,7 +2039,7 @@ Searching contacts by user&#39;s query
 
 
 
-<a name="dialog.UpdateContactRegistered"/>
+<a name="dialog.UpdateContactRegistered"></a>
 
 ### UpdateContactRegistered
 Update about contact registration
@@ -1680,7 +2057,7 @@ Update about contact registration
 
 
 
-<a name="dialog.UpdateContactsAddTaskSuspended"/>
+<a name="dialog.UpdateContactsAddTaskSuspended"></a>
 
 ### UpdateContactsAddTaskSuspended
 Update about suspending task - normally it should be ignored
@@ -1695,7 +2072,7 @@ Update about suspending task - normally it should be ignored
 
 
 
-<a name="dialog.UpdateContactsAdded"/>
+<a name="dialog.UpdateContactsAdded"></a>
 
 ### UpdateContactsAdded
 Update about contacts added
@@ -1711,7 +2088,7 @@ Update about contacts added
 
 
 
-<a name="dialog.UpdateContactsRemoved"/>
+<a name="dialog.UpdateContactsRemoved"></a>
 
 ### UpdateContactsRemoved
 Update about contacts removed
@@ -1732,32 +2109,32 @@ Update about contacts removed
  
 
 
-<a name="dialog.Contacts"/>
+<a name="dialog.Contacts"></a>
 
 ### Contacts
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| ImportContacts | [RequestImportContacts](#dialog.RequestImportContacts) | [ResponseImportContacts](#dialog.RequestImportContacts) | Import contacts and wait while query is not finished |
-| DeferredImportContacts | [RequestDeferredImportContacts](#dialog.RequestDeferredImportContacts) | [ResponseDeferredImportContacts](#dialog.RequestDeferredImportContacts) | Same as above, but without waiting response |
-| GetContacts | [RequestGetContacts](#dialog.RequestGetContacts) | [ResponseGetContacts](#dialog.RequestGetContacts) |  |
-| RemoveContact | [RequestRemoveContact](#dialog.RequestRemoveContact) | [ResponseSeq](#dialog.RequestRemoveContact) |  |
-| AddContact | [RequestAddContact](#dialog.RequestAddContact) | [ResponseSeq](#dialog.RequestAddContact) |  |
-| SearchContacts | [RequestSearchContacts](#dialog.RequestSearchContacts) | [ResponseSearchContacts](#dialog.RequestSearchContacts) | Search contacts by query string |
+| ImportContacts | [RequestImportContacts](#dialog.RequestImportContacts) | [ResponseImportContacts](#dialog.ResponseImportContacts) | Import contacts and wait while query is not finished |
+| DeferredImportContacts | [RequestDeferredImportContacts](#dialog.RequestDeferredImportContacts) | [ResponseDeferredImportContacts](#dialog.ResponseDeferredImportContacts) | Same as above, but without waiting response |
+| GetContacts | [RequestGetContacts](#dialog.RequestGetContacts) | [ResponseGetContacts](#dialog.ResponseGetContacts) |  |
+| RemoveContact | [RequestRemoveContact](#dialog.RequestRemoveContact) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| AddContact | [RequestAddContact](#dialog.RequestAddContact) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| SearchContacts | [RequestSearchContacts](#dialog.RequestSearchContacts) | [ResponseSearchContacts](#dialog.ResponseSearchContacts) | Search contacts by query string |
 
  
 
 
 
-<a name="counters.proto"/>
+<a name="counters.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## counters.proto
 
 
 
-<a name="dialog.AppCounters"/>
+<a name="dialog.AppCounters"></a>
 
 ### AppCounters
 
@@ -1774,7 +2151,7 @@ Update about contacts removed
 
 
 
-<a name="dialog.UnreadDialog"/>
+<a name="dialog.UnreadDialog"></a>
 
 ### UnreadDialog
 Unread dialogs
@@ -1790,7 +2167,7 @@ Unread dialogs
 
 
 
-<a name="dialog.UpdateCountersChanged"/>
+<a name="dialog.UpdateCountersChanged"></a>
 
 ### UpdateCountersChanged
 deprecated
@@ -1815,14 +2192,14 @@ deprecated
 
 
 
-<a name="crypto.proto"/>
+<a name="crypto.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## crypto.proto
 
 
 
-<a name="dialog.RequestKeyExchange"/>
+<a name="dialog.RequestKeyExchange"></a>
 
 ### RequestKeyExchange
 Exchange public keys
@@ -1837,7 +2214,7 @@ Exchange public keys
 
 
 
-<a name="dialog.ResponseKeyExchange"/>
+<a name="dialog.ResponseKeyExchange"></a>
 
 ### ResponseKeyExchange
 
@@ -1858,27 +2235,27 @@ Exchange public keys
  
 
 
-<a name="dialog.Crypto"/>
+<a name="dialog.Crypto"></a>
 
 ### Crypto
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| KeyExchange | [RequestKeyExchange](#dialog.RequestKeyExchange) | [ResponseKeyExchange](#dialog.RequestKeyExchange) |  |
+| KeyExchange | [RequestKeyExchange](#dialog.RequestKeyExchange) | [ResponseKeyExchange](#dialog.ResponseKeyExchange) |  |
 
  
 
 
 
-<a name="definitions.proto"/>
+<a name="definitions.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## definitions.proto
 
 
 
-<a name="dialog.DataClock"/>
+<a name="dialog.DataClock"></a>
 
 ### DataClock
 server timestamp when state was created or modified
@@ -1893,7 +2270,7 @@ server timestamp when state was created or modified
 
 
 
-<a name="dialog.DialogOptions"/>
+<a name="dialog.DialogOptions"></a>
 
 ### DialogOptions
 
@@ -1908,7 +2285,7 @@ server timestamp when state was created or modified
 
 
 
-<a name="dialog.UUIDValue"/>
+<a name="dialog.UUIDValue"></a>
 
 ### UUIDValue
 
@@ -1928,7 +2305,7 @@ server timestamp when state was created or modified
  
 
 
-<a name="definitions.proto-extensions"/>
+<a name="definitions.proto-extensions"></a>
 
 ### File-level Extensions
 | Extension | Type | Base | Number | Description |
@@ -1941,14 +2318,14 @@ server timestamp when state was created or modified
 
 
 
-<a name="device_info.proto"/>
+<a name="device_info.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## device_info.proto
 
 
 
-<a name="dialog.ClientInfo"/>
+<a name="dialog.ClientInfo"></a>
 
 ### ClientInfo
 Generic client info, containing information about platform type, version, sdk etc
@@ -1969,7 +2346,7 @@ Generic client info, containing information about platform type, version, sdk et
 
 
 
-<a name="dialog.RequestNotifyAboutDeviceInfo"/>
+<a name="dialog.RequestNotifyAboutDeviceInfo"></a>
 
 ### RequestNotifyAboutDeviceInfo
 Notifying about device information
@@ -1987,7 +2364,7 @@ Notifying about device information
  
 
 
-<a name="dialog.PlatformType"/>
+<a name="dialog.PlatformType"></a>
 
 ### PlatformType
 
@@ -2007,27 +2384,27 @@ Notifying about device information
  
 
 
-<a name="dialog.DeviceInfo"/>
+<a name="dialog.DeviceInfo"></a>
 
 ### DeviceInfo
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| NotifyAboutDeviceInfo | [RequestNotifyAboutDeviceInfo](#dialog.RequestNotifyAboutDeviceInfo) | [ResponseVoid](#dialog.RequestNotifyAboutDeviceInfo) | Set info about current device |
+| NotifyAboutDeviceInfo | [RequestNotifyAboutDeviceInfo](#dialog.RequestNotifyAboutDeviceInfo) | [ResponseVoid](#dialog.ResponseVoid) | Set info about current device |
 
  
 
 
 
-<a name="event_bus.proto"/>
+<a name="event_bus.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## event_bus.proto
 
 
 
-<a name="dialog.RequestJoinEventBus"/>
+<a name="dialog.RequestJoinEventBus"></a>
 
 ### RequestJoinEventBus
 Joining Event Bus
@@ -2043,7 +2420,7 @@ Joining Event Bus
 
 
 
-<a name="dialog.RequestKeepAliveEventBus"/>
+<a name="dialog.RequestKeepAliveEventBus"></a>
 
 ### RequestKeepAliveEventBus
 Keep Alive Event Bus
@@ -2059,7 +2436,7 @@ Keep Alive Event Bus
 
 
 
-<a name="dialog.RequestPostToEventBus"/>
+<a name="dialog.RequestPostToEventBus"></a>
 
 ### RequestPostToEventBus
 Event Bus Destination
@@ -2076,7 +2453,7 @@ Event Bus Destination
 
 
 
-<a name="dialog.ResponseJoinEventBus"/>
+<a name="dialog.ResponseJoinEventBus"></a>
 
 ### ResponseJoinEventBus
 
@@ -2091,7 +2468,7 @@ Event Bus Destination
 
 
 
-<a name="dialog.UpdateEventBusDeviceConnected"/>
+<a name="dialog.UpdateEventBusDeviceConnected"></a>
 
 ### UpdateEventBusDeviceConnected
 Update about pubsub device connected
@@ -2109,7 +2486,7 @@ Update about pubsub device connected
 
 
 
-<a name="dialog.UpdateEventBusDeviceDisconnected"/>
+<a name="dialog.UpdateEventBusDeviceDisconnected"></a>
 
 ### UpdateEventBusDeviceDisconnected
 Update about device disconnected
@@ -2127,7 +2504,7 @@ Update about device disconnected
 
 
 
-<a name="dialog.UpdateEventBusDisposed"/>
+<a name="dialog.UpdateEventBusDisposed"></a>
 
 ### UpdateEventBusDisposed
 Event Bus dispose
@@ -2142,7 +2519,7 @@ Event Bus dispose
 
 
 
-<a name="dialog.UpdateEventBusMessage"/>
+<a name="dialog.UpdateEventBusMessage"></a>
 
 ### UpdateEventBusMessage
 Event Bus Message
@@ -2166,29 +2543,77 @@ Event Bus Message
  
 
 
-<a name="dialog.EventBus"/>
+<a name="dialog.EventBus"></a>
 
 ### EventBus
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| JoinEventBus | [RequestJoinEventBus](#dialog.RequestJoinEventBus) | [ResponseJoinEventBus](#dialog.RequestJoinEventBus) |  |
-| KeepAliveEventBus | [RequestKeepAliveEventBus](#dialog.RequestKeepAliveEventBus) | [ResponseVoid](#dialog.RequestKeepAliveEventBus) |  |
-| PostToEventBus | [RequestPostToEventBus](#dialog.RequestPostToEventBus) | [ResponseVoid](#dialog.RequestPostToEventBus) |  |
+| JoinEventBus | [RequestJoinEventBus](#dialog.RequestJoinEventBus) | [ResponseJoinEventBus](#dialog.ResponseJoinEventBus) |  |
+| KeepAliveEventBus | [RequestKeepAliveEventBus](#dialog.RequestKeepAliveEventBus) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| PostToEventBus | [RequestPostToEventBus](#dialog.RequestPostToEventBus) | [ResponseVoid](#dialog.ResponseVoid) |  |
 
  
 
 
 
-<a name="groups.proto"/>
+<a name="gateway_service.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## gateway_service.proto
+
+
+
+<a name="dialog.GetDifferenceCommand"></a>
+
+### GetDifferenceCommand
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| seq | [google.protobuf.Int32Value](#google.protobuf.Int32Value) |  |  |
+| state | [bytes](#bytes) |  |  |
+| configHash | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="dialog.ServiceUpdate"></a>
+
+### ServiceUpdate
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| obsoleteUpdate | [google.protobuf.BytesValue](#google.protobuf.BytesValue) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="groups.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## groups.proto
 
 
 
-<a name="dialog.Group"/>
+<a name="dialog.Group"></a>
 
 ### Group
 Group information
@@ -2213,16 +2638,42 @@ Group information
 | theme | [google.protobuf.StringValue](#google.protobuf.StringValue) |  | Theme of group |
 | about | [google.protobuf.StringValue](#google.protobuf.StringValue) |  | About of group |
 | shortname | [google.protobuf.StringValue](#google.protobuf.StringValue) |  | Group short name |
+| base_permissions | [GroupAdminPermission](#dialog.GroupAdminPermission) | repeated | Base permissions for invited members |
 
 
 
 
 
 
-<a name="dialog.GroupFull"/>
+<a name="dialog.GroupData"></a>
+
+### GroupData
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| space_id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| title | [string](#string) |  | Title of group |
+| avatar | [Avatar](#dialog.Avatar) |  | Avatar of group |
+| members_amount | [int32](#int32) |  | Number of members |
+| group_type | [GroupType](#dialog.GroupType) |  | Group Type. Used only for displaying information. Default is GROUP. |
+| creator_user_id | [int32](#int32) |  | Group creator |
+| created_at | [google.protobuf.Timestamp](#google.protobuf.Timestamp) |  | Date of creation |
+| about | [google.protobuf.StringValue](#google.protobuf.StringValue) |  | About of group |
+| shortname | [google.protobuf.StringValue](#google.protobuf.StringValue) |  | Group short name |
+| base_permissions | [GroupAdminPermission](#dialog.GroupAdminPermission) | repeated |  |
+| clock | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="dialog.GroupFull"></a>
 
 ### GroupFull
-Goup Full information - Deprecated
+Group Full information - Deprecated
 
 
 | Field | Type | Label | Description |
@@ -2243,7 +2694,7 @@ Goup Full information - Deprecated
 
 
 
-<a name="dialog.GroupMemberPermission"/>
+<a name="dialog.GroupMemberPermission"></a>
 
 ### GroupMemberPermission
 A struct mapping a group member to their permissions
@@ -2261,7 +2712,7 @@ permissions a list of permissions that user has
 
 
 
-<a name="dialog.Member"/>
+<a name="dialog.Member"></a>
 
 ### Member
 Member information
@@ -2280,7 +2731,7 @@ Member information
 
 
 
-<a name="dialog.RequestCreateGroup"/>
+<a name="dialog.RequestCreateGroup"></a>
 
 ### RequestCreateGroup
 Creating group chat
@@ -2295,13 +2746,14 @@ Creating group chat
 | group_type | [GroupType](#dialog.GroupType) |  | group or channel |
 | username | [google.protobuf.StringValue](#google.protobuf.StringValue) |  | optional shortname of a group, group will be public if set |
 | optimizations | [UpdateOptimization](#dialog.UpdateOptimization) | repeated | Optimizations drops some info from response to decrease traffic and latency |
+| base_permissions | [GroupAdminPermission](#dialog.GroupAdminPermission) | repeated | Base permissions for invited members |
 
 
 
 
 
 
-<a name="dialog.RequestEditGroupAbout"/>
+<a name="dialog.RequestEditGroupAbout"></a>
 
 ### RequestEditGroupAbout
 Edit Group About
@@ -2319,7 +2771,7 @@ Edit Group About
 
 
 
-<a name="dialog.RequestEditGroupAvatar"/>
+<a name="dialog.RequestEditGroupAvatar"></a>
 
 ### RequestEditGroupAvatar
 Changing group avatar
@@ -2337,7 +2789,25 @@ Changing group avatar
 
 
 
-<a name="dialog.RequestEditGroupTitle"/>
+<a name="dialog.RequestEditGroupBasePermissions"></a>
+
+### RequestEditGroupBasePermissions
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| group_peer | [GroupOutPeer](#dialog.GroupOutPeer) |  |  |
+| random_id | [int64](#int64) |  | Id for query deduplication |
+| granted_permissions | [GroupAdminPermission](#dialog.GroupAdminPermission) | repeated |  |
+| revoked_permissions | [GroupAdminPermission](#dialog.GroupAdminPermission) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.RequestEditGroupTitle"></a>
 
 ### RequestEditGroupTitle
 Changing group title
@@ -2355,7 +2825,7 @@ Changing group title
 
 
 
-<a name="dialog.RequestEditGroupTopic"/>
+<a name="dialog.RequestEditGroupTopic"></a>
 
 ### RequestEditGroupTopic
 Edit group topic
@@ -2373,7 +2843,7 @@ Edit group topic
 
 
 
-<a name="dialog.RequestGetGroupInviteUrl"/>
+<a name="dialog.RequestGetGroupInviteUrl"></a>
 
 ### RequestGetGroupInviteUrl
 Building invite url
@@ -2388,7 +2858,7 @@ Building invite url
 
 
 
-<a name="dialog.RequestGetGroupInviteUrlBase"/>
+<a name="dialog.RequestGetGroupInviteUrlBase"></a>
 
 ### RequestGetGroupInviteUrlBase
 Get group invite url base
@@ -2398,7 +2868,7 @@ Get group invite url base
 
 
 
-<a name="dialog.RequestGetGroupMemberPermissions"/>
+<a name="dialog.RequestGetGroupMemberPermissions"></a>
 
 ### RequestGetGroupMemberPermissions
 Fetches the group administration permissions for each of the users from the list
@@ -2414,7 +2884,7 @@ Fetches the group administration permissions for each of the users from the list
 
 
 
-<a name="dialog.RequestInviteUser"/>
+<a name="dialog.RequestInviteUser"></a>
 
 ### RequestInviteUser
 Inviting user to group
@@ -2432,7 +2902,7 @@ Inviting user to group
 
 
 
-<a name="dialog.RequestJoinGroup"/>
+<a name="dialog.RequestJoinGroup"></a>
 
 ### RequestJoinGroup
 Join group method
@@ -2448,7 +2918,7 @@ Join group method
 
 
 
-<a name="dialog.RequestJoinGroupByPeer"/>
+<a name="dialog.RequestJoinGroupByPeer"></a>
 
 ### RequestJoinGroupByPeer
 Join group by peer
@@ -2463,7 +2933,7 @@ Join group by peer
 
 
 
-<a name="dialog.RequestKickUser"/>
+<a name="dialog.RequestKickUser"></a>
 
 ### RequestKickUser
 Kicking user from group
@@ -2481,7 +2951,7 @@ Kicking user from group
 
 
 
-<a name="dialog.RequestLeaveGroup"/>
+<a name="dialog.RequestLeaveGroup"></a>
 
 ### RequestLeaveGroup
 Leaving group
@@ -2498,7 +2968,7 @@ Leaving group
 
 
 
-<a name="dialog.RequestLoadFullGroups"/>
+<a name="dialog.RequestLoadFullGroups"></a>
 
 ### RequestLoadFullGroups
 Loading Full Groups - Deprecated
@@ -2513,7 +2983,7 @@ Loading Full Groups - Deprecated
 
 
 
-<a name="dialog.RequestLoadMembers"/>
+<a name="dialog.RequestLoadMembers"></a>
 
 ### RequestLoadMembers
 Loading group members
@@ -2530,7 +3000,7 @@ Loading group members
 
 
 
-<a name="dialog.RequestMakeUserAdmin"/>
+<a name="dialog.RequestMakeUserAdmin"></a>
 
 ### RequestMakeUserAdmin
 Make user admin
@@ -2547,7 +3017,7 @@ Make user admin
 
 
 
-<a name="dialog.RequestMakeUserAdminObsolete"/>
+<a name="dialog.RequestMakeUserAdminObsolete"></a>
 
 ### RequestMakeUserAdminObsolete
 [OBSOLETE] Make user admin
@@ -2563,7 +3033,7 @@ Make user admin
 
 
 
-<a name="dialog.RequestRemoveGroupAvatar"/>
+<a name="dialog.RequestRemoveGroupAvatar"></a>
 
 ### RequestRemoveGroupAvatar
 Removing group avatar
@@ -2580,7 +3050,7 @@ Removing group avatar
 
 
 
-<a name="dialog.RequestRevokeInviteUrl"/>
+<a name="dialog.RequestRevokeInviteUrl"></a>
 
 ### RequestRevokeInviteUrl
 Revoking invite urls
@@ -2595,7 +3065,7 @@ Revoking invite urls
 
 
 
-<a name="dialog.RequestSetGroupShortname"/>
+<a name="dialog.RequestSetGroupShortname"></a>
 
 ### RequestSetGroupShortname
 Sets group short name
@@ -2611,7 +3081,7 @@ Sets group short name
 
 
 
-<a name="dialog.RequestTransferOwnership"/>
+<a name="dialog.RequestTransferOwnership"></a>
 
 ### RequestTransferOwnership
 Transfer ownership of group
@@ -2627,7 +3097,7 @@ Transfer ownership of group
 
 
 
-<a name="dialog.ResponseCreateGroup"/>
+<a name="dialog.ResponseCreateGroup"></a>
 
 ### ResponseCreateGroup
 
@@ -2646,7 +3116,7 @@ Transfer ownership of group
 
 
 
-<a name="dialog.ResponseEditGroupAvatar"/>
+<a name="dialog.ResponseEditGroupAvatar"></a>
 
 ### ResponseEditGroupAvatar
 
@@ -2665,7 +3135,7 @@ Transfer ownership of group
 
 
 
-<a name="dialog.ResponseGetGroupInviteUrlBase"/>
+<a name="dialog.ResponseGetGroupInviteUrlBase"></a>
 
 ### ResponseGetGroupInviteUrlBase
 
@@ -2680,7 +3150,7 @@ Transfer ownership of group
 
 
 
-<a name="dialog.ResponseGetGroupMemberPermissions"/>
+<a name="dialog.ResponseGetGroupMemberPermissions"></a>
 
 ### ResponseGetGroupMemberPermissions
 
@@ -2695,7 +3165,7 @@ Transfer ownership of group
 
 
 
-<a name="dialog.ResponseInviteUrl"/>
+<a name="dialog.ResponseInviteUrl"></a>
 
 ### ResponseInviteUrl
 Response for invite url methods
@@ -2710,7 +3180,7 @@ Response for invite url methods
 
 
 
-<a name="dialog.ResponseJoinGroup"/>
+<a name="dialog.ResponseJoinGroup"></a>
 
 ### ResponseJoinGroup
 
@@ -2731,7 +3201,7 @@ Response for invite url methods
 
 
 
-<a name="dialog.ResponseLoadFullGroups"/>
+<a name="dialog.ResponseLoadFullGroups"></a>
 
 ### ResponseLoadFullGroups
 Deprecated
@@ -2746,7 +3216,7 @@ Deprecated
 
 
 
-<a name="dialog.ResponseLoadMembers"/>
+<a name="dialog.ResponseLoadMembers"></a>
 
 ### ResponseLoadMembers
 
@@ -2762,7 +3232,7 @@ Deprecated
 
 
 
-<a name="dialog.ResponseMakeUserAdminObsolete"/>
+<a name="dialog.ResponseMakeUserAdminObsolete"></a>
 
 ### ResponseMakeUserAdminObsolete
 
@@ -2779,7 +3249,23 @@ Deprecated
 
 
 
-<a name="dialog.UpdateGroupAboutChanged"/>
+<a name="dialog.UpdateGroup"></a>
+
+### UpdateGroup
+Update about group data changed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+| data | [GroupData](#dialog.GroupData) |  |  |
+
+
+
+
+
+
+<a name="dialog.UpdateGroupAboutChanged"></a>
 
 ### UpdateGroupAboutChanged
 Update about about changed
@@ -2795,7 +3281,7 @@ Update about about changed
 
 
 
-<a name="dialog.UpdateGroupAboutChangedObsolete"/>
+<a name="dialog.UpdateGroupAboutChangedObsolete"></a>
 
 ### UpdateGroupAboutChangedObsolete
 Update about group about change
@@ -2811,7 +3297,7 @@ Update about group about change
 
 
 
-<a name="dialog.UpdateGroupAvatarChanged"/>
+<a name="dialog.UpdateGroupAvatarChanged"></a>
 
 ### UpdateGroupAvatarChanged
 Update about avatar changed
@@ -2827,7 +3313,7 @@ Update about avatar changed
 
 
 
-<a name="dialog.UpdateGroupAvatarChangedObsolete"/>
+<a name="dialog.UpdateGroupAvatarChangedObsolete"></a>
 
 ### UpdateGroupAvatarChangedObsolete
 Update about group avatar change
@@ -2846,7 +3332,23 @@ Update about group avatar change
 
 
 
-<a name="dialog.UpdateGroupCanInviteMembersChanged"/>
+<a name="dialog.UpdateGroupBasePermissionsChanged"></a>
+
+### UpdateGroupBasePermissionsChanged
+Update about base group permissions changed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| group_id | [int32](#int32) |  |  |
+| base_permissions | [GroupAdminPermission](#dialog.GroupAdminPermission) | repeated | new base permissions |
+
+
+
+
+
+
+<a name="dialog.UpdateGroupCanInviteMembersChanged"></a>
 
 ### UpdateGroupCanInviteMembersChanged
 Update about can invite members changed
@@ -2862,7 +3364,7 @@ Update about can invite members changed
 
 
 
-<a name="dialog.UpdateGroupCanSendMessagesChanged"/>
+<a name="dialog.UpdateGroupCanSendMessagesChanged"></a>
 
 ### UpdateGroupCanSendMessagesChanged
 Update about can send messages changed
@@ -2878,7 +3380,7 @@ Update about can send messages changed
 
 
 
-<a name="dialog.UpdateGroupCanViewMembersChanged"/>
+<a name="dialog.UpdateGroupCanViewMembersChanged"></a>
 
 ### UpdateGroupCanViewMembersChanged
 Update about can view members changed
@@ -2894,7 +3396,7 @@ Update about can view members changed
 
 
 
-<a name="dialog.UpdateGroupHistoryShared"/>
+<a name="dialog.UpdateGroupHistoryShared"></a>
 
 ### UpdateGroupHistoryShared
 Update about history shared
@@ -2909,7 +3411,7 @@ Update about history shared
 
 
 
-<a name="dialog.UpdateGroupInviteObsolete"/>
+<a name="dialog.UpdateGroupInviteObsolete"></a>
 
 ### UpdateGroupInviteObsolete
 Update about inviting current user to group
@@ -2928,7 +3430,7 @@ Update about inviting current user to group
 
 
 
-<a name="dialog.UpdateGroupMemberAdminChanged"/>
+<a name="dialog.UpdateGroupMemberAdminChanged"></a>
 
 ### UpdateGroupMemberAdminChanged
 Update about member admin changed
@@ -2945,7 +3447,7 @@ Update about member admin changed
 
 
 
-<a name="dialog.UpdateGroupMemberChanged"/>
+<a name="dialog.UpdateGroupMemberChanged"></a>
 
 ### UpdateGroupMemberChanged
 Update about membership changed
@@ -2961,7 +3463,7 @@ Update about membership changed
 
 
 
-<a name="dialog.UpdateGroupMemberDiff"/>
+<a name="dialog.UpdateGroupMemberDiff"></a>
 
 ### UpdateGroupMemberDiff
 Update about members changed
@@ -2978,7 +3480,7 @@ Update about members changed
 
 
 
-<a name="dialog.UpdateGroupMemberPermissionsChanged"/>
+<a name="dialog.UpdateGroupMemberPermissionsChanged"></a>
 
 ### UpdateGroupMemberPermissionsChanged
 Update about the user&#39;s permissions
@@ -2995,7 +3497,7 @@ Update about the user&#39;s permissions
 
 
 
-<a name="dialog.UpdateGroupMembersBecameAsync"/>
+<a name="dialog.UpdateGroupMembersBecameAsync"></a>
 
 ### UpdateGroupMembersBecameAsync
 Update about members became async
@@ -3010,7 +3512,7 @@ Update about members became async
 
 
 
-<a name="dialog.UpdateGroupMembersCountChanged"/>
+<a name="dialog.UpdateGroupMembersCountChanged"></a>
 
 ### UpdateGroupMembersCountChanged
 Update about members count changed
@@ -3026,7 +3528,7 @@ Update about members count changed
 
 
 
-<a name="dialog.UpdateGroupMembersUpdateObsolete"/>
+<a name="dialog.UpdateGroupMembersUpdateObsolete"></a>
 
 ### UpdateGroupMembersUpdateObsolete
 Silent group members update
@@ -3042,7 +3544,7 @@ Silent group members update
 
 
 
-<a name="dialog.UpdateGroupMembersUpdated"/>
+<a name="dialog.UpdateGroupMembersUpdated"></a>
 
 ### UpdateGroupMembersUpdated
 Update about members updated
@@ -3058,7 +3560,7 @@ Update about members updated
 
 
 
-<a name="dialog.UpdateGroupOwnerChanged"/>
+<a name="dialog.UpdateGroupOwnerChanged"></a>
 
 ### UpdateGroupOwnerChanged
 Update about owner changed
@@ -3074,7 +3576,7 @@ Update about owner changed
 
 
 
-<a name="dialog.UpdateGroupShortnameChanged"/>
+<a name="dialog.UpdateGroupShortnameChanged"></a>
 
 ### UpdateGroupShortnameChanged
 Update group short name
@@ -3091,7 +3593,7 @@ Update group short name
 
 
 
-<a name="dialog.UpdateGroupTitleChanged"/>
+<a name="dialog.UpdateGroupTitleChanged"></a>
 
 ### UpdateGroupTitleChanged
 Update about title changed
@@ -3107,7 +3609,7 @@ Update about title changed
 
 
 
-<a name="dialog.UpdateGroupTitleChangedObsolete"/>
+<a name="dialog.UpdateGroupTitleChangedObsolete"></a>
 
 ### UpdateGroupTitleChangedObsolete
 Update about group title change
@@ -3126,7 +3628,7 @@ Update about group title change
 
 
 
-<a name="dialog.UpdateGroupTopicChanged"/>
+<a name="dialog.UpdateGroupTopicChanged"></a>
 
 ### UpdateGroupTopicChanged
 Update about topic changed
@@ -3142,7 +3644,7 @@ Update about topic changed
 
 
 
-<a name="dialog.UpdateGroupTopicChangedObsolete"/>
+<a name="dialog.UpdateGroupTopicChangedObsolete"></a>
 
 ### UpdateGroupTopicChangedObsolete
 Update about group topic change
@@ -3161,7 +3663,7 @@ Update about group topic change
 
 
 
-<a name="dialog.UpdateGroupUserInvitedObsolete"/>
+<a name="dialog.UpdateGroupUserInvitedObsolete"></a>
 
 ### UpdateGroupUserInvitedObsolete
 Update about inviting user to group
@@ -3181,7 +3683,7 @@ Update about inviting user to group
 
 
 
-<a name="dialog.UpdateGroupUserKickObsolete"/>
+<a name="dialog.UpdateGroupUserKickObsolete"></a>
 
 ### UpdateGroupUserKickObsolete
 Update about kicking user
@@ -3200,7 +3702,7 @@ Update about kicking user
 
 
 
-<a name="dialog.UpdateGroupUserLeaveObsolete"/>
+<a name="dialog.UpdateGroupUserLeaveObsolete"></a>
 
 ### UpdateGroupUserLeaveObsolete
 Update about leaving user
@@ -3220,7 +3722,7 @@ Update about leaving user
  
 
 
-<a name="dialog.GroupAdminPermission"/>
+<a name="dialog.GroupAdminPermission"></a>
 
 ### GroupAdminPermission
 Possible permissions on a group
@@ -3238,10 +3740,11 @@ Possible permissions on a group
 | GROUPADMINPERMISSION_GETINTEGRATIONTOKEN | 8 |  |
 | GROUPADMINPERMISSION_SENDMESSAGE | 9 |  |
 | GROUPADMINPERMISSION_PINMESSAGE | 10 |  |
+| GROUPADMINPERMISSION_VIEWMEMBERS | 11 |  |
 
 
 
-<a name="dialog.GroupType"/>
+<a name="dialog.GroupType"></a>
 
 ### GroupType
 
@@ -3251,6 +3754,7 @@ Possible permissions on a group
 | GROUPTYPE_UNKNOWN | 0 |  |
 | GROUPTYPE_GROUP | 1 |  |
 | GROUPTYPE_CHANNEL | 2 |  |
+| GROUPTYPE_THREAD | 4 |  |
 
 
  
@@ -3258,47 +3762,48 @@ Possible permissions on a group
  
 
 
-<a name="dialog.Groups"/>
+<a name="dialog.Groups"></a>
 
 ### Groups
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| LoadFullGroups | [RequestLoadFullGroups](#dialog.RequestLoadFullGroups) | [ResponseLoadFullGroups](#dialog.RequestLoadFullGroups) | deprecated |
-| LoadMembers | [RequestLoadMembers](#dialog.RequestLoadMembers) | [ResponseLoadMembers](#dialog.RequestLoadMembers) |  |
-| CreateGroup | [RequestCreateGroup](#dialog.RequestCreateGroup) | [ResponseCreateGroup](#dialog.RequestCreateGroup) |  |
-| EditGroupTitle | [RequestEditGroupTitle](#dialog.RequestEditGroupTitle) | [ResponseSeqDateMid](#dialog.RequestEditGroupTitle) |  |
-| SetGroupShortname | [RequestSetGroupShortname](#dialog.RequestSetGroupShortname) | [ResponseSeq](#dialog.RequestSetGroupShortname) |  |
-| EditGroupAvatar | [RequestEditGroupAvatar](#dialog.RequestEditGroupAvatar) | [ResponseEditGroupAvatar](#dialog.RequestEditGroupAvatar) |  |
-| RemoveGroupAvatar | [RequestRemoveGroupAvatar](#dialog.RequestRemoveGroupAvatar) | [ResponseSeqDateMid](#dialog.RequestRemoveGroupAvatar) |  |
-| EditGroupTopic | [RequestEditGroupTopic](#dialog.RequestEditGroupTopic) | [ResponseSeqDate](#dialog.RequestEditGroupTopic) |  |
-| EditGroupAbout | [RequestEditGroupAbout](#dialog.RequestEditGroupAbout) | [ResponseSeqDate](#dialog.RequestEditGroupAbout) |  |
-| InviteUser | [RequestInviteUser](#dialog.RequestInviteUser) | [ResponseSeqDateMid](#dialog.RequestInviteUser) |  |
-| LeaveGroup | [RequestLeaveGroup](#dialog.RequestLeaveGroup) | [ResponseSeqDateMid](#dialog.RequestLeaveGroup) |  |
-| KickUser | [RequestKickUser](#dialog.RequestKickUser) | [ResponseSeqDateMid](#dialog.RequestKickUser) |  |
-| MakeUserAdmin | [RequestMakeUserAdmin](#dialog.RequestMakeUserAdmin) | [ResponseSeqDate](#dialog.RequestMakeUserAdmin) |  |
-| GetGroupMemberPermissions | [RequestGetGroupMemberPermissions](#dialog.RequestGetGroupMemberPermissions) | [ResponseGetGroupMemberPermissions](#dialog.RequestGetGroupMemberPermissions) |  |
-| TransferOwnership | [RequestTransferOwnership](#dialog.RequestTransferOwnership) | [ResponseSeqDate](#dialog.RequestTransferOwnership) |  |
-| GetGroupInviteUrl | [RequestGetGroupInviteUrl](#dialog.RequestGetGroupInviteUrl) | [ResponseInviteUrl](#dialog.RequestGetGroupInviteUrl) |  |
-| GetGroupInviteUrlBase | [RequestGetGroupInviteUrlBase](#dialog.RequestGetGroupInviteUrlBase) | [ResponseGetGroupInviteUrlBase](#dialog.RequestGetGroupInviteUrlBase) |  |
-| RevokeInviteUrl | [RequestRevokeInviteUrl](#dialog.RequestRevokeInviteUrl) | [ResponseInviteUrl](#dialog.RequestRevokeInviteUrl) |  |
-| JoinGroup | [RequestJoinGroup](#dialog.RequestJoinGroup) | [ResponseJoinGroup](#dialog.RequestJoinGroup) |  |
-| JoinGroupByPeer | [RequestJoinGroupByPeer](#dialog.RequestJoinGroupByPeer) | [ResponseVoid](#dialog.RequestJoinGroupByPeer) |  |
-| MakeUserAdminObsolete | [RequestMakeUserAdminObsolete](#dialog.RequestMakeUserAdminObsolete) | [ResponseMakeUserAdminObsolete](#dialog.RequestMakeUserAdminObsolete) |  |
+| LoadFullGroups | [RequestLoadFullGroups](#dialog.RequestLoadFullGroups) | [ResponseLoadFullGroups](#dialog.ResponseLoadFullGroups) | deprecated |
+| LoadMembers | [RequestLoadMembers](#dialog.RequestLoadMembers) | [ResponseLoadMembers](#dialog.ResponseLoadMembers) |  |
+| CreateGroup | [RequestCreateGroup](#dialog.RequestCreateGroup) | [ResponseCreateGroup](#dialog.ResponseCreateGroup) |  |
+| EditGroupTitle | [RequestEditGroupTitle](#dialog.RequestEditGroupTitle) | [ResponseSeqDateMid](#dialog.ResponseSeqDateMid) |  |
+| SetGroupShortname | [RequestSetGroupShortname](#dialog.RequestSetGroupShortname) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| EditGroupAvatar | [RequestEditGroupAvatar](#dialog.RequestEditGroupAvatar) | [ResponseEditGroupAvatar](#dialog.ResponseEditGroupAvatar) |  |
+| RemoveGroupAvatar | [RequestRemoveGroupAvatar](#dialog.RequestRemoveGroupAvatar) | [ResponseSeqDateMid](#dialog.ResponseSeqDateMid) |  |
+| EditGroupTopic | [RequestEditGroupTopic](#dialog.RequestEditGroupTopic) | [ResponseSeqDate](#dialog.ResponseSeqDate) |  |
+| EditGroupAbout | [RequestEditGroupAbout](#dialog.RequestEditGroupAbout) | [ResponseSeqDate](#dialog.ResponseSeqDate) |  |
+| EditGroupBasePermissions | [RequestEditGroupBasePermissions](#dialog.RequestEditGroupBasePermissions) | [.google.protobuf.Empty](#google.protobuf.Empty) |  |
+| InviteUser | [RequestInviteUser](#dialog.RequestInviteUser) | [ResponseSeqDateMid](#dialog.ResponseSeqDateMid) |  |
+| LeaveGroup | [RequestLeaveGroup](#dialog.RequestLeaveGroup) | [ResponseSeqDateMid](#dialog.ResponseSeqDateMid) |  |
+| KickUser | [RequestKickUser](#dialog.RequestKickUser) | [ResponseSeqDateMid](#dialog.ResponseSeqDateMid) |  |
+| MakeUserAdmin | [RequestMakeUserAdmin](#dialog.RequestMakeUserAdmin) | [ResponseSeqDate](#dialog.ResponseSeqDate) |  |
+| GetGroupMemberPermissions | [RequestGetGroupMemberPermissions](#dialog.RequestGetGroupMemberPermissions) | [ResponseGetGroupMemberPermissions](#dialog.ResponseGetGroupMemberPermissions) |  |
+| TransferOwnership | [RequestTransferOwnership](#dialog.RequestTransferOwnership) | [ResponseSeqDate](#dialog.ResponseSeqDate) |  |
+| GetGroupInviteUrl | [RequestGetGroupInviteUrl](#dialog.RequestGetGroupInviteUrl) | [ResponseInviteUrl](#dialog.ResponseInviteUrl) |  |
+| GetGroupInviteUrlBase | [RequestGetGroupInviteUrlBase](#dialog.RequestGetGroupInviteUrlBase) | [ResponseGetGroupInviteUrlBase](#dialog.ResponseGetGroupInviteUrlBase) |  |
+| RevokeInviteUrl | [RequestRevokeInviteUrl](#dialog.RequestRevokeInviteUrl) | [ResponseInviteUrl](#dialog.ResponseInviteUrl) |  |
+| JoinGroup | [RequestJoinGroup](#dialog.RequestJoinGroup) | [ResponseJoinGroup](#dialog.ResponseJoinGroup) |  |
+| JoinGroupByPeer | [RequestJoinGroupByPeer](#dialog.RequestJoinGroupByPeer) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| MakeUserAdminObsolete | [RequestMakeUserAdminObsolete](#dialog.RequestMakeUserAdminObsolete) | [ResponseMakeUserAdminObsolete](#dialog.ResponseMakeUserAdminObsolete) |  |
 
  
 
 
 
-<a name="integrations.proto"/>
+<a name="integrations.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## integrations.proto
 
 
 
-<a name="dialog.RequestGetIntegrationToken"/>
+<a name="dialog.RequestGetIntegrationToken"></a>
 
 ### RequestGetIntegrationToken
 Getting current group token
@@ -3313,7 +3818,7 @@ Getting current group token
 
 
 
-<a name="dialog.RequestRevokeIntegrationToken"/>
+<a name="dialog.RequestRevokeIntegrationToken"></a>
 
 ### RequestRevokeIntegrationToken
 Revoke group token
@@ -3328,7 +3833,7 @@ Revoke group token
 
 
 
-<a name="dialog.ResponseIntegrationToken"/>
+<a name="dialog.ResponseIntegrationToken"></a>
 
 ### ResponseIntegrationToken
 Group token response
@@ -3350,28 +3855,28 @@ Group token response
  
 
 
-<a name="dialog.Integrations"/>
+<a name="dialog.Integrations"></a>
 
 ### Integrations
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetIntegrationToken | [RequestGetIntegrationToken](#dialog.RequestGetIntegrationToken) | [ResponseIntegrationToken](#dialog.RequestGetIntegrationToken) | Get token for posting to group |
-| RevokeIntegrationToken | [RequestRevokeIntegrationToken](#dialog.RequestRevokeIntegrationToken) | [ResponseIntegrationToken](#dialog.RequestRevokeIntegrationToken) | Revoke token |
+| GetIntegrationToken | [RequestGetIntegrationToken](#dialog.RequestGetIntegrationToken) | [ResponseIntegrationToken](#dialog.ResponseIntegrationToken) | Get token for posting to group |
+| RevokeIntegrationToken | [RequestRevokeIntegrationToken](#dialog.RequestRevokeIntegrationToken) | [ResponseIntegrationToken](#dialog.ResponseIntegrationToken) | Revoke token |
 
  
 
 
 
-<a name="media_and_files.proto"/>
+<a name="media_and_files.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## media_and_files.proto
 
 
 
-<a name="dialog.AudioLocation"/>
+<a name="dialog.AudioLocation"></a>
 
 ### AudioLocation
 Audio location
@@ -3389,7 +3894,7 @@ Audio location
 
 
 
-<a name="dialog.Avatar"/>
+<a name="dialog.Avatar"></a>
 
 ### Avatar
 Avatar of User or Group
@@ -3406,7 +3911,7 @@ Avatar of User or Group
 
 
 
-<a name="dialog.AvatarImage"/>
+<a name="dialog.AvatarImage"></a>
 
 ### AvatarImage
 Avatar Image
@@ -3424,7 +3929,7 @@ Avatar Image
 
 
 
-<a name="dialog.Color"/>
+<a name="dialog.Color"></a>
 
 ### Color
 
@@ -3440,7 +3945,7 @@ Avatar Image
 
 
 
-<a name="dialog.FastThumb"/>
+<a name="dialog.FastThumb"></a>
 
 ### FastThumb
 Fast thumb of media messages. Less than 90x90 and compressed by JPEG with low quality
@@ -3457,7 +3962,7 @@ Fast thumb of media messages. Less than 90x90 and compressed by JPEG with low qu
 
 
 
-<a name="dialog.FileLocation"/>
+<a name="dialog.FileLocation"></a>
 
 ### FileLocation
 Location of file on server
@@ -3473,7 +3978,7 @@ Location of file on server
 
 
 
-<a name="dialog.FileUrlDescription"/>
+<a name="dialog.FileUrlDescription"></a>
 
 ### FileUrlDescription
 File url description
@@ -3492,7 +3997,7 @@ File url description
 
 
 
-<a name="dialog.HTTPHeader"/>
+<a name="dialog.HTTPHeader"></a>
 
 ### HTTPHeader
 HTTP Header record
@@ -3508,7 +4013,7 @@ HTTP Header record
 
 
 
-<a name="dialog.ImageLocation"/>
+<a name="dialog.ImageLocation"></a>
 
 ### ImageLocation
 Image location
@@ -3526,7 +4031,7 @@ Image location
 
 
 
-<a name="dialog.PredefinedColor"/>
+<a name="dialog.PredefinedColor"></a>
 
 ### PredefinedColor
 Predefined color
@@ -3541,7 +4046,7 @@ Predefined color
 
 
 
-<a name="dialog.RequestCommitFileUpload"/>
+<a name="dialog.RequestCommitFileUpload"></a>
 
 ### RequestCommitFileUpload
 Comminting uploaded file to storage
@@ -3557,7 +4062,7 @@ Comminting uploaded file to storage
 
 
 
-<a name="dialog.RequestGetFileUploadPartUrl"/>
+<a name="dialog.RequestGetFileUploadPartUrl"></a>
 
 ### RequestGetFileUploadPartUrl
 Upload file part
@@ -3574,7 +4079,7 @@ Upload file part
 
 
 
-<a name="dialog.RequestGetFileUploadUrl"/>
+<a name="dialog.RequestGetFileUploadUrl"></a>
 
 ### RequestGetFileUploadUrl
 Requesting pload url
@@ -3589,7 +4094,7 @@ Requesting pload url
 
 
 
-<a name="dialog.RequestGetFileUrl"/>
+<a name="dialog.RequestGetFileUrl"></a>
 
 ### RequestGetFileUrl
 Requesting file URL for downloading
@@ -3604,7 +4109,7 @@ Requesting file URL for downloading
 
 
 
-<a name="dialog.RequestGetFileUrlBuilder"/>
+<a name="dialog.RequestGetFileUrlBuilder"></a>
 
 ### RequestGetFileUrlBuilder
 Get File URL Builder that allows to build file urls from client side
@@ -3619,7 +4124,7 @@ Get File URL Builder that allows to build file urls from client side
 
 
 
-<a name="dialog.RequestGetFileUrls"/>
+<a name="dialog.RequestGetFileUrls"></a>
 
 ### RequestGetFileUrls
 Requesting multiple fle URL for downloading
@@ -3634,7 +4139,7 @@ Requesting multiple fle URL for downloading
 
 
 
-<a name="dialog.ResponseCommitFileUpload"/>
+<a name="dialog.ResponseCommitFileUpload"></a>
 
 ### ResponseCommitFileUpload
 
@@ -3649,7 +4154,7 @@ Requesting multiple fle URL for downloading
 
 
 
-<a name="dialog.ResponseGetFileUploadPartUrl"/>
+<a name="dialog.ResponseGetFileUploadPartUrl"></a>
 
 ### ResponseGetFileUploadPartUrl
 
@@ -3664,7 +4169,7 @@ Requesting multiple fle URL for downloading
 
 
 
-<a name="dialog.ResponseGetFileUploadUrl"/>
+<a name="dialog.ResponseGetFileUploadUrl"></a>
 
 ### ResponseGetFileUploadUrl
 
@@ -3680,7 +4185,7 @@ Requesting multiple fle URL for downloading
 
 
 
-<a name="dialog.ResponseGetFileUrl"/>
+<a name="dialog.ResponseGetFileUrl"></a>
 
 ### ResponseGetFileUrl
 
@@ -3698,7 +4203,7 @@ Requesting multiple fle URL for downloading
 
 
 
-<a name="dialog.ResponseGetFileUrlBuilder"/>
+<a name="dialog.ResponseGetFileUrlBuilder"></a>
 
 ### ResponseGetFileUrlBuilder
 
@@ -3717,7 +4222,7 @@ Requesting multiple fle URL for downloading
 
 
 
-<a name="dialog.ResponseGetFileUrls"/>
+<a name="dialog.ResponseGetFileUrls"></a>
 
 ### ResponseGetFileUrls
 
@@ -3732,7 +4237,7 @@ Requesting multiple fle URL for downloading
 
 
 
-<a name="dialog.RgbColor"/>
+<a name="dialog.RgbColor"></a>
 
 ### RgbColor
 RGB Color
@@ -3749,7 +4254,7 @@ RGB Color
  
 
 
-<a name="dialog.Colors"/>
+<a name="dialog.Colors"></a>
 
 ### Colors
 
@@ -3767,32 +4272,32 @@ RGB Color
  
 
 
-<a name="dialog.MediaAndFiles"/>
+<a name="dialog.MediaAndFiles"></a>
 
 ### MediaAndFiles
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetFileUrl | [RequestGetFileUrl](#dialog.RequestGetFileUrl) | [ResponseGetFileUrl](#dialog.RequestGetFileUrl) | Get link to file for downloading |
-| GetFileUrls | [RequestGetFileUrls](#dialog.RequestGetFileUrls) | [ResponseGetFileUrls](#dialog.RequestGetFileUrls) | Get link to files for downloading |
-| GetFileUrlBuilder | [RequestGetFileUrlBuilder](#dialog.RequestGetFileUrlBuilder) | [ResponseGetFileUrlBuilder](#dialog.RequestGetFileUrlBuilder) | Create builder for file url |
-| GetFileUploadUrl | [RequestGetFileUploadUrl](#dialog.RequestGetFileUploadUrl) | [ResponseGetFileUploadUrl](#dialog.RequestGetFileUploadUrl) | Get url for uploading |
-| CommitFileUpload | [RequestCommitFileUpload](#dialog.RequestCommitFileUpload) | [ResponseCommitFileUpload](#dialog.RequestCommitFileUpload) | Finish uploading a file |
-| GetFileUploadPartUrl | [RequestGetFileUploadPartUrl](#dialog.RequestGetFileUploadPartUrl) | [ResponseGetFileUploadPartUrl](#dialog.RequestGetFileUploadPartUrl) | Get url for uploading chunk of file |
+| GetFileUrl | [RequestGetFileUrl](#dialog.RequestGetFileUrl) | [ResponseGetFileUrl](#dialog.ResponseGetFileUrl) | Get link to file for downloading |
+| GetFileUrls | [RequestGetFileUrls](#dialog.RequestGetFileUrls) | [ResponseGetFileUrls](#dialog.ResponseGetFileUrls) | Get link to files for downloading |
+| GetFileUrlBuilder | [RequestGetFileUrlBuilder](#dialog.RequestGetFileUrlBuilder) | [ResponseGetFileUrlBuilder](#dialog.ResponseGetFileUrlBuilder) | Create builder for file url |
+| GetFileUploadUrl | [RequestGetFileUploadUrl](#dialog.RequestGetFileUploadUrl) | [ResponseGetFileUploadUrl](#dialog.ResponseGetFileUploadUrl) | Get url for uploading |
+| CommitFileUpload | [RequestCommitFileUpload](#dialog.RequestCommitFileUpload) | [ResponseCommitFileUpload](#dialog.ResponseCommitFileUpload) | Finish uploading a file |
+| GetFileUploadPartUrl | [RequestGetFileUploadPartUrl](#dialog.RequestGetFileUploadPartUrl) | [ResponseGetFileUploadPartUrl](#dialog.ResponseGetFileUploadPartUrl) | Get url for uploading chunk of file |
 
  
 
 
 
-<a name="messaging.proto"/>
+<a name="messaging.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## messaging.proto
 
 
 
-<a name="dialog.AudioMedia"/>
+<a name="dialog.AudioMedia"></a>
 
 ### AudioMedia
 Audio media
@@ -3807,7 +4312,7 @@ Audio media
 
 
 
-<a name="dialog.BinaryMessage"/>
+<a name="dialog.BinaryMessage"></a>
 
 ### BinaryMessage
 Binary Message. Useful for implementing your own content types
@@ -3823,7 +4328,7 @@ Binary Message. Useful for implementing your own content types
 
 
 
-<a name="dialog.DeletedMessage"/>
+<a name="dialog.DeletedMessage"></a>
 
 ### DeletedMessage
 Deleted message
@@ -3838,7 +4343,7 @@ Deleted message
 
 
 
-<a name="dialog.Dialog"/>
+<a name="dialog.Dialog"></a>
 
 ### Dialog
 Conversation from history
@@ -3872,13 +4377,32 @@ historyMessage Optional last messages
 | attributes | [MessageAttributes](#dialog.MessageAttributes) |  |  |
 | pinned_messages | [PinnedMessages](#dialog.PinnedMessages) |  |  |
 | history_message | [HistoryMessage](#dialog.HistoryMessage) |  | last message in this dialog |
+| last_receive | [int64](#int64) |  |  |
+| last_read | [int64](#int64) |  |  |
 
 
 
 
 
 
-<a name="dialog.DialogGroup"/>
+<a name="dialog.DialogData"></a>
+
+### DialogData
+Data related to dialog entity
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| is_favourite | [bool](#bool) |  |  |
+| created_at | [int64](#int64) |  |  |
+| clock | [int64](#int64) |  | When dialog was changed last time |
+
+
+
+
+
+
+<a name="dialog.DialogGroup"></a>
 
 ### DialogGroup
 Grouped dialog list
@@ -3895,23 +4419,55 @@ Grouped dialog list
 
 
 
-<a name="dialog.DialogIndex"/>
+<a name="dialog.DialogIndex"></a>
 
 ### DialogIndex
-Dialog index from history. Used in client side pagination
+
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | peer | [Peer](#dialog.Peer) |  | The peer for the conversation |
-| timestamp | [int64](#int64) |  | The timestamp for the top message |
+| last_message_date | [int64](#int64) |  | Last message date of a dialog |
+| data | [DialogData](#dialog.DialogData) |  |  |
 
 
 
 
 
 
-<a name="dialog.DialogShort"/>
+<a name="dialog.DialogListEntry"></a>
+
+### DialogListEntry
+Compound info of a one of the dialogs in dialog list SDK 2.0
+
+peer
+unread_count count of the unread messages in dialog
+my_read_date date of the last own read
+last_message_date date of the last message
+receive_date date of the last received message
+read_date date of the last read message
+entry_clock shared clock across all datas which required for making a dialog entry
+data data related to dialog itself
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| peer | [Peer](#dialog.Peer) |  | Peer of conversation |
+| unread_count | [int32](#int32) |  |  |
+| my_read_date | [int64](#int64) |  |  |
+| last_message_date | [int64](#int64) |  |  |
+| receive_date | [int64](#int64) |  |  |
+| read_date | [int64](#int64) |  |  |
+| entry_clock | [int64](#int64) |  |  |
+| data | [DialogData](#dialog.DialogData) |  |  |
+
+
+
+
+
+
+<a name="dialog.DialogShort"></a>
 
 ### DialogShort
 Short Dialog from grouped conversation list
@@ -3928,7 +4484,7 @@ Short Dialog from grouped conversation list
 
 
 
-<a name="dialog.DocumentEx"/>
+<a name="dialog.DocumentEx"></a>
 
 ### DocumentEx
 
@@ -3945,7 +4501,7 @@ Short Dialog from grouped conversation list
 
 
 
-<a name="dialog.DocumentExPhoto"/>
+<a name="dialog.DocumentExPhoto"></a>
 
 ### DocumentExPhoto
 File photo extension
@@ -3961,7 +4517,7 @@ File photo extension
 
 
 
-<a name="dialog.DocumentExVideo"/>
+<a name="dialog.DocumentExVideo"></a>
 
 ### DocumentExVideo
 File video extension
@@ -3978,7 +4534,7 @@ File video extension
 
 
 
-<a name="dialog.DocumentExVoice"/>
+<a name="dialog.DocumentExVoice"></a>
 
 ### DocumentExVoice
 File voice extension
@@ -3993,7 +4549,7 @@ File voice extension
 
 
 
-<a name="dialog.DocumentMessage"/>
+<a name="dialog.DocumentMessage"></a>
 
 ### DocumentMessage
 File message
@@ -4014,7 +4570,7 @@ File message
 
 
 
-<a name="dialog.EmptyMessage"/>
+<a name="dialog.EmptyMessage"></a>
 
 ### EmptyMessage
 Empty Message
@@ -4024,7 +4580,7 @@ Empty Message
 
 
 
-<a name="dialog.HistoryMessage"/>
+<a name="dialog.HistoryMessage"></a>
 
 ### HistoryMessage
 Message from history
@@ -4045,13 +4601,14 @@ Message from history
 | forward | [ReferencedMessages](#dialog.ReferencedMessages) |  |  |
 | reply | [ReferencedMessages](#dialog.ReferencedMessages) |  |  |
 | edited_at | [google.protobuf.Int64Value](#google.protobuf.Int64Value) |  |  |
+| random_id | [int64](#int64) |  |  |
 
 
 
 
 
 
-<a name="dialog.ImageMedia"/>
+<a name="dialog.ImageMedia"></a>
 
 ### ImageMedia
 Image media
@@ -4067,7 +4624,7 @@ image image
 
 
 
-<a name="dialog.InteractiveMedia"/>
+<a name="dialog.InteractiveMedia"></a>
 
 ### InteractiveMedia
 A text message extension representing an interactive action.
@@ -4086,7 +4643,7 @@ Can be used to add widgets (such as buttons, selects, etc) to messages.
 
 
 
-<a name="dialog.InteractiveMediaButton"/>
+<a name="dialog.InteractiveMediaButton"></a>
 
 ### InteractiveMediaButton
 A &#39;Button&#39; widget
@@ -4102,7 +4659,7 @@ A &#39;Button&#39; widget
 
 
 
-<a name="dialog.InteractiveMediaConfirm"/>
+<a name="dialog.InteractiveMediaConfirm"></a>
 
 ### InteractiveMediaConfirm
 An alert dialog content to show to user
@@ -4120,7 +4677,7 @@ An alert dialog content to show to user
 
 
 
-<a name="dialog.InteractiveMediaGroup"/>
+<a name="dialog.InteractiveMediaGroup"></a>
 
 ### InteractiveMediaGroup
 A group of interactive media actions
@@ -4138,7 +4695,7 @@ A group of interactive media actions
 
 
 
-<a name="dialog.InteractiveMediaSelect"/>
+<a name="dialog.InteractiveMediaSelect"></a>
 
 ### InteractiveMediaSelect
 A select from multiple values widget
@@ -4155,7 +4712,7 @@ A select from multiple values widget
 
 
 
-<a name="dialog.InteractiveMediaSelectOption"/>
+<a name="dialog.InteractiveMediaSelectOption"></a>
 
 ### InteractiveMediaSelectOption
 A row in the select widget
@@ -4171,7 +4728,7 @@ A row in the select widget
 
 
 
-<a name="dialog.InteractiveMediaTranslation"/>
+<a name="dialog.InteractiveMediaTranslation"></a>
 
 ### InteractiveMediaTranslation
 
@@ -4187,7 +4744,7 @@ A row in the select widget
 
 
 
-<a name="dialog.InteractiveMediaTranslationGroup"/>
+<a name="dialog.InteractiveMediaTranslationGroup"></a>
 
 ### InteractiveMediaTranslationGroup
 
@@ -4203,7 +4760,7 @@ A row in the select widget
 
 
 
-<a name="dialog.InteractiveMediaWidget"/>
+<a name="dialog.InteractiveMediaWidget"></a>
 
 ### InteractiveMediaWidget
 Some interactive element inside a message
@@ -4219,7 +4776,7 @@ Some interactive element inside a message
 
 
 
-<a name="dialog.JsonMessage"/>
+<a name="dialog.JsonMessage"></a>
 
 ### JsonMessage
 Custom-data JsonMessage
@@ -4234,7 +4791,7 @@ Custom-data JsonMessage
 
 
 
-<a name="dialog.MessageAttributes"/>
+<a name="dialog.MessageAttributes"></a>
 
 ### MessageAttributes
 Message Attributes
@@ -4252,7 +4809,7 @@ Message Attributes
 
 
 
-<a name="dialog.MessageContent"/>
+<a name="dialog.MessageContent"></a>
 
 ### MessageContent
 
@@ -4275,7 +4832,7 @@ Message Attributes
 
 
 
-<a name="dialog.MessageMedia"/>
+<a name="dialog.MessageMedia"></a>
 
 ### MessageMedia
 Message media
@@ -4293,7 +4850,7 @@ Message media
 
 
 
-<a name="dialog.MessageReaction"/>
+<a name="dialog.MessageReaction"></a>
 
 ### MessageReaction
 Reaction to message
@@ -4309,7 +4866,7 @@ Reaction to message
 
 
 
-<a name="dialog.ParagraphStyle"/>
+<a name="dialog.ParagraphStyle"></a>
 
 ### ParagraphStyle
 Paragraph style
@@ -4326,7 +4883,7 @@ Paragraph style
 
 
 
-<a name="dialog.PinnedMessages"/>
+<a name="dialog.PinnedMessages"></a>
 
 ### PinnedMessages
 Pinned messages
@@ -4341,7 +4898,7 @@ Pinned messages
 
 
 
-<a name="dialog.QuotedMessage"/>
+<a name="dialog.QuotedMessage"></a>
 
 ### QuotedMessage
 Quoted Message
@@ -4365,10 +4922,10 @@ quotedMessageContent
 
 
 
-<a name="dialog.ReferencedMessages"/>
+<a name="dialog.ReferencedMessages"></a>
 
 ### ReferencedMessages
-mids Referenced messge ids
+mids Referenced message ids
 
 
 | Field | Type | Label | Description |
@@ -4380,7 +4937,7 @@ mids Referenced messge ids
 
 
 
-<a name="dialog.RequestArchiveChat"/>
+<a name="dialog.RequestArchiveChat"></a>
 
 ### RequestArchiveChat
 Archiving chat
@@ -4395,7 +4952,7 @@ Archiving chat
 
 
 
-<a name="dialog.RequestClearChat"/>
+<a name="dialog.RequestClearChat"></a>
 
 ### RequestClearChat
 Clearing of conversation (without removing dialog from dialogs list)
@@ -4411,7 +4968,7 @@ Clearing of conversation (without removing dialog from dialogs list)
 
 
 
-<a name="dialog.RequestDeleteChat"/>
+<a name="dialog.RequestDeleteChat"></a>
 
 ### RequestDeleteChat
 Deleting of conversation (also leave group for group conversations)
@@ -4427,7 +4984,7 @@ Deleting of conversation (also leave group for group conversations)
 
 
 
-<a name="dialog.RequestDeleteMessageObsolete"/>
+<a name="dialog.RequestDeleteMessageObsolete"></a>
 
 ### RequestDeleteMessageObsolete
 Deleting messages
@@ -4442,7 +4999,23 @@ Deleting messages
 
 
 
-<a name="dialog.RequestDoInteractiveMediaAction"/>
+<a name="dialog.RequestDialogListDifference"></a>
+
+### RequestDialogListDifference
+Loading compound difference (all dialogs after from_clock) as DialogListEntries
+Use it to request difference in dialog list
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| from_clock | [int64](#int64) |  | Shared clock across all states which required for making a dialog entry (e.g. max clock among those dates) / Conceptually you have to set this to sync all including datas after reconnect or authorization |
+
+
+
+
+
+
+<a name="dialog.RequestDoInteractiveMediaAction"></a>
 
 ### RequestDoInteractiveMediaAction
 Sends a request to do interactive media message
@@ -4459,7 +5032,7 @@ Sends a request to do interactive media message
 
 
 
-<a name="dialog.RequestFavouriteDialog"/>
+<a name="dialog.RequestFavouriteDialog"></a>
 
 ### RequestFavouriteDialog
 Marking dialog as favourite
@@ -4474,7 +5047,7 @@ Marking dialog as favourite
 
 
 
-<a name="dialog.RequestFetchDialogIndex"/>
+<a name="dialog.RequestFetchDialogIndex"></a>
 
 ### RequestFetchDialogIndex
 Fetches dialog index (short info about all user&#39;s dialogs).
@@ -4485,7 +5058,22 @@ Used in client side pagination.
 
 
 
-<a name="dialog.RequestHideDialog"/>
+<a name="dialog.RequestGetLastConversationMessages"></a>
+
+### RequestGetLastConversationMessages
+Use it to receive messages for visible dialogs after FetchDialogsIndex
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| peers | [Peer](#dialog.Peer) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.RequestHideDialog"></a>
 
 ### RequestHideDialog
 Hide Dialog from grouped list
@@ -4500,7 +5088,7 @@ Hide Dialog from grouped list
 
 
 
-<a name="dialog.RequestLoadArchived"/>
+<a name="dialog.RequestLoadArchived"></a>
 
 ### RequestLoadArchived
 Loading archived messages - deprecated
@@ -4517,7 +5105,7 @@ Loading archived messages - deprecated
 
 
 
-<a name="dialog.RequestLoadDialogs"/>
+<a name="dialog.RequestLoadDialogs"></a>
 
 ### RequestLoadDialogs
 Loading conversation history
@@ -4536,7 +5124,7 @@ Loading conversation history
 
 
 
-<a name="dialog.RequestLoadGroupedDialogs"/>
+<a name="dialog.RequestLoadGroupedDialogs"></a>
 
 ### RequestLoadGroupedDialogs
 Load all dialogs from grouped list - deprecated
@@ -4551,7 +5139,7 @@ Load all dialogs from grouped list - deprecated
 
 
 
-<a name="dialog.RequestLoadHistory"/>
+<a name="dialog.RequestLoadHistory"></a>
 
 ### RequestLoadHistory
 Loading history of chat
@@ -4570,7 +5158,7 @@ Loading history of chat
 
 
 
-<a name="dialog.RequestMessageRead"/>
+<a name="dialog.RequestMessageRead"></a>
 
 ### RequestMessageRead
 Marking plain messages as read
@@ -4586,7 +5174,7 @@ Marking plain messages as read
 
 
 
-<a name="dialog.RequestMessageReceived"/>
+<a name="dialog.RequestMessageReceived"></a>
 
 ### RequestMessageReceived
 Confirmation of plain message receive by device
@@ -4602,7 +5190,7 @@ Confirmation of plain message receive by device
 
 
 
-<a name="dialog.RequestMessageRemoveReaction"/>
+<a name="dialog.RequestMessageRemoveReaction"></a>
 
 ### RequestMessageRemoveReaction
 Removing Message reaction
@@ -4619,7 +5207,7 @@ Removing Message reaction
 
 
 
-<a name="dialog.RequestMessageSetReaction"/>
+<a name="dialog.RequestMessageSetReaction"></a>
 
 ### RequestMessageSetReaction
 Setting Message reaction
@@ -4636,7 +5224,7 @@ Setting Message reaction
 
 
 
-<a name="dialog.RequestNotifyDialogOpened"/>
+<a name="dialog.RequestNotifyDialogOpened"></a>
 
 ### RequestNotifyDialogOpened
 Notifying about dialog open
@@ -4651,7 +5239,7 @@ Notifying about dialog open
 
 
 
-<a name="dialog.RequestPinMessage"/>
+<a name="dialog.RequestPinMessage"></a>
 
 ### RequestPinMessage
 Pin message in conversation
@@ -4668,7 +5256,7 @@ Pin message in conversation
 
 
 
-<a name="dialog.RequestSendMessage"/>
+<a name="dialog.RequestSendMessage"></a>
 
 ### RequestSendMessage
 Sending plain message
@@ -4677,18 +5265,21 @@ Sending plain message
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | peer | [OutPeer](#dialog.OutPeer) |  |  |
-| rid | [int64](#int64) |  | Id for deduplication |
+| deduplication_id | [int64](#int64) |  | Id for message deduplication |
 | message | [MessageContent](#dialog.MessageContent) |  |  |
 | is_only_for_user | [int32](#int32) |  | if not empty, then message will be send to this user only |
 | forward | [ReferencedMessages](#dialog.ReferencedMessages) |  | If current message forwards some other |
 | reply | [ReferencedMessages](#dialog.ReferencedMessages) |  | If current message is a reply on some other |
+| predicates | [SearchPredicate](#dialog.SearchPredicate) | repeated |  |
+| white_list | [int32](#int32) | repeated |  |
+| black_list | [int32](#int32) | repeated |  |
 
 
 
 
 
 
-<a name="dialog.RequestShowDialog"/>
+<a name="dialog.RequestShowDialog"></a>
 
 ### RequestShowDialog
 Show Dialog in grouped list
@@ -4703,7 +5294,7 @@ Show Dialog in grouped list
 
 
 
-<a name="dialog.RequestUnfavouriteDialog"/>
+<a name="dialog.RequestUnfavouriteDialog"></a>
 
 ### RequestUnfavouriteDialog
 Making dialog as unfavourite
@@ -4718,7 +5309,7 @@ Making dialog as unfavourite
 
 
 
-<a name="dialog.RequestUnpinMessage"/>
+<a name="dialog.RequestUnpinMessage"></a>
 
 ### RequestUnpinMessage
 Unpin message in conversation
@@ -4735,7 +5326,7 @@ Unpin message in conversation
 
 
 
-<a name="dialog.RequestUpdateMessage"/>
+<a name="dialog.RequestUpdateMessage"></a>
 
 ### RequestUpdateMessage
 Changing Message content
@@ -4752,7 +5343,24 @@ Changing Message content
 
 
 
-<a name="dialog.ResponseDialogsOrder"/>
+<a name="dialog.ResponseDialogListDifference"></a>
+
+### ResponseDialogListDifference
+Contains dialogs that was change after from_clock
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| entries | [DialogListEntry](#dialog.DialogListEntry) | repeated |  |
+| clock | [int64](#int64) |  | Start and the end of the compound history data interval |
+| prev_clock | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseDialogsOrder"></a>
 
 ### ResponseDialogsOrder
 Dialogs order response - deprecated
@@ -4769,7 +5377,7 @@ Dialogs order response - deprecated
 
 
 
-<a name="dialog.ResponseFetchDialogIndex"/>
+<a name="dialog.ResponseFetchDialogIndex"></a>
 
 ### ResponseFetchDialogIndex
 
@@ -4784,7 +5392,38 @@ Dialogs order response - deprecated
 
 
 
-<a name="dialog.ResponseLoadArchived"/>
+<a name="dialog.ResponseGetLastConversationMessages"></a>
+
+### ResponseGetLastConversationMessages
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| messages | [ResponseGetLastConversationMessages.Pair](#dialog.ResponseGetLastConversationMessages.Pair) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.ResponseGetLastConversationMessages.Pair"></a>
+
+### ResponseGetLastConversationMessages.Pair
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| peer | [Peer](#dialog.Peer) |  |  |
+| message | [HistoryMessage](#dialog.HistoryMessage) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseLoadArchived"></a>
 
 ### ResponseLoadArchived
 deprecated
@@ -4804,7 +5443,7 @@ deprecated
 
 
 
-<a name="dialog.ResponseLoadDialogs"/>
+<a name="dialog.ResponseLoadDialogs"></a>
 
 ### ResponseLoadDialogs
 Contains dialogs and related peers and entities
@@ -4823,7 +5462,7 @@ Contains dialogs and related peers and entities
 
 
 
-<a name="dialog.ResponseLoadGroupedDialogs"/>
+<a name="dialog.ResponseLoadGroupedDialogs"></a>
 
 ### ResponseLoadGroupedDialogs
 deprecated
@@ -4844,7 +5483,7 @@ deprecated
 
 
 
-<a name="dialog.ResponseLoadHistory"/>
+<a name="dialog.ResponseLoadHistory"></a>
 
 ### ResponseLoadHistory
 
@@ -4865,7 +5504,7 @@ deprecated
 
 
 
-<a name="dialog.ResponseReactionsResponse"/>
+<a name="dialog.ResponseReactionsResponse"></a>
 
 ### ResponseReactionsResponse
 Response for reactions change
@@ -4882,7 +5521,42 @@ Response for reactions change
 
 
 
-<a name="dialog.ServiceEx"/>
+<a name="dialog.ResponseSendMessage"></a>
+
+### ResponseSendMessage
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| message_id | [UUIDValue](#dialog.UUIDValue) |  | Message id |
+| message_date | [int64](#int64) |  | Message creation date from server |
+| previous_message_id | [UUIDValue](#dialog.UUIDValue) |  | Previous message id |
+| creator_user_id | [int64](#int64) |  | Message creator |
+| clock | [int64](#int64) |  | Clock of this message (initially equals the message_date field) |
+
+
+
+
+
+
+<a name="dialog.SearchPredicate"></a>
+
+### SearchPredicate
+Predicate for searching in custom profile
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| values | [string](#string) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.ServiceEx"></a>
 
 ### ServiceEx
 
@@ -4911,7 +5585,7 @@ Response for reactions change
 
 
 
-<a name="dialog.ServiceExChangedAbout"/>
+<a name="dialog.ServiceExChangedAbout"></a>
 
 ### ServiceExChangedAbout
 Service message on group about change
@@ -4926,7 +5600,7 @@ Service message on group about change
 
 
 
-<a name="dialog.ServiceExChangedAvatar"/>
+<a name="dialog.ServiceExChangedAvatar"></a>
 
 ### ServiceExChangedAvatar
 Service message about avatar change
@@ -4941,7 +5615,7 @@ Service message about avatar change
 
 
 
-<a name="dialog.ServiceExChangedTitle"/>
+<a name="dialog.ServiceExChangedTitle"></a>
 
 ### ServiceExChangedTitle
 Service message about group title change
@@ -4956,7 +5630,7 @@ Service message about group title change
 
 
 
-<a name="dialog.ServiceExChangedTopic"/>
+<a name="dialog.ServiceExChangedTopic"></a>
 
 ### ServiceExChangedTopic
 Service message on group topic change
@@ -4971,7 +5645,7 @@ Service message on group topic change
 
 
 
-<a name="dialog.ServiceExChatArchived"/>
+<a name="dialog.ServiceExChatArchived"></a>
 
 ### ServiceExChatArchived
 Message about chat archived
@@ -4981,7 +5655,7 @@ Message about chat archived
 
 
 
-<a name="dialog.ServiceExChatRestored"/>
+<a name="dialog.ServiceExChatRestored"></a>
 
 ### ServiceExChatRestored
 Message about chat restored
@@ -4991,7 +5665,7 @@ Message about chat restored
 
 
 
-<a name="dialog.ServiceExContactRegistered"/>
+<a name="dialog.ServiceExContactRegistered"></a>
 
 ### ServiceExContactRegistered
 Service message about user registration
@@ -5006,7 +5680,7 @@ Service message about user registration
 
 
 
-<a name="dialog.ServiceExGroupCreated"/>
+<a name="dialog.ServiceExGroupCreated"></a>
 
 ### ServiceExGroupCreated
 Service message about group creating
@@ -5016,7 +5690,7 @@ Service message about group creating
 
 
 
-<a name="dialog.ServiceExPhoneCall"/>
+<a name="dialog.ServiceExPhoneCall"></a>
 
 ### ServiceExPhoneCall
 Update about phone call
@@ -5031,7 +5705,7 @@ Update about phone call
 
 
 
-<a name="dialog.ServiceExPhoneMissed"/>
+<a name="dialog.ServiceExPhoneMissed"></a>
 
 ### ServiceExPhoneMissed
 Update about missing phone call
@@ -5041,7 +5715,7 @@ Update about missing phone call
 
 
 
-<a name="dialog.ServiceExPhoneRejected"/>
+<a name="dialog.ServiceExPhoneRejected"></a>
 
 ### ServiceExPhoneRejected
 Update about phone call rejected
@@ -5051,7 +5725,7 @@ Update about phone call rejected
 
 
 
-<a name="dialog.ServiceExUserInvited"/>
+<a name="dialog.ServiceExUserInvited"></a>
 
 ### ServiceExUserInvited
 Service message about adding user to group
@@ -5066,7 +5740,7 @@ Service message about adding user to group
 
 
 
-<a name="dialog.ServiceExUserJoined"/>
+<a name="dialog.ServiceExUserJoined"></a>
 
 ### ServiceExUserJoined
 Service message about user join to group
@@ -5076,7 +5750,7 @@ Service message about user join to group
 
 
 
-<a name="dialog.ServiceExUserKicked"/>
+<a name="dialog.ServiceExUserKicked"></a>
 
 ### ServiceExUserKicked
 Service message about kicking user from group
@@ -5091,7 +5765,7 @@ Service message about kicking user from group
 
 
 
-<a name="dialog.ServiceExUserLeft"/>
+<a name="dialog.ServiceExUserLeft"></a>
 
 ### ServiceExUserLeft
 Service message about user left group
@@ -5101,7 +5775,7 @@ Service message about user left group
 
 
 
-<a name="dialog.ServiceMessage"/>
+<a name="dialog.ServiceMessage"></a>
 
 ### ServiceMessage
 Service message
@@ -5117,7 +5791,7 @@ Service message
 
 
 
-<a name="dialog.StickerMessage"/>
+<a name="dialog.StickerMessage"></a>
 
 ### StickerMessage
 Sticker message
@@ -5138,7 +5812,7 @@ Sticker message
 
 
 
-<a name="dialog.TextCommand"/>
+<a name="dialog.TextCommand"></a>
 
 ### TextCommand
 Text Command Message for bots
@@ -5154,7 +5828,7 @@ Text Command Message for bots
 
 
 
-<a name="dialog.TextExMarkdown"/>
+<a name="dialog.TextExMarkdown"></a>
 
 ### TextExMarkdown
 Markdown extension
@@ -5169,7 +5843,7 @@ Markdown extension
 
 
 
-<a name="dialog.TextMessage"/>
+<a name="dialog.TextMessage"></a>
 
 ### TextMessage
 Text message
@@ -5188,7 +5862,7 @@ Text message
 
 
 
-<a name="dialog.TextMessageEx"/>
+<a name="dialog.TextMessageEx"></a>
 
 ### TextMessageEx
 
@@ -5205,7 +5879,7 @@ Text message
 
 
 
-<a name="dialog.TextModernAttach"/>
+<a name="dialog.TextModernAttach"></a>
 
 ### TextModernAttach
 Attaches to message
@@ -5225,7 +5899,7 @@ Attaches to message
 
 
 
-<a name="dialog.TextModernField"/>
+<a name="dialog.TextModernField"></a>
 
 ### TextModernField
 Modern message fields
@@ -5242,7 +5916,7 @@ Modern message fields
 
 
 
-<a name="dialog.TextModernMessage"/>
+<a name="dialog.TextModernMessage"></a>
 
 ### TextModernMessage
 Modern text message
@@ -5261,7 +5935,7 @@ Modern text message
 
 
 
-<a name="dialog.UnsupportedMessage"/>
+<a name="dialog.UnsupportedMessage"></a>
 
 ### UnsupportedMessage
 Explicit type for unsupported message
@@ -5271,7 +5945,7 @@ Explicit type for unsupported message
 
 
 
-<a name="dialog.UpdateChatArchive"/>
+<a name="dialog.UpdateChatArchive"></a>
 
 ### UpdateChatArchive
 Update about chat archive
@@ -5286,7 +5960,7 @@ Update about chat archive
 
 
 
-<a name="dialog.UpdateChatClear"/>
+<a name="dialog.UpdateChatClear"></a>
 
 ### UpdateChatClear
 Update about chat clear
@@ -5302,7 +5976,7 @@ Update about chat clear
 
 
 
-<a name="dialog.UpdateChatDelete"/>
+<a name="dialog.UpdateChatDelete"></a>
 
 ### UpdateChatDelete
 Update about chat delete
@@ -5318,7 +5992,7 @@ Update about chat delete
 
 
 
-<a name="dialog.UpdateChatGroupsChanged"/>
+<a name="dialog.UpdateChatGroupsChanged"></a>
 
 ### UpdateChatGroupsChanged
 Update about chat groups changed. Called only when adding, removing and reordering of grouped dialog.
@@ -5333,7 +6007,7 @@ Update about chat groups changed. Called only when adding, removing and reorderi
 
 
 
-<a name="dialog.UpdateDialogFavouriteChanged"/>
+<a name="dialog.UpdateDialogFavouriteChanged"></a>
 
 ### UpdateDialogFavouriteChanged
 Update about dialog favourite changed
@@ -5349,7 +6023,7 @@ Update about dialog favourite changed
 
 
 
-<a name="dialog.UpdateInteractiveMediaEvent"/>
+<a name="dialog.UpdateInteractiveMediaEvent"></a>
 
 ### UpdateInteractiveMediaEvent
 The update which will be received when the action is performed. Duplicated on all clients.
@@ -5367,7 +6041,7 @@ The update which will be received when the action is performed. Duplicated on al
 
 
 
-<a name="dialog.UpdateMessage"/>
+<a name="dialog.UpdateMessage"></a>
 
 ### UpdateMessage
 Update about plain message
@@ -5377,21 +6051,23 @@ Update about plain message
 | ----- | ---- | ----- | ----------- |
 | peer | [Peer](#dialog.Peer) |  |  |
 | sender_uid | [int32](#int32) |  |  |
-| date | [int64](#int64) |  |  |
+| date | [int64](#int64) |  | message creation date |
 | mid | [UUIDValue](#dialog.UUIDValue) |  | Message id |
 | message | [MessageContent](#dialog.MessageContent) |  |  |
 | attributes | [MessageAttributes](#dialog.MessageAttributes) |  | attributes to help reasoning about message |
 | forward | [ReferencedMessages](#dialog.ReferencedMessages) |  |  |
 | reply | [ReferencedMessages](#dialog.ReferencedMessages) |  |  |
 | previous_mid | [UUIDValue](#dialog.UUIDValue) |  | Message id of previos message from current conversation |
-| counter | [google.protobuf.Int32Value](#google.protobuf.Int32Value) |  | counter of unreads message |
+| counter | [google.protobuf.Int32Value](#google.protobuf.Int32Value) |  | counter of the unread messages |
+| my_read_date | [google.protobuf.Int64Value](#google.protobuf.Int64Value) |  | date of my own read |
+| random_id | [int64](#int64) |  |  |
 
 
 
 
 
 
-<a name="dialog.UpdateMessageContentChanged"/>
+<a name="dialog.UpdateMessageContentChanged"></a>
 
 ### UpdateMessageContentChanged
 Update about message change
@@ -5409,7 +6085,7 @@ Update about message change
 
 
 
-<a name="dialog.UpdateMessageDelete"/>
+<a name="dialog.UpdateMessageDelete"></a>
 
 ### UpdateMessageDelete
 Update about message delete
@@ -5427,7 +6103,26 @@ Update about message delete
 
 
 
-<a name="dialog.UpdateMessageRead"/>
+<a name="dialog.UpdateMessageEditRejectedByHook"></a>
+
+### UpdateMessageEditRejectedByHook
+Update about rejection of message update request
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| peer | [Peer](#dialog.Peer) |  |  |
+| mid | [UUIDValue](#dialog.UUIDValue) |  | related message id |
+| date | [int64](#int64) |  |  |
+| hookId | [string](#string) |  |  |
+| reason | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+
+
+
+
+
+
+<a name="dialog.UpdateMessageRead"></a>
 
 ### UpdateMessageRead
 Update about message read
@@ -5444,7 +6139,7 @@ Update about message read
 
 
 
-<a name="dialog.UpdateMessageReadByMe"/>
+<a name="dialog.UpdateMessageReadByMe"></a>
 
 ### UpdateMessageReadByMe
 Update about message read by me
@@ -5461,7 +6156,7 @@ Update about message read by me
 
 
 
-<a name="dialog.UpdateMessageReceived"/>
+<a name="dialog.UpdateMessageReceived"></a>
 
 ### UpdateMessageReceived
 Update about message received
@@ -5478,7 +6173,26 @@ Update about message received
 
 
 
-<a name="dialog.UpdateMessageSent"/>
+<a name="dialog.UpdateMessageRejectedByHook"></a>
+
+### UpdateMessageRejectedByHook
+Update about rejection of message send request
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| peer | [Peer](#dialog.Peer) |  |  |
+| rid | [int64](#int64) |  |  |
+| date | [int64](#int64) |  |  |
+| hookId | [string](#string) |  |  |
+| reason | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+
+
+
+
+
+
+<a name="dialog.UpdateMessageSent"></a>
 
 ### UpdateMessageSent
 Update about message sent
@@ -5492,13 +6206,14 @@ Update about message sent
 | mid | [UUIDValue](#dialog.UUIDValue) |  | Message id |
 | prev_mid | [UUIDValue](#dialog.UUIDValue) |  | Previous message id in current conversation |
 | unread_counter | [google.protobuf.Int32Value](#google.protobuf.Int32Value) |  | counter of unread messages |
+| myReadDate | [google.protobuf.Int64Value](#google.protobuf.Int64Value) |  |  |
 
 
 
 
 
 
-<a name="dialog.UpdatePinnedMessagesChanged"/>
+<a name="dialog.UpdatePinnedMessagesChanged"></a>
 
 ### UpdatePinnedMessagesChanged
 Update about pinned messages changed in conversation
@@ -5515,7 +6230,7 @@ Update about pinned messages changed in conversation
 
 
 
-<a name="dialog.UpdateReactionsUpdate"/>
+<a name="dialog.UpdateReactionsUpdate"></a>
 
 ### UpdateReactionsUpdate
 Update about reactions change
@@ -5532,7 +6247,38 @@ Update about reactions change
 
 
 
-<a name="dialog.WebpageMedia"/>
+<a name="dialog.UpdateThreadCreated"></a>
+
+### UpdateThreadCreated
+Update about new thread inside group
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| peer | [GroupOutPeer](#dialog.GroupOutPeer) |  | peer representing thread |
+| start_message | [UUIDValue](#dialog.UUIDValue) |  | messageId from parent group where thread starts |
+
+
+
+
+
+
+<a name="dialog.UpdateThreadLifted"></a>
+
+### UpdateThreadLifted
+Update about thread converted to group
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| peer | [GroupOutPeer](#dialog.GroupOutPeer) |  |  |
+
+
+
+
+
+
+<a name="dialog.WebpageMedia"></a>
 
 ### WebpageMedia
 Webpage media
@@ -5552,7 +6298,7 @@ Webpage media
  
 
 
-<a name="dialog.DialogsFilter"/>
+<a name="dialog.DialogsFilter"></a>
 
 ### DialogsFilter
 
@@ -5565,7 +6311,7 @@ Webpage media
 
 
 
-<a name="dialog.InteractiveMediaStyle"/>
+<a name="dialog.InteractiveMediaStyle"></a>
 
 ### InteractiveMediaStyle
 
@@ -5579,7 +6325,7 @@ Webpage media
 
 
 
-<a name="dialog.ListLoadMode"/>
+<a name="dialog.ListLoadMode"></a>
 
 ### ListLoadMode
 
@@ -5593,7 +6339,7 @@ Webpage media
 
 
 
-<a name="dialog.MessageState"/>
+<a name="dialog.MessageState"></a>
 
 ### MessageState
 
@@ -5611,49 +6357,51 @@ Webpage media
  
 
 
-<a name="dialog.Messaging"/>
+<a name="dialog.Messaging"></a>
 
 ### Messaging
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| DoInteractiveMediaAction | [RequestDoInteractiveMediaAction](#dialog.RequestDoInteractiveMediaAction) | [ResponseVoid](#dialog.RequestDoInteractiveMediaAction) | Interact with a message media (click on button for example) |
-| SendMessage | [RequestSendMessage](#dialog.RequestSendMessage) | [ResponseSeqDate](#dialog.RequestSendMessage) |  |
-| UpdateMessage | [RequestUpdateMessage](#dialog.RequestUpdateMessage) | [ResponseSeqDate](#dialog.RequestUpdateMessage) |  |
-| MessageReceived | [RequestMessageReceived](#dialog.RequestMessageReceived) | [ResponseVoid](#dialog.RequestMessageReceived) | Mark message as received by self |
-| MessageRead | [RequestMessageRead](#dialog.RequestMessageRead) | [ResponseVoid](#dialog.RequestMessageRead) | Mark message as read by self |
-| DeleteMessageObsolete | [RequestDeleteMessageObsolete](#dialog.RequestDeleteMessageObsolete) | [ResponseSeq](#dialog.RequestDeleteMessageObsolete) | deprecated |
-| ClearChat | [RequestClearChat](#dialog.RequestClearChat) | [ResponseSeq](#dialog.RequestClearChat) | Clear chat history |
-| DeleteChat | [RequestDeleteChat](#dialog.RequestDeleteChat) | [ResponseSeq](#dialog.RequestDeleteChat) |  |
-| ArchiveChat | [RequestArchiveChat](#dialog.RequestArchiveChat) | [ResponseSeq](#dialog.RequestArchiveChat) | deprecated |
-| MessageSetReaction | [RequestMessageSetReaction](#dialog.RequestMessageSetReaction) | [ResponseReactionsResponse](#dialog.RequestMessageSetReaction) | Add reaction on message (emoji) |
-| MessageRemoveReaction | [RequestMessageRemoveReaction](#dialog.RequestMessageRemoveReaction) | [ResponseReactionsResponse](#dialog.RequestMessageRemoveReaction) |  |
-| LoadHistory | [RequestLoadHistory](#dialog.RequestLoadHistory) | [ResponseLoadHistory](#dialog.RequestLoadHistory) | Load conversation history |
-| LoadDialogs | [RequestLoadDialogs](#dialog.RequestLoadDialogs) | [ResponseLoadDialogs](#dialog.RequestLoadDialogs) | Load user&#39;s dialogs |
-| FetchDialogIndex | [RequestFetchDialogIndex](#dialog.RequestFetchDialogIndex) | [ResponseFetchDialogIndex](#dialog.RequestFetchDialogIndex) | Load short info about all user&#39;s dialogs |
-| LoadArchived | [RequestLoadArchived](#dialog.RequestLoadArchived) | [ResponseLoadArchived](#dialog.RequestLoadArchived) | deprecated |
-| LoadGroupedDialogs | [RequestLoadGroupedDialogs](#dialog.RequestLoadGroupedDialogs) | [ResponseLoadGroupedDialogs](#dialog.RequestLoadGroupedDialogs) | deprecated |
-| HideDialog | [RequestHideDialog](#dialog.RequestHideDialog) | [ResponseDialogsOrder](#dialog.RequestHideDialog) | deprecated |
-| ShowDialog | [RequestShowDialog](#dialog.RequestShowDialog) | [ResponseDialogsOrder](#dialog.RequestShowDialog) | deprecated |
-| FavouriteDialog | [RequestFavouriteDialog](#dialog.RequestFavouriteDialog) | [ResponseDialogsOrder](#dialog.RequestFavouriteDialog) |  |
-| UnfavouriteDialog | [RequestUnfavouriteDialog](#dialog.RequestUnfavouriteDialog) | [ResponseDialogsOrder](#dialog.RequestUnfavouriteDialog) |  |
-| NotifyDialogOpened | [RequestNotifyDialogOpened](#dialog.RequestNotifyDialogOpened) | [ResponseVoid](#dialog.RequestNotifyDialogOpened) |  |
-| PinMessage | [RequestPinMessage](#dialog.RequestPinMessage) | [ResponseSeqDate](#dialog.RequestPinMessage) |  |
-| UnpinMessage | [RequestUnpinMessage](#dialog.RequestUnpinMessage) | [ResponseSeqDate](#dialog.RequestUnpinMessage) |  |
+| DoInteractiveMediaAction | [RequestDoInteractiveMediaAction](#dialog.RequestDoInteractiveMediaAction) | [ResponseVoid](#dialog.ResponseVoid) | Interact with a message media (click on button for example) |
+| SendMessage | [RequestSendMessage](#dialog.RequestSendMessage) | [ResponseSendMessage](#dialog.ResponseSendMessage) |  |
+| UpdateMessage | [RequestUpdateMessage](#dialog.RequestUpdateMessage) | [ResponseSeqDate](#dialog.ResponseSeqDate) |  |
+| MessageReceived | [RequestMessageReceived](#dialog.RequestMessageReceived) | [ResponseVoid](#dialog.ResponseVoid) | Mark message as received by self |
+| MessageRead | [RequestMessageRead](#dialog.RequestMessageRead) | [ResponseVoid](#dialog.ResponseVoid) | Mark message as read by self |
+| DeleteMessageObsolete | [RequestDeleteMessageObsolete](#dialog.RequestDeleteMessageObsolete) | [ResponseSeq](#dialog.ResponseSeq) | deprecated |
+| ClearChat | [RequestClearChat](#dialog.RequestClearChat) | [ResponseSeq](#dialog.ResponseSeq) | Clear chat history |
+| DeleteChat | [RequestDeleteChat](#dialog.RequestDeleteChat) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| ArchiveChat | [RequestArchiveChat](#dialog.RequestArchiveChat) | [ResponseSeq](#dialog.ResponseSeq) | deprecated |
+| MessageSetReaction | [RequestMessageSetReaction](#dialog.RequestMessageSetReaction) | [ResponseReactionsResponse](#dialog.ResponseReactionsResponse) | Add reaction on message (emoji) |
+| MessageRemoveReaction | [RequestMessageRemoveReaction](#dialog.RequestMessageRemoveReaction) | [ResponseReactionsResponse](#dialog.ResponseReactionsResponse) |  |
+| LoadHistory | [RequestLoadHistory](#dialog.RequestLoadHistory) | [ResponseLoadHistory](#dialog.ResponseLoadHistory) | Load conversation history |
+| LoadDialogs | [RequestLoadDialogs](#dialog.RequestLoadDialogs) | [ResponseLoadDialogs](#dialog.ResponseLoadDialogs) | Load user&#39;s dialogs |
+| FetchDialogIndex | [RequestFetchDialogIndex](#dialog.RequestFetchDialogIndex) | [ResponseFetchDialogIndex](#dialog.ResponseFetchDialogIndex) | Load short info about all user&#39;s dialogs |
+| DialogListDifference | [RequestDialogListDifference](#dialog.RequestDialogListDifference) | [ResponseDialogListDifference](#dialog.ResponseDialogListDifference) | Load dialogs by peers |
+| GetLastConversationMessages | [RequestGetLastConversationMessages](#dialog.RequestGetLastConversationMessages) | [ResponseGetLastConversationMessages](#dialog.ResponseGetLastConversationMessages) | Load last messages of the given conversations |
+| LoadArchived | [RequestLoadArchived](#dialog.RequestLoadArchived) | [ResponseLoadArchived](#dialog.ResponseLoadArchived) | deprecated |
+| LoadGroupedDialogs | [RequestLoadGroupedDialogs](#dialog.RequestLoadGroupedDialogs) | [ResponseLoadGroupedDialogs](#dialog.ResponseLoadGroupedDialogs) | deprecated |
+| HideDialog | [RequestHideDialog](#dialog.RequestHideDialog) | [ResponseDialogsOrder](#dialog.ResponseDialogsOrder) | deprecated |
+| ShowDialog | [RequestShowDialog](#dialog.RequestShowDialog) | [ResponseDialogsOrder](#dialog.ResponseDialogsOrder) | deprecated |
+| FavouriteDialog | [RequestFavouriteDialog](#dialog.RequestFavouriteDialog) | [ResponseDialogsOrder](#dialog.ResponseDialogsOrder) |  |
+| UnfavouriteDialog | [RequestUnfavouriteDialog](#dialog.RequestUnfavouriteDialog) | [ResponseDialogsOrder](#dialog.ResponseDialogsOrder) |  |
+| NotifyDialogOpened | [RequestNotifyDialogOpened](#dialog.RequestNotifyDialogOpened) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| PinMessage | [RequestPinMessage](#dialog.RequestPinMessage) | [ResponseSeqDate](#dialog.ResponseSeqDate) |  |
+| UnpinMessage | [RequestUnpinMessage](#dialog.RequestUnpinMessage) | [ResponseSeqDate](#dialog.ResponseSeqDate) |  |
 
  
 
 
 
-<a name="miscellaneous.proto"/>
+<a name="miscellaneous.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## miscellaneous.proto
 
 
 
-<a name="dialog.Any"/>
+<a name="dialog.Any"></a>
 
 ### Any
 Any
@@ -5671,7 +6419,7 @@ data data
 
 
 
-<a name="dialog.CallsConfig"/>
+<a name="dialog.CallsConfig"></a>
 
 ### CallsConfig
 Calls configuration
@@ -5699,7 +6447,7 @@ screenSharingEnabled If true then client should enable screen sharing
 
 
 
-<a name="dialog.Config"/>
+<a name="dialog.Config"></a>
 
 ### Config
 Configuration of system
@@ -5724,13 +6472,15 @@ servicePeers Service peers supported interpreted by the client
 | custom_profile_schema | [string](#string) |  |  |
 | service_peers | [ServicePeers](#dialog.ServicePeers) |  |  |
 | extensions | [Any](#dialog.Any) | repeated |  |
+| client_keep_alive | [int64](#int64) |  |  |
+| supported_methods | [SupportedServerMethodsType](#dialog.SupportedServerMethodsType) | repeated |  |
 
 
 
 
 
 
-<a name="dialog.Discover"/>
+<a name="dialog.Discover"></a>
 
 ### Discover
 Discover description
@@ -5746,7 +6496,7 @@ peers peers
 
 
 
-<a name="dialog.Extension"/>
+<a name="dialog.Extension"></a>
 
 ### Extension
 Extention
@@ -5764,7 +6514,7 @@ data Extension data
 
 
 
-<a name="dialog.InvitesConfig"/>
+<a name="dialog.InvitesConfig"></a>
 
 ### InvitesConfig
 Group invites configuration
@@ -5786,7 +6536,7 @@ shareInviteUrl Independent URL for external app sharing
 
 
 
-<a name="dialog.RecursiveMapValue"/>
+<a name="dialog.RecursiveMapValue"></a>
 
 ### RecursiveMapValue
 
@@ -5801,7 +6551,7 @@ shareInviteUrl Independent URL for external app sharing
 
 
 
-<a name="dialog.RecursiveMapValue.Array"/>
+<a name="dialog.RecursiveMapValue.Array"></a>
 
 ### RecursiveMapValue.Array
 
@@ -5816,7 +6566,7 @@ shareInviteUrl Independent URL for external app sharing
 
 
 
-<a name="dialog.RecursiveMapValue.Item"/>
+<a name="dialog.RecursiveMapValue.Item"></a>
 
 ### RecursiveMapValue.Item
 
@@ -5832,7 +6582,7 @@ shareInviteUrl Independent URL for external app sharing
 
 
 
-<a name="dialog.RecursiveMapValue.Value"/>
+<a name="dialog.RecursiveMapValue.Value"></a>
 
 ### RecursiveMapValue.Value
 
@@ -5852,7 +6602,7 @@ shareInviteUrl Independent URL for external app sharing
 
 
 
-<a name="dialog.ResponseBool"/>
+<a name="dialog.ResponseBool"></a>
 
 ### ResponseBool
 Boolean response
@@ -5867,7 +6617,7 @@ Boolean response
 
 
 
-<a name="dialog.ResponseSeq"/>
+<a name="dialog.ResponseSeq"></a>
 
 ### ResponseSeq
 Sequence response. Methods that return this value must process response in particular order
@@ -5884,7 +6634,7 @@ Sequence response. Methods that return this value must process response in parti
 
 
 
-<a name="dialog.ResponseSeqDate"/>
+<a name="dialog.ResponseSeqDate"></a>
 
 ### ResponseSeqDate
 Sequence response with date. Methods that return this value must process response in particular order
@@ -5902,7 +6652,7 @@ Sequence response with date. Methods that return this value must process respons
 
 
 
-<a name="dialog.ResponseSeqDateMid"/>
+<a name="dialog.ResponseSeqDateMid"></a>
 
 ### ResponseSeqDateMid
 Response with seq, date and messageId
@@ -5920,7 +6670,7 @@ Response with seq, date and messageId
 
 
 
-<a name="dialog.ResponseVoid"/>
+<a name="dialog.ResponseVoid"></a>
 
 ### ResponseVoid
 Empty response
@@ -5930,7 +6680,7 @@ Empty response
 
 
 
-<a name="dialog.ServerMetaInfo"/>
+<a name="dialog.ServerMetaInfo"></a>
 
 ### ServerMetaInfo
 Some info about the servr
@@ -5948,7 +6698,7 @@ apiVersion Server api version
 
 
 
-<a name="dialog.ServicePeers"/>
+<a name="dialog.ServicePeers"></a>
 
 ### ServicePeers
 Service peers
@@ -5965,7 +6715,7 @@ Service peers
 
 
 
-<a name="dialog.UpdateConfig"/>
+<a name="dialog.UpdateConfig"></a>
 
 ### UpdateConfig
 Update about config change
@@ -5983,7 +6733,7 @@ Update about config change
  
 
 
-<a name="dialog.RtcpMuxPolicy"/>
+<a name="dialog.RtcpMuxPolicy"></a>
 
 ### RtcpMuxPolicy
 
@@ -5996,7 +6746,19 @@ Update about config change
 
 
 
-<a name="dialog.UpdateOptimization"/>
+<a name="dialog.SupportedServerMethodsType"></a>
+
+### SupportedServerMethodsType
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| NONE_SUPPORTED_METHODS | 0 |  |
+| CHANGE_PASSWORD | 1 |  |
+
+
+
+<a name="dialog.UpdateOptimization"></a>
 
 ### UpdateOptimization
 
@@ -6022,14 +6784,14 @@ Update about config change
 
 
 
-<a name="obsolete.proto"/>
+<a name="obsolete.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## obsolete.proto
 
 
 
-<a name="dialog.ObsoleteGetDifferenceCommand"/>
+<a name="dialog.ObsoleteGetDifferenceCommand"></a>
 
 ### ObsoleteGetDifferenceCommand
 
@@ -6046,7 +6808,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteOutPeer"/>
+<a name="dialog.ObsoleteOutPeer"></a>
 
 ### ObsoleteOutPeer
 
@@ -6062,7 +6824,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoletePeer"/>
+<a name="dialog.ObsoletePeer"></a>
 
 ### ObsoletePeer
 
@@ -6080,7 +6842,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoletePeersList"/>
+<a name="dialog.ObsoletePeersList"></a>
 
 ### ObsoletePeersList
 
@@ -6095,7 +6857,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteSeqUpdateBox"/>
+<a name="dialog.ObsoleteSeqUpdateBox"></a>
 
 ### ObsoleteSeqUpdateBox
 
@@ -6112,7 +6874,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteServiceUpdate"/>
+<a name="dialog.ObsoleteServiceUpdate"></a>
 
 ### ObsoleteServiceUpdate
 
@@ -6127,7 +6889,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox"/>
+<a name="dialog.ObsoleteWeakUpdateBox"></a>
 
 ### ObsoleteWeakUpdateBox
 
@@ -6147,13 +6909,14 @@ Update about config change
 | incomingCall | [ObsoleteWeakUpdateBox.ObsoleteUpdateIncomingCall](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateIncomingCall) |  |  |
 | callHandled | [ObsoleteWeakUpdateBox.ObsoleteUpdateCallHandled](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateCallHandled) |  |  |
 | callDisposed | [ObsoleteWeakUpdateBox.ObsoleteUpdateCallDisposed](#dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateCallDisposed) |  |  |
+| update_any | [UpdateSeqUpdate](#dialog.UpdateSeqUpdate) |  |  |
 
 
 
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateCallDisposed"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateCallDisposed"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateCallDisposed
 
@@ -6170,7 +6933,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateCallHandled"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateCallHandled"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateCallHandled
 
@@ -6186,7 +6949,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDeviceConnected"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDeviceConnected"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDeviceConnected
 
@@ -6203,7 +6966,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDeviceDisconnected"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDeviceDisconnected"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDeviceDisconnected
 
@@ -6220,7 +6983,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDisposed"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDisposed"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusDisposed
 
@@ -6235,7 +6998,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusMessage"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusMessage"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateEventBusMessage
 
@@ -6253,7 +7016,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateForceReloadState"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateForceReloadState"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateForceReloadState
 
@@ -6268,7 +7031,24 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateGroupOnline"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateForceReloadState.ObsoleteForceReloadField"></a>
+
+### ObsoleteWeakUpdateBox.ObsoleteUpdateForceReloadState.ObsoleteForceReloadField
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| reloadDialogs | [google.protobuf.Empty](#google.protobuf.Empty) |  |  |
+| reloadContacts | [google.protobuf.Empty](#google.protobuf.Empty) |  |  |
+| reloadHistory | [ObsoletePeersList](#dialog.ObsoletePeersList) |  |  |
+
+
+
+
+
+
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateGroupOnline"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateGroupOnline
 
@@ -6278,13 +7058,14 @@ Update about config change
 | ----- | ---- | ----- | ----------- |
 | groupId | [int32](#int32) |  |  |
 | count | [int32](#int32) |  |  |
+| clock | [int64](#int64) |  |  |
 
 
 
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateIncomingCall"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateIncomingCall"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateIncomingCall
 
@@ -6304,7 +7085,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateTyping"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateTyping"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateTyping
 
@@ -6322,7 +7103,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateUserLastSeen"/>
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateUserLastSeen"></a>
 
 ### ObsoleteWeakUpdateBox.ObsoleteUpdateUserLastSeen
 
@@ -6341,7 +7122,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateCommand"/>
+<a name="dialog.ObsoleteWeakUpdateCommand"></a>
 
 ### ObsoleteWeakUpdateCommand
 
@@ -6364,7 +7145,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateCommand.ObsoleteMyOnline"/>
+<a name="dialog.ObsoleteWeakUpdateCommand.ObsoleteMyOnline"></a>
 
 ### ObsoleteWeakUpdateCommand.ObsoleteMyOnline
 
@@ -6379,7 +7160,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteWeakUpdateCommand.ObsoleteMyTyping"/>
+<a name="dialog.ObsoleteWeakUpdateCommand.ObsoleteMyTyping"></a>
 
 ### ObsoleteWeakUpdateCommand.ObsoleteMyTyping
 
@@ -6398,7 +7179,7 @@ Update about config change
  
 
 
-<a name="dialog.ObsoletePeer.ObsoletePeerType"/>
+<a name="dialog.ObsoletePeer.ObsoletePeerType"></a>
 
 ### ObsoletePeer.ObsoletePeerType
 
@@ -6412,7 +7193,7 @@ Update about config change
 
 
 
-<a name="dialog.ObsoleteTypingType"/>
+<a name="dialog.ObsoleteTypingType"></a>
 
 ### ObsoleteTypingType
 
@@ -6423,12 +7204,27 @@ Update about config change
 | OBSOLETE_TYPINGTYPE_TEXT | 1 |  |
 
 
- 
+
+<a name="dialog.ObsoleteWeakUpdateBox.ObsoleteUpdateCallDisposed.ObsoleteDisposalReason"></a>
+
+### ObsoleteWeakUpdateBox.ObsoleteUpdateCallDisposed.ObsoleteDisposalReason
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| OBSOLETE_DISPOSAL_REASON_UNKNOWN | 0 |  |
+| OBSOLETE_DISPOSAL_REASON_REJECTED | 1 |  |
+| OBSOLETE_DISPOSAL_REASON_BUSY | 2 |  |
+| OBSOLETE_DISPOSAL_REASON_ENDED | 3 |  |
+| OBSOLETE_DISPOSAL_REASON_ANSWER_TIMEOUT | 4 |  |
+
 
  
 
+ 
 
-<a name="dialog.Obsolete"/>
+
+<a name="dialog.Obsolete"></a>
 
 ### Obsolete
 deprecated
@@ -6436,21 +7232,21 @@ deprecated
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | Obsolete | [.google.protobuf.BytesValue](#google.protobuf.BytesValue) | [.google.protobuf.BytesValue](#google.protobuf.BytesValue) |  |
-| SeqUpdates | [.google.protobuf.Empty](#google.protobuf.Empty) | [ObsoleteSeqUpdateBox](#google.protobuf.Empty) |  |
-| WeakUpdates | [ObsoleteWeakUpdateCommand](#dialog.ObsoleteWeakUpdateCommand) | [ObsoleteWeakUpdateBox](#dialog.ObsoleteWeakUpdateCommand) |  |
+| SeqUpdates | [.google.protobuf.Empty](#google.protobuf.Empty) | [ObsoleteSeqUpdateBox](#dialog.ObsoleteSeqUpdateBox) stream |  |
+| WeakUpdates | [ObsoleteWeakUpdateCommand](#dialog.ObsoleteWeakUpdateCommand) stream | [ObsoleteWeakUpdateBox](#dialog.ObsoleteWeakUpdateBox) stream |  |
 
  
 
 
 
-<a name="peers.proto"/>
+<a name="peers.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## peers.proto
 
 
 
-<a name="dialog.GroupOutPeer"/>
+<a name="dialog.GroupOutPeer"></a>
 
 ### GroupOutPeer
 Group&#39;s out peer
@@ -6466,7 +7262,7 @@ Group&#39;s out peer
 
 
 
-<a name="dialog.OutPeer"/>
+<a name="dialog.OutPeer"></a>
 
 ### OutPeer
 Out peer with access hash
@@ -6484,7 +7280,7 @@ Out peer with access hash
 
 
 
-<a name="dialog.Peer"/>
+<a name="dialog.Peer"></a>
 
 ### Peer
 Peer
@@ -6501,7 +7297,7 @@ Peer
 
 
 
-<a name="dialog.UserOutPeer"/>
+<a name="dialog.UserOutPeer"></a>
 
 ### UserOutPeer
 User&#39;s out peer
@@ -6519,7 +7315,7 @@ User&#39;s out peer
  
 
 
-<a name="dialog.PeerType"/>
+<a name="dialog.PeerType"></a>
 
 ### PeerType
 
@@ -6541,14 +7337,14 @@ User&#39;s out peer
 
 
 
-<a name="privacy.proto"/>
+<a name="privacy.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## privacy.proto
 
 
 
-<a name="dialog.RequestBlockUser"/>
+<a name="dialog.RequestBlockUser"></a>
 
 ### RequestBlockUser
 Block User
@@ -6563,7 +7359,7 @@ Block User
 
 
 
-<a name="dialog.RequestLoadBlockedUsers"/>
+<a name="dialog.RequestLoadBlockedUsers"></a>
 
 ### RequestLoadBlockedUsers
 Load Blocked Users
@@ -6573,7 +7369,7 @@ Load Blocked Users
 
 
 
-<a name="dialog.RequestUnblockUser"/>
+<a name="dialog.RequestUnblockUser"></a>
 
 ### RequestUnblockUser
 Unblock User
@@ -6588,7 +7384,7 @@ Unblock User
 
 
 
-<a name="dialog.ResponseLoadBlockedUsers"/>
+<a name="dialog.ResponseLoadBlockedUsers"></a>
 
 ### ResponseLoadBlockedUsers
 
@@ -6603,7 +7399,7 @@ Unblock User
 
 
 
-<a name="dialog.UpdateUserBlocked"/>
+<a name="dialog.UpdateUserBlocked"></a>
 
 ### UpdateUserBlocked
 Update about User Blocked
@@ -6618,7 +7414,7 @@ Update about User Blocked
 
 
 
-<a name="dialog.UpdateUserUnblocked"/>
+<a name="dialog.UpdateUserUnblocked"></a>
 
 ### UpdateUserUnblocked
 Update about User Unblocked
@@ -6639,29 +7435,29 @@ Update about User Unblocked
  
 
 
-<a name="dialog.Privacy"/>
+<a name="dialog.Privacy"></a>
 
 ### Privacy
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| BlockUser | [RequestBlockUser](#dialog.RequestBlockUser) | [ResponseSeq](#dialog.RequestBlockUser) |  |
-| UnblockUser | [RequestUnblockUser](#dialog.RequestUnblockUser) | [ResponseSeq](#dialog.RequestUnblockUser) |  |
-| LoadBlockedUsers | [RequestLoadBlockedUsers](#dialog.RequestLoadBlockedUsers) | [ResponseLoadBlockedUsers](#dialog.RequestLoadBlockedUsers) |  |
+| BlockUser | [RequestBlockUser](#dialog.RequestBlockUser) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| UnblockUser | [RequestUnblockUser](#dialog.RequestUnblockUser) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| LoadBlockedUsers | [RequestLoadBlockedUsers](#dialog.RequestLoadBlockedUsers) | [ResponseLoadBlockedUsers](#dialog.ResponseLoadBlockedUsers) |  |
 
  
 
 
 
-<a name="profile.proto"/>
+<a name="profile.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## profile.proto
 
 
 
-<a name="dialog.RequestChangeUserStatus"/>
+<a name="dialog.RequestChangeUserStatus"></a>
 
 ### RequestChangeUserStatus
 Changing user&#39;s status
@@ -6676,7 +7472,7 @@ Changing user&#39;s status
 
 
 
-<a name="dialog.RequestCheckNickName"/>
+<a name="dialog.RequestCheckNickName"></a>
 
 ### RequestCheckNickName
 Checking availability of nickname
@@ -6691,7 +7487,7 @@ Checking availability of nickname
 
 
 
-<a name="dialog.RequestEditAbout"/>
+<a name="dialog.RequestEditAbout"></a>
 
 ### RequestEditAbout
 Changing about information
@@ -6706,7 +7502,7 @@ Changing about information
 
 
 
-<a name="dialog.RequestEditAvatar"/>
+<a name="dialog.RequestEditAvatar"></a>
 
 ### RequestEditAvatar
 Changing account&#39;s avatar
@@ -6721,7 +7517,7 @@ Changing account&#39;s avatar
 
 
 
-<a name="dialog.RequestEditCustomProfile"/>
+<a name="dialog.RequestEditCustomProfile"></a>
 
 ### RequestEditCustomProfile
 Chaning user custom profile based on scheme
@@ -6736,7 +7532,7 @@ Chaning user custom profile based on scheme
 
 
 
-<a name="dialog.RequestEditMyPreferredLanguages"/>
+<a name="dialog.RequestEditMyPreferredLanguages"></a>
 
 ### RequestEditMyPreferredLanguages
 Changing preffered languages
@@ -6751,7 +7547,7 @@ Changing preffered languages
 
 
 
-<a name="dialog.RequestEditMyTimeZone"/>
+<a name="dialog.RequestEditMyTimeZone"></a>
 
 ### RequestEditMyTimeZone
 Updating user&#39;s time zone
@@ -6766,7 +7562,7 @@ Updating user&#39;s time zone
 
 
 
-<a name="dialog.RequestEditName"/>
+<a name="dialog.RequestEditName"></a>
 
 ### RequestEditName
 Changing account&#39;s name
@@ -6781,7 +7577,7 @@ Changing account&#39;s name
 
 
 
-<a name="dialog.RequestEditNickName"/>
+<a name="dialog.RequestEditNickName"></a>
 
 ### RequestEditNickName
 Changing account&#39;s nickname
@@ -6796,7 +7592,7 @@ Changing account&#39;s nickname
 
 
 
-<a name="dialog.RequestEditSex"/>
+<a name="dialog.RequestEditSex"></a>
 
 ### RequestEditSex
 Changing user&#39;s sex
@@ -6811,7 +7607,7 @@ Changing user&#39;s sex
 
 
 
-<a name="dialog.RequestRemoveAvatar"/>
+<a name="dialog.RequestRemoveAvatar"></a>
 
 ### RequestRemoveAvatar
 Removing account&#39;s avatar
@@ -6821,7 +7617,7 @@ Removing account&#39;s avatar
 
 
 
-<a name="dialog.ResponseEditAvatar"/>
+<a name="dialog.ResponseEditAvatar"></a>
 
 ### ResponseEditAvatar
 
@@ -6844,37 +7640,37 @@ Removing account&#39;s avatar
  
 
 
-<a name="dialog.Profile"/>
+<a name="dialog.Profile"></a>
 
 ### Profile
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| EditName | [RequestEditName](#dialog.RequestEditName) | [ResponseSeq](#dialog.RequestEditName) |  |
-| EditNickName | [RequestEditNickName](#dialog.RequestEditNickName) | [ResponseSeq](#dialog.RequestEditNickName) |  |
-| CheckNickName | [RequestCheckNickName](#dialog.RequestCheckNickName) | [ResponseBool](#dialog.RequestCheckNickName) |  |
-| EditAbout | [RequestEditAbout](#dialog.RequestEditAbout) | [ResponseSeq](#dialog.RequestEditAbout) |  |
-| EditAvatar | [RequestEditAvatar](#dialog.RequestEditAvatar) | [ResponseEditAvatar](#dialog.RequestEditAvatar) |  |
-| RemoveAvatar | [RequestRemoveAvatar](#dialog.RequestRemoveAvatar) | [ResponseSeq](#dialog.RequestRemoveAvatar) |  |
-| EditMyTimeZone | [RequestEditMyTimeZone](#dialog.RequestEditMyTimeZone) | [ResponseSeq](#dialog.RequestEditMyTimeZone) |  |
-| EditMyPreferredLanguages | [RequestEditMyPreferredLanguages](#dialog.RequestEditMyPreferredLanguages) | [ResponseSeq](#dialog.RequestEditMyPreferredLanguages) |  |
-| EditSex | [RequestEditSex](#dialog.RequestEditSex) | [ResponseSeq](#dialog.RequestEditSex) |  |
-| EditCustomProfile | [RequestEditCustomProfile](#dialog.RequestEditCustomProfile) | [ResponseSeq](#dialog.RequestEditCustomProfile) |  |
-| ChangeUserStatus | [RequestChangeUserStatus](#dialog.RequestChangeUserStatus) | [ResponseSeq](#dialog.RequestChangeUserStatus) |  |
+| EditName | [RequestEditName](#dialog.RequestEditName) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| EditNickName | [RequestEditNickName](#dialog.RequestEditNickName) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| CheckNickName | [RequestCheckNickName](#dialog.RequestCheckNickName) | [ResponseBool](#dialog.ResponseBool) |  |
+| EditAbout | [RequestEditAbout](#dialog.RequestEditAbout) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| EditAvatar | [RequestEditAvatar](#dialog.RequestEditAvatar) | [ResponseEditAvatar](#dialog.ResponseEditAvatar) |  |
+| RemoveAvatar | [RequestRemoveAvatar](#dialog.RequestRemoveAvatar) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| EditMyTimeZone | [RequestEditMyTimeZone](#dialog.RequestEditMyTimeZone) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| EditMyPreferredLanguages | [RequestEditMyPreferredLanguages](#dialog.RequestEditMyPreferredLanguages) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| EditSex | [RequestEditSex](#dialog.RequestEditSex) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| EditCustomProfile | [RequestEditCustomProfile](#dialog.RequestEditCustomProfile) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| ChangeUserStatus | [RequestChangeUserStatus](#dialog.RequestChangeUserStatus) | [ResponseSeq](#dialog.ResponseSeq) |  |
 
  
 
 
 
-<a name="push.proto"/>
+<a name="push.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## push.proto
 
 
 
-<a name="dialog.RequestRegisterApplePush"/>
+<a name="dialog.RequestRegisterApplePush"></a>
 
 ### RequestRegisterApplePush
 Registering apple push on server
@@ -6884,13 +7680,14 @@ Registering apple push on server
 | ----- | ---- | ----- | ----------- |
 | apns_key | [int32](#int32) |  |  |
 | token | [string](#string) |  |  |
+| apns_string_key | [string](#string) |  |  |
 
 
 
 
 
 
-<a name="dialog.RequestRegisterApplePushKit"/>
+<a name="dialog.RequestRegisterApplePushKit"></a>
 
 ### RequestRegisterApplePushKit
 Registration of a new Apple&#39;s PushKit tokens
@@ -6900,13 +7697,14 @@ Registration of a new Apple&#39;s PushKit tokens
 | ----- | ---- | ----- | ----------- |
 | apns_key | [int32](#int32) |  |  |
 | token | [string](#string) |  |  |
+| apns_string_key | [string](#string) |  |  |
 
 
 
 
 
 
-<a name="dialog.RequestRegisterApplePushToken"/>
+<a name="dialog.RequestRegisterApplePushToken"></a>
 
 ### RequestRegisterApplePushToken
 Registering Apple Push Token
@@ -6922,7 +7720,7 @@ Registering Apple Push Token
 
 
 
-<a name="dialog.RequestRegisterGooglePush"/>
+<a name="dialog.RequestRegisterGooglePush"></a>
 
 ### RequestRegisterGooglePush
 Registering push token on server
@@ -6938,7 +7736,7 @@ Registering push token on server
 
 
 
-<a name="dialog.RequestUnregisterApplePush"/>
+<a name="dialog.RequestUnregisterApplePush"></a>
 
 ### RequestUnregisterApplePush
 Unregistering Apple Push
@@ -6953,7 +7751,7 @@ Unregistering Apple Push
 
 
 
-<a name="dialog.RequestUnregisterApplePushKit"/>
+<a name="dialog.RequestUnregisterApplePushKit"></a>
 
 ### RequestUnregisterApplePushKit
 Unregistering Apple Push Kit token
@@ -6968,7 +7766,7 @@ Unregistering Apple Push Kit token
 
 
 
-<a name="dialog.RequestUnregisterApplePushToken"/>
+<a name="dialog.RequestUnregisterApplePushToken"></a>
 
 ### RequestUnregisterApplePushToken
 Unregister Apple Push token
@@ -6983,7 +7781,7 @@ Unregister Apple Push token
 
 
 
-<a name="dialog.RequestUnregisterGooglePush"/>
+<a name="dialog.RequestUnregisterGooglePush"></a>
 
 ### RequestUnregisterGooglePush
 Unregistering Google Push
@@ -7004,34 +7802,34 @@ Unregistering Google Push
  
 
 
-<a name="dialog.Push"/>
+<a name="dialog.Push"></a>
 
 ### Push
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| RegisterGooglePush | [RequestRegisterGooglePush](#dialog.RequestRegisterGooglePush) | [ResponseVoid](#dialog.RequestRegisterGooglePush) |  |
-| UnregisterGooglePush | [RequestUnregisterGooglePush](#dialog.RequestUnregisterGooglePush) | [ResponseVoid](#dialog.RequestUnregisterGooglePush) |  |
-| RegisterApplePush | [RequestRegisterApplePush](#dialog.RequestRegisterApplePush) | [ResponseVoid](#dialog.RequestRegisterApplePush) |  |
-| UnregisterApplePush | [RequestUnregisterApplePush](#dialog.RequestUnregisterApplePush) | [ResponseVoid](#dialog.RequestUnregisterApplePush) |  |
-| RegisterApplePushKit | [RequestRegisterApplePushKit](#dialog.RequestRegisterApplePushKit) | [ResponseVoid](#dialog.RequestRegisterApplePushKit) |  |
-| UnregisterApplePushKit | [RequestUnregisterApplePushKit](#dialog.RequestUnregisterApplePushKit) | [ResponseVoid](#dialog.RequestUnregisterApplePushKit) |  |
-| RegisterApplePushToken | [RequestRegisterApplePushToken](#dialog.RequestRegisterApplePushToken) | [ResponseVoid](#dialog.RequestRegisterApplePushToken) |  |
-| UnregisterApplePushToken | [RequestUnregisterApplePushToken](#dialog.RequestUnregisterApplePushToken) | [ResponseVoid](#dialog.RequestUnregisterApplePushToken) |  |
+| RegisterGooglePush | [RequestRegisterGooglePush](#dialog.RequestRegisterGooglePush) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| UnregisterGooglePush | [RequestUnregisterGooglePush](#dialog.RequestUnregisterGooglePush) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| RegisterApplePush | [RequestRegisterApplePush](#dialog.RequestRegisterApplePush) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| UnregisterApplePush | [RequestUnregisterApplePush](#dialog.RequestUnregisterApplePush) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| RegisterApplePushKit | [RequestRegisterApplePushKit](#dialog.RequestRegisterApplePushKit) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| UnregisterApplePushKit | [RequestUnregisterApplePushKit](#dialog.RequestUnregisterApplePushKit) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| RegisterApplePushToken | [RequestRegisterApplePushToken](#dialog.RequestRegisterApplePushToken) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| UnregisterApplePushToken | [RequestUnregisterApplePushToken](#dialog.RequestUnregisterApplePushToken) | [ResponseVoid](#dialog.ResponseVoid) |  |
 
  
 
 
 
-<a name="raw_api.proto"/>
+<a name="raw_api.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## raw_api.proto
 
 
 
-<a name="dialog.RequestRawRequest"/>
+<a name="dialog.RequestRawRequest"></a>
 
 ### RequestRawRequest
 
@@ -7047,7 +7845,7 @@ Unregistering Google Push
 
 
 
-<a name="dialog.ResponseRawRequest"/>
+<a name="dialog.ResponseRawRequest"></a>
 
 ### ResponseRawRequest
 
@@ -7068,27 +7866,27 @@ Unregistering Google Push
  
 
 
-<a name="dialog.RawAPI"/>
+<a name="dialog.RawAPI"></a>
 
 ### RawAPI
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| RawRequest | [RequestRawRequest](#dialog.RequestRawRequest) | [ResponseRawRequest](#dialog.RequestRawRequest) |  |
+| RawRequest | [RequestRawRequest](#dialog.RequestRawRequest) | [ResponseRawRequest](#dialog.ResponseRawRequest) |  |
 
  
 
 
 
-<a name="registration.proto"/>
+<a name="registration.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## registration.proto
 
 
 
-<a name="dialog.RegisterDeprecatedDeviceRequest"/>
+<a name="dialog.RegisterDeprecatedDeviceRequest"></a>
 
 ### RegisterDeprecatedDeviceRequest
 
@@ -7098,7 +7896,7 @@ Unregistering Google Push
 
 
 
-<a name="dialog.RequestExchangeAuthIdForToken"/>
+<a name="dialog.RequestExchangeAuthIdForToken"></a>
 
 ### RequestExchangeAuthIdForToken
 
@@ -7114,7 +7912,7 @@ Unregistering Google Push
 
 
 
-<a name="dialog.RequestRegisterDevice"/>
+<a name="dialog.RequestRegisterDevice"></a>
 
 ### RequestRegisterDevice
 
@@ -7132,7 +7930,7 @@ Unregistering Google Push
 
 
 
-<a name="dialog.ResponseDeviceRequest"/>
+<a name="dialog.ResponseDeviceRequest"></a>
 
 ### ResponseDeviceRequest
 
@@ -7143,6 +7941,7 @@ Unregistering Google Push
 | server_pk | [bytes](#bytes) |  |  |
 | auth_id | [int64](#int64) |  |  |
 | token | [string](#string) |  |  |
+| auth_method_seq | [AuthorizationMethod](#dialog.AuthorizationMethod) | repeated | Sequence of the required authorization methods |
 
 
 
@@ -7150,34 +7949,49 @@ Unregistering Google Push
 
  
 
- 
+
+<a name="dialog.AuthorizationMethod"></a>
+
+### AuthorizationMethod
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| nothing | 0 |  |
+| login_password | 1 |  |
+| phone | 2 |  |
+| email | 3 |  |
+| certificate | 4 |  |
+
 
  
 
+ 
 
-<a name="dialog.Registration"/>
+
+<a name="dialog.Registration"></a>
 
 ### Registration
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| ExchangeAuthIdForToken | [RequestExchangeAuthIdForToken](#dialog.RequestExchangeAuthIdForToken) | [ResponseDeviceRequest](#dialog.RequestExchangeAuthIdForToken) |  |
-| RegisterDevice | [RequestRegisterDevice](#dialog.RequestRegisterDevice) | [ResponseDeviceRequest](#dialog.RequestRegisterDevice) | register device to get auth token |
-| RegisterDeprecatedDevice | [RegisterDeprecatedDeviceRequest](#dialog.RegisterDeprecatedDeviceRequest) | [ResponseDeviceRequest](#dialog.RegisterDeprecatedDeviceRequest) | deprecated |
+| ExchangeAuthIdForToken | [RequestExchangeAuthIdForToken](#dialog.RequestExchangeAuthIdForToken) | [ResponseDeviceRequest](#dialog.ResponseDeviceRequest) |  |
+| RegisterDevice | [RequestRegisterDevice](#dialog.RequestRegisterDevice) | [ResponseDeviceRequest](#dialog.ResponseDeviceRequest) | register device to get auth token |
+| RegisterDeprecatedDevice | [RegisterDeprecatedDeviceRequest](#dialog.RegisterDeprecatedDeviceRequest) | [ResponseDeviceRequest](#dialog.ResponseDeviceRequest) | deprecated |
 
  
 
 
 
-<a name="search.proto"/>
+<a name="search.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## search.proto
 
 
 
-<a name="dialog.MessageSearchItem"/>
+<a name="dialog.MessageSearchItem"></a>
 
 ### MessageSearchItem
 Message Search result container
@@ -7192,7 +8006,7 @@ Message Search result container
 
 
 
-<a name="dialog.MessageSearchResult"/>
+<a name="dialog.MessageSearchResult"></a>
 
 ### MessageSearchResult
 Message container
@@ -7211,7 +8025,7 @@ Message container
 
 
 
-<a name="dialog.PeerSearchResult"/>
+<a name="dialog.PeerSearchResult"></a>
 
 ### PeerSearchResult
 Peer search result
@@ -7234,7 +8048,68 @@ Peer search result
 
 
 
-<a name="dialog.RequestMessageSearch"/>
+<a name="dialog.RequestFieldAutocomplete"></a>
+
+### RequestFieldAutocomplete
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| field_name | [string](#string) |  |  |
+| field_value | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestGetRecommendations"></a>
+
+### RequestGetRecommendations
+
+
+
+
+
+
+
+<a name="dialog.RequestLoadUserSearchByPredicatesCount"></a>
+
+### RequestLoadUserSearchByPredicatesCount
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| predicates | [SearchPredicate](#dialog.SearchPredicate) | repeated |  |
+| group_id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestLoadUserSearchByPredicatesResults"></a>
+
+### RequestLoadUserSearchByPredicatesResults
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| predicates | [SearchPredicate](#dialog.SearchPredicate) | repeated |  |
+| group_id | [int32](#int32) |  |  |
+| query | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+| limit | [int32](#int32) |  |  |
+| required_fields | [string](#string) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.RequestMessageSearch"></a>
 
 ### RequestMessageSearch
 Performing message search
@@ -7250,7 +8125,7 @@ Performing message search
 
 
 
-<a name="dialog.RequestMessageSearchMore"/>
+<a name="dialog.RequestMessageSearchMore"></a>
 
 ### RequestMessageSearchMore
 Performing message search paging
@@ -7266,7 +8141,7 @@ Performing message search paging
 
 
 
-<a name="dialog.RequestPeerSearch"/>
+<a name="dialog.RequestPeerSearch"></a>
 
 ### RequestPeerSearch
 Performing peer search
@@ -7282,7 +8157,7 @@ Performing peer search
 
 
 
-<a name="dialog.RequestResolvePeer"/>
+<a name="dialog.RequestResolvePeer"></a>
 
 ### RequestResolvePeer
 Resolve peer by shortname
@@ -7297,7 +8172,7 @@ Resolve peer by shortname
 
 
 
-<a name="dialog.RequestSimpleSearch"/>
+<a name="dialog.RequestSimpleSearch"></a>
 
 ### RequestSimpleSearch
 
@@ -7313,7 +8188,7 @@ Resolve peer by shortname
 
 
 
-<a name="dialog.RequestSimpleSearchMore"/>
+<a name="dialog.RequestSimpleSearchMore"></a>
 
 ### RequestSimpleSearchMore
 
@@ -7329,7 +8204,69 @@ Resolve peer by shortname
 
 
 
-<a name="dialog.ResponseMessageSearchResponse"/>
+<a name="dialog.ResponseFieldAutocomplete"></a>
+
+### ResponseFieldAutocomplete
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| field_name | [string](#string) |  |  |
+| field_value | [string](#string) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.ResponseGetRecommendations"></a>
+
+### ResponseGetRecommendations
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| peers | [OutPeer](#dialog.OutPeer) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.ResponseLoadUserSearchByPredicatesCount"></a>
+
+### ResponseLoadUserSearchByPredicatesCount
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| result_count | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseLoadUserSearchByPredicatesResults"></a>
+
+### ResponseLoadUserSearchByPredicatesResults
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| users | [UserMatch](#dialog.UserMatch) | repeated |  |
+| result_count | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseMessageSearchResponse"></a>
 
 ### ResponseMessageSearchResponse
 Search Result with related peers and entities
@@ -7349,7 +8286,7 @@ Search Result with related peers and entities
 
 
 
-<a name="dialog.ResponsePeerSearch"/>
+<a name="dialog.ResponsePeerSearch"></a>
 
 ### ResponsePeerSearch
 Response with related peers and entities
@@ -7368,7 +8305,7 @@ Response with related peers and entities
 
 
 
-<a name="dialog.ResponseResolvePeer"/>
+<a name="dialog.ResponseResolvePeer"></a>
 
 ### ResponseResolvePeer
 
@@ -7383,7 +8320,7 @@ Response with related peers and entities
 
 
 
-<a name="dialog.SearchAndCondition"/>
+<a name="dialog.SearchAndCondition"></a>
 
 ### SearchAndCondition
 Search AND condion
@@ -7398,7 +8335,7 @@ Search AND condion
 
 
 
-<a name="dialog.SearchCondition"/>
+<a name="dialog.SearchCondition"></a>
 
 ### SearchCondition
 
@@ -7419,7 +8356,7 @@ Search AND condion
 
 
 
-<a name="dialog.SearchOrCondition"/>
+<a name="dialog.SearchOrCondition"></a>
 
 ### SearchOrCondition
 Search OR condition
@@ -7434,7 +8371,7 @@ Search OR condition
 
 
 
-<a name="dialog.SearchPeerCondition"/>
+<a name="dialog.SearchPeerCondition"></a>
 
 ### SearchPeerCondition
 Serch Peer condition
@@ -7449,7 +8386,7 @@ Serch Peer condition
 
 
 
-<a name="dialog.SearchPeerContentType"/>
+<a name="dialog.SearchPeerContentType"></a>
 
 ### SearchPeerContentType
 Search content type condition
@@ -7464,7 +8401,7 @@ Search content type condition
 
 
 
-<a name="dialog.SearchPeerTypeCondition"/>
+<a name="dialog.SearchPeerTypeCondition"></a>
 
 ### SearchPeerTypeCondition
 Search peer type condition
@@ -7479,7 +8416,7 @@ Search peer type condition
 
 
 
-<a name="dialog.SearchPieceText"/>
+<a name="dialog.SearchPieceText"></a>
 
 ### SearchPieceText
 Search peer name condition
@@ -7494,7 +8431,7 @@ Search peer name condition
 
 
 
-<a name="dialog.SearchSenderIdConfition"/>
+<a name="dialog.SearchSenderIdConfition"></a>
 
 ### SearchSenderIdConfition
 Searching sender uid condition
@@ -7509,7 +8446,7 @@ Searching sender uid condition
 
 
 
-<a name="dialog.SimpleContactSearchCondition"/>
+<a name="dialog.SimpleContactSearchCondition"></a>
 
 ### SimpleContactSearchCondition
 
@@ -7524,7 +8461,22 @@ Searching sender uid condition
 
 
 
-<a name="dialog.SimpleMessageSearchCondition"/>
+<a name="dialog.SimpleGroupSearchCondition"></a>
+
+### SimpleGroupSearchCondition
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| query_string | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="dialog.SimpleMessageSearchCondition"></a>
 
 ### SimpleMessageSearchCondition
 
@@ -7541,7 +8493,7 @@ Searching sender uid condition
 
 
 
-<a name="dialog.SimplePeerSearchCondition"/>
+<a name="dialog.SimplePeerSearchCondition"></a>
 
 ### SimplePeerSearchCondition
 Search among contacts/groups/users
@@ -7557,7 +8509,7 @@ Search among contacts/groups/users
 
 
 
-<a name="dialog.SimpleSearchCondition"/>
+<a name="dialog.SimpleSearchCondition"></a>
 
 ### SimpleSearchCondition
 
@@ -7569,13 +8521,14 @@ Search among contacts/groups/users
 | message | [SimpleMessageSearchCondition](#dialog.SimpleMessageSearchCondition) |  |  |
 | peer | [SimplePeerSearchCondition](#dialog.SimplePeerSearchCondition) |  |  |
 | userProfile | [SimpleUserProfileSearchCondition](#dialog.SimpleUserProfileSearchCondition) |  |  |
+| group | [SimpleGroupSearchCondition](#dialog.SimpleGroupSearchCondition) |  |  |
 
 
 
 
 
 
-<a name="dialog.SimpleUserProfileSearchCondition"/>
+<a name="dialog.SimpleUserProfileSearchCondition"></a>
 
 ### SimpleUserProfileSearchCondition
 
@@ -7590,7 +8543,23 @@ Search among contacts/groups/users
 
 
 
-<a name="dialog.criterion"/>
+<a name="dialog.UserMatch"></a>
+
+### UserMatch
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [int32](#int32) |  |  |
+| match_predicates | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="dialog.criterion"></a>
 
 ### criterion
 
@@ -7602,7 +8571,7 @@ Search among contacts/groups/users
  
 
 
-<a name="dialog.SearchContentType"/>
+<a name="dialog.SearchContentType"></a>
 
 ### SearchContentType
 
@@ -7618,7 +8587,7 @@ Search among contacts/groups/users
 
 
 
-<a name="dialog.SearchPeerType"/>
+<a name="dialog.SearchPeerType"></a>
 
 ### SearchPeerType
 
@@ -7636,32 +8605,36 @@ Search among contacts/groups/users
  
 
 
-<a name="dialog.Search"/>
+<a name="dialog.Search"></a>
 
 ### Search
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| PeerSearch | [RequestPeerSearch](#dialog.RequestPeerSearch) | [ResponsePeerSearch](#dialog.RequestPeerSearch) | Search among groups/users/contacts |
-| ResolvePeer | [RequestResolvePeer](#dialog.RequestResolvePeer) | [ResponseResolvePeer](#dialog.RequestResolvePeer) |  |
-| MessageSearch | [RequestMessageSearch](#dialog.RequestMessageSearch) | [ResponseMessageSearchResponse](#dialog.RequestMessageSearch) | Search by messages |
-| MessageSearchMore | [RequestMessageSearchMore](#dialog.RequestMessageSearchMore) | [ResponseMessageSearchResponse](#dialog.RequestMessageSearchMore) |  |
-| SimpleSearch | [RequestSimpleSearch](#dialog.RequestSimpleSearch) | [ResponseMessageSearchResponse](#dialog.RequestSimpleSearch) | Custom search by conditions |
-| SimpleSearchMore | [RequestSimpleSearchMore](#dialog.RequestSimpleSearchMore) | [ResponseMessageSearchResponse](#dialog.RequestSimpleSearchMore) |  |
+| PeerSearch | [RequestPeerSearch](#dialog.RequestPeerSearch) | [ResponsePeerSearch](#dialog.ResponsePeerSearch) | Search among groups/users/contacts |
+| ResolvePeer | [RequestResolvePeer](#dialog.RequestResolvePeer) | [ResponseResolvePeer](#dialog.ResponseResolvePeer) |  |
+| MessageSearch | [RequestMessageSearch](#dialog.RequestMessageSearch) | [ResponseMessageSearchResponse](#dialog.ResponseMessageSearchResponse) | Search by messages |
+| MessageSearchMore | [RequestMessageSearchMore](#dialog.RequestMessageSearchMore) | [ResponseMessageSearchResponse](#dialog.ResponseMessageSearchResponse) |  |
+| SimpleSearch | [RequestSimpleSearch](#dialog.RequestSimpleSearch) | [ResponseMessageSearchResponse](#dialog.ResponseMessageSearchResponse) | Custom search by conditions |
+| SimpleSearchMore | [RequestSimpleSearchMore](#dialog.RequestSimpleSearchMore) | [ResponseMessageSearchResponse](#dialog.ResponseMessageSearchResponse) |  |
+| AutocompleteSuggestions | [RequestFieldAutocomplete](#dialog.RequestFieldAutocomplete) | [ResponseFieldAutocomplete](#dialog.ResponseFieldAutocomplete) | Search for autocomplete suggestions among custom user profile |
+| LoadUserSearchByPredicatesResults | [RequestLoadUserSearchByPredicatesResults](#dialog.RequestLoadUserSearchByPredicatesResults) | [ResponseLoadUserSearchByPredicatesResults](#dialog.ResponseLoadUserSearchByPredicatesResults) |  |
+| LoadUserSearchByPredicatesCount | [RequestLoadUserSearchByPredicatesCount](#dialog.RequestLoadUserSearchByPredicatesCount) | [ResponseLoadUserSearchByPredicatesCount](#dialog.ResponseLoadUserSearchByPredicatesCount) |  |
+| GetRecommendations | [RequestGetRecommendations](#dialog.RequestGetRecommendations) | [ResponseGetRecommendations](#dialog.ResponseGetRecommendations) |  |
 
  
 
 
 
-<a name="sequence_and_updates.proto"/>
+<a name="sequence_and_updates.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## sequence_and_updates.proto
 
 
 
-<a name="dialog.GroupMembersSubset"/>
+<a name="dialog.GroupMembersSubset"></a>
 
 ### GroupMembersSubset
 Represents subset of group members
@@ -7677,7 +8650,7 @@ Represents subset of group members
 
 
 
-<a name="dialog.RequestGetDialogsDifference"/>
+<a name="dialog.RequestGetDialogsDifference"></a>
 
 ### RequestGetDialogsDifference
 Getting difference of dialogs
@@ -7692,7 +8665,7 @@ Getting difference of dialogs
 
 
 
-<a name="dialog.RequestGetDifference"/>
+<a name="dialog.RequestGetDifference"></a>
 
 ### RequestGetDifference
 Getting difference of sequence
@@ -7710,7 +8683,7 @@ Getting difference of sequence
 
 
 
-<a name="dialog.RequestGetReferencedEntitites"/>
+<a name="dialog.RequestGetReferencedEntitites"></a>
 
 ### RequestGetReferencedEntitites
 Loading referenced entities
@@ -7728,7 +8701,7 @@ Loading referenced entities
 
 
 
-<a name="dialog.RequestGetState"/>
+<a name="dialog.RequestGetState"></a>
 
 ### RequestGetState
 Get main sequence state
@@ -7743,7 +8716,7 @@ Get main sequence state
 
 
 
-<a name="dialog.RequestSubscribeFromGroupOnline"/>
+<a name="dialog.RequestSubscribeFromGroupOnline"></a>
 
 ### RequestSubscribeFromGroupOnline
 Removing subscription for groups online
@@ -7758,7 +8731,7 @@ Removing subscription for groups online
 
 
 
-<a name="dialog.RequestSubscribeFromOnline"/>
+<a name="dialog.RequestSubscribeFromOnline"></a>
 
 ### RequestSubscribeFromOnline
 Removing subscription for users online
@@ -7773,7 +8746,7 @@ Removing subscription for users online
 
 
 
-<a name="dialog.RequestSubscribeToGroupOnline"/>
+<a name="dialog.RequestSubscribeToGroupOnline"></a>
 
 ### RequestSubscribeToGroupOnline
 Subscribing for groups online
@@ -7788,7 +8761,7 @@ Subscribing for groups online
 
 
 
-<a name="dialog.RequestSubscribeToOnline"/>
+<a name="dialog.RequestSubscribeToOnline"></a>
 
 ### RequestSubscribeToOnline
 Subscribing for users online
@@ -7803,7 +8776,7 @@ Subscribing for users online
 
 
 
-<a name="dialog.ResponseGetDialogsDifference"/>
+<a name="dialog.ResponseGetDialogsDifference"></a>
 
 ### ResponseGetDialogsDifference
 Dialogs &#43; peers and entities
@@ -7820,7 +8793,7 @@ Dialogs &#43; peers and entities
 
 
 
-<a name="dialog.ResponseGetDifference"/>
+<a name="dialog.ResponseGetDifference"></a>
 
 ### ResponseGetDifference
 Updates happens after requested seq number &#43; related peers and entities
@@ -7832,7 +8805,7 @@ Updates happens after requested seq number &#43; related peers and entities
 | state | [bytes](#bytes) |  |  |
 | users | [User](#dialog.User) | repeated |  |
 | groups | [Group](#dialog.Group) | repeated |  |
-| updates | [UpdateContainer](#dialog.UpdateContainer) | repeated |  |
+| updates | [UpdateSeqUpdate](#dialog.UpdateSeqUpdate) | repeated |  |
 | messages | [HistoryMessage](#dialog.HistoryMessage) | repeated |  |
 | need_more | [bool](#bool) |  | false if all updates returned |
 | users_refs | [UserOutPeer](#dialog.UserOutPeer) | repeated |  |
@@ -7845,7 +8818,7 @@ Updates happens after requested seq number &#43; related peers and entities
 
 
 
-<a name="dialog.ResponseGetReferencedEntitites"/>
+<a name="dialog.ResponseGetReferencedEntitites"></a>
 
 ### ResponseGetReferencedEntitites
 
@@ -7862,7 +8835,7 @@ Updates happens after requested seq number &#43; related peers and entities
 
 
 
-<a name="dialog.SeqUpdateBox"/>
+<a name="dialog.SeqUpdateBox"></a>
 
 ### SeqUpdateBox
 Container which contains UpdateSeqUpdate
@@ -7872,14 +8845,15 @@ Container which contains UpdateSeqUpdate
 | ----- | ---- | ----- | ----------- |
 | seq | [int32](#int32) |  |  |
 | state | [bytes](#bytes) |  |  |
-| update | [google.protobuf.BytesValue](#google.protobuf.BytesValue) |  | serialized UpdateSeqUpdate |
+| update | [google.protobuf.BytesValue](#google.protobuf.BytesValue) |  | UpdateSeqUpdate in bytes |
+| unboxed_update | [UpdateSeqUpdate](#dialog.UpdateSeqUpdate) |  |  |
 
 
 
 
 
 
-<a name="dialog.UpdateCombinedUpdate"/>
+<a name="dialog.UpdateCombinedUpdate"></a>
 
 ### UpdateCombinedUpdate
 Combined update
@@ -7900,7 +8874,7 @@ Combined update
 
 
 
-<a name="dialog.UpdateContainer"/>
+<a name="dialog.UpdateContainer"></a>
 
 ### UpdateContainer
 Update container
@@ -7916,7 +8890,7 @@ Update container
 
 
 
-<a name="dialog.UpdateEmptyUpdate"/>
+<a name="dialog.UpdateEmptyUpdate"></a>
 
 ### UpdateEmptyUpdate
 Empty update
@@ -7926,7 +8900,7 @@ Empty update
 
 
 
-<a name="dialog.UpdateFatSeqUpdate"/>
+<a name="dialog.UpdateFatSeqUpdate"></a>
 
 ### UpdateFatSeqUpdate
 Fat sequence update with additional data
@@ -7946,7 +8920,7 @@ Fat sequence update with additional data
 
 
 
-<a name="dialog.UpdateRawUpdate"/>
+<a name="dialog.UpdateRawUpdate"></a>
 
 ### UpdateRawUpdate
 Custom Raw Update
@@ -7962,7 +8936,7 @@ Custom Raw Update
 
 
 
-<a name="dialog.UpdateSeqUpdate"/>
+<a name="dialog.UpdateSeqUpdate"></a>
 
 ### UpdateSeqUpdate
 Sequence update
@@ -8061,13 +9035,20 @@ Sequence update
 | updateConfig | [UpdateConfig](#dialog.UpdateConfig) |  |  |
 | updateSpaceModified | [UpdateSpaceModified](#dialog.UpdateSpaceModified) |  |  |
 | updateSpaceMemberModified | [UpdateSpaceMemberModified](#dialog.UpdateSpaceMemberModified) |  |  |
+| updateMessageRejectedByHook | [UpdateMessageRejectedByHook](#dialog.UpdateMessageRejectedByHook) |  |  |
+| updateMessageEditRejectedByHook | [UpdateMessageEditRejectedByHook](#dialog.UpdateMessageEditRejectedByHook) |  |  |
+| updateUser | [UpdateUser](#dialog.UpdateUser) |  |  |
+| updateFeatureFlagChanged | [UpdateFeatureFlagChanged](#dialog.UpdateFeatureFlagChanged) |  |  |
+| updateThreadCreated | [UpdateThreadCreated](#dialog.UpdateThreadCreated) |  |  |
+| updateThreadLifted | [UpdateThreadLifted](#dialog.UpdateThreadLifted) |  |  |
+| updateGroup | [UpdateGroup](#dialog.UpdateGroup) |  |  |
 
 
 
 
 
 
-<a name="dialog.UpdateSeqUpdateTooLong"/>
+<a name="dialog.UpdateSeqUpdateTooLong"></a>
 
 ### UpdateSeqUpdateTooLong
 Notification about requiring performing manual GetDifference
@@ -8077,7 +9058,7 @@ Notification about requiring performing manual GetDifference
 
 
 
-<a name="dialog.UpdateWeakFatUpdate"/>
+<a name="dialog.UpdateWeakFatUpdate"></a>
 
 ### UpdateWeakFatUpdate
 Fat Weak Update
@@ -8096,7 +9077,7 @@ Fat Weak Update
 
 
 
-<a name="dialog.UpdateWeakUpdate"/>
+<a name="dialog.UpdateWeakUpdate"></a>
 
 ### UpdateWeakUpdate
 Out of sequence update (for typing and online statuses)
@@ -8119,35 +9100,35 @@ Out of sequence update (for typing and online statuses)
  
 
 
-<a name="dialog.SequenceAndUpdates"/>
+<a name="dialog.SequenceAndUpdates"></a>
 
 ### SequenceAndUpdates
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetState | [RequestGetState](#dialog.RequestGetState) | [ResponseSeq](#dialog.RequestGetState) | Get last seq number |
-| GetDifference | [RequestGetDifference](#dialog.RequestGetDifference) | [ResponseGetDifference](#dialog.RequestGetDifference) | Get all update that happens after given seq number |
-| GetDialogsDifference | [RequestGetDialogsDifference](#dialog.RequestGetDialogsDifference) | [ResponseGetDialogsDifference](#dialog.RequestGetDialogsDifference) | Load all dialogs that changed after given date |
-| GetReferencedEntitites | [RequestGetReferencedEntitites](#dialog.RequestGetReferencedEntitites) | [ResponseGetReferencedEntitites](#dialog.RequestGetReferencedEntitites) | Load some required entities |
-| SubscribeToOnline | [RequestSubscribeToOnline](#dialog.RequestSubscribeToOnline) | [ResponseVoid](#dialog.RequestSubscribeToOnline) |  |
-| SubscribeFromOnline | [RequestSubscribeFromOnline](#dialog.RequestSubscribeFromOnline) | [ResponseVoid](#dialog.RequestSubscribeFromOnline) |  |
-| SubscribeToGroupOnline | [RequestSubscribeToGroupOnline](#dialog.RequestSubscribeToGroupOnline) | [ResponseVoid](#dialog.RequestSubscribeToGroupOnline) |  |
-| SubscribeFromGroupOnline | [RequestSubscribeFromGroupOnline](#dialog.RequestSubscribeFromGroupOnline) | [ResponseVoid](#dialog.RequestSubscribeFromGroupOnline) |  |
-| SeqUpdates | [.google.protobuf.Empty](#google.protobuf.Empty) | [SeqUpdateBox](#google.protobuf.Empty) | Get stream of the user&#39;s updates |
+| GetState | [RequestGetState](#dialog.RequestGetState) | [ResponseSeq](#dialog.ResponseSeq) | Get last seq number |
+| GetDifference | [RequestGetDifference](#dialog.RequestGetDifference) | [ResponseGetDifference](#dialog.ResponseGetDifference) | Get all update that happens after given seq number |
+| GetDialogsDifference | [RequestGetDialogsDifference](#dialog.RequestGetDialogsDifference) | [ResponseGetDialogsDifference](#dialog.ResponseGetDialogsDifference) | Load all dialogs that changed after given date |
+| GetReferencedEntitites | [RequestGetReferencedEntitites](#dialog.RequestGetReferencedEntitites) | [ResponseGetReferencedEntitites](#dialog.ResponseGetReferencedEntitites) | Load some required entities |
+| SubscribeToOnline | [RequestSubscribeToOnline](#dialog.RequestSubscribeToOnline) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| SubscribeFromOnline | [RequestSubscribeFromOnline](#dialog.RequestSubscribeFromOnline) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| SubscribeToGroupOnline | [RequestSubscribeToGroupOnline](#dialog.RequestSubscribeToGroupOnline) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| SubscribeFromGroupOnline | [RequestSubscribeFromGroupOnline](#dialog.RequestSubscribeFromGroupOnline) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| SeqUpdates | [.google.protobuf.Empty](#google.protobuf.Empty) | [SeqUpdateBox](#dialog.SeqUpdateBox) stream | Get stream of the user&#39;s updates |
 
  
 
 
 
-<a name="spaces.proto"/>
+<a name="spaces.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## spaces.proto
 
 
 
-<a name="dialog.RequestCreateSpace"/>
+<a name="dialog.RequestCreateSpace"></a>
 
 ### RequestCreateSpace
 
@@ -8166,7 +9147,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestDeleteSpace"/>
+<a name="dialog.RequestDeleteSpace"></a>
 
 ### RequestDeleteSpace
 
@@ -8182,7 +9163,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestGetSpaceInviteUrl"/>
+<a name="dialog.RequestGetSpaceInviteUrl"></a>
 
 ### RequestGetSpaceInviteUrl
 
@@ -8197,7 +9178,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestLoadSpaces"/>
+<a name="dialog.RequestLoadSpaces"></a>
 
 ### RequestLoadSpaces
 
@@ -8207,7 +9188,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestRevokeSpaceInviteUrl"/>
+<a name="dialog.RequestRevokeSpaceInviteUrl"></a>
 
 ### RequestRevokeSpaceInviteUrl
 
@@ -8222,7 +9203,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestSetAbout"/>
+<a name="dialog.RequestSetAbout"></a>
 
 ### RequestSetAbout
 
@@ -8239,7 +9220,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestSetAvatar"/>
+<a name="dialog.RequestSetAvatar"></a>
 
 ### RequestSetAvatar
 
@@ -8256,7 +9237,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestSetShortname"/>
+<a name="dialog.RequestSetShortname"></a>
 
 ### RequestSetShortname
 
@@ -8273,7 +9254,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestSetTitle"/>
+<a name="dialog.RequestSetTitle"></a>
 
 ### RequestSetTitle
 
@@ -8290,7 +9271,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestSpaceInvite"/>
+<a name="dialog.RequestSpaceInvite"></a>
 
 ### RequestSpaceInvite
 
@@ -8307,7 +9288,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestSpaceKick"/>
+<a name="dialog.RequestSpaceKick"></a>
 
 ### RequestSpaceKick
 
@@ -8324,7 +9305,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestSpaceLeave"/>
+<a name="dialog.RequestSpaceLeave"></a>
 
 ### RequestSpaceLeave
 
@@ -8341,7 +9322,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.RequestStreamSpaceMembers"/>
+<a name="dialog.RequestStreamSpaceMembers"></a>
 
 ### RequestStreamSpaceMembers
 
@@ -8357,7 +9338,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.ResponseLoadSpaces"/>
+<a name="dialog.ResponseLoadSpaces"></a>
 
 ### ResponseLoadSpaces
 
@@ -8373,7 +9354,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.ResponseSpace"/>
+<a name="dialog.ResponseSpace"></a>
 
 ### ResponseSpace
 
@@ -8388,7 +9369,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.ResponseSpaceInviteUrl"/>
+<a name="dialog.ResponseSpaceInviteUrl"></a>
 
 ### ResponseSpaceInviteUrl
 
@@ -8403,7 +9384,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.ResponseSpaceMember"/>
+<a name="dialog.ResponseSpaceMember"></a>
 
 ### ResponseSpaceMember
 
@@ -8419,7 +9400,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.Space"/>
+<a name="dialog.Space"></a>
 
 ### Space
 
@@ -8443,7 +9424,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.Space.General"/>
+<a name="dialog.Space.General"></a>
 
 ### Space.General
 
@@ -8453,7 +9434,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.Space.Private"/>
+<a name="dialog.Space.Private"></a>
 
 ### Space.Private
 
@@ -8468,7 +9449,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.Space.Public"/>
+<a name="dialog.Space.Public"></a>
 
 ### Space.Public
 
@@ -8484,7 +9465,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.SpaceMember"/>
+<a name="dialog.SpaceMember"></a>
 
 ### SpaceMember
 
@@ -8504,7 +9485,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.SpaceMemberWithPeer"/>
+<a name="dialog.SpaceMemberWithPeer"></a>
 
 ### SpaceMemberWithPeer
 
@@ -8520,7 +9501,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.UpdateSpaceMemberModified"/>
+<a name="dialog.UpdateSpaceMemberModified"></a>
 
 ### UpdateSpaceMemberModified
 
@@ -8535,7 +9516,7 @@ Out of sequence update (for typing and online statuses)
 
 
 
-<a name="dialog.UpdateSpaceModified"/>
+<a name="dialog.UpdateSpaceModified"></a>
 
 ### UpdateSpaceModified
 
@@ -8556,39 +9537,39 @@ Out of sequence update (for typing and online statuses)
  
 
 
-<a name="dialog.Spaces"/>
+<a name="dialog.Spaces"></a>
 
 ### Spaces
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| CreateSpace | [RequestCreateSpace](#dialog.RequestCreateSpace) | [ResponseSpace](#dialog.RequestCreateSpace) |  |
-| DeleteSpace | [RequestDeleteSpace](#dialog.RequestDeleteSpace) | [ResponseSpace](#dialog.RequestDeleteSpace) |  |
-| SetTitle | [RequestSetTitle](#dialog.RequestSetTitle) | [ResponseSpace](#dialog.RequestSetTitle) |  |
-| SetShortname | [RequestSetShortname](#dialog.RequestSetShortname) | [ResponseSpace](#dialog.RequestSetShortname) |  |
-| SetAbout | [RequestSetAbout](#dialog.RequestSetAbout) | [ResponseSpace](#dialog.RequestSetAbout) |  |
-| SetAvatar | [RequestSetAvatar](#dialog.RequestSetAvatar) | [ResponseSpace](#dialog.RequestSetAvatar) |  |
-| LoadSpaces | [RequestLoadSpaces](#dialog.RequestLoadSpaces) | [ResponseLoadSpaces](#dialog.RequestLoadSpaces) |  |
-| LoadSpaceMembers | [RequestStreamSpaceMembers](#dialog.RequestStreamSpaceMembers) | [SpaceMemberWithPeer](#dialog.RequestStreamSpaceMembers) |  |
-| Invite | [RequestSpaceInvite](#dialog.RequestSpaceInvite) | [ResponseSpaceMember](#dialog.RequestSpaceInvite) |  |
-| Kick | [RequestSpaceKick](#dialog.RequestSpaceKick) | [ResponseSpaceMember](#dialog.RequestSpaceKick) |  |
-| Leave | [RequestSpaceLeave](#dialog.RequestSpaceLeave) | [ResponseSpaceMember](#dialog.RequestSpaceLeave) |  |
-| GetSpaceInviteUrl | [RequestGetSpaceInviteUrl](#dialog.RequestGetSpaceInviteUrl) | [ResponseSpaceInviteUrl](#dialog.RequestGetSpaceInviteUrl) |  |
-| RevokeSpaceInviteUrl | [RequestRevokeSpaceInviteUrl](#dialog.RequestRevokeSpaceInviteUrl) | [ResponseSpaceInviteUrl](#dialog.RequestRevokeSpaceInviteUrl) |  |
+| CreateSpace | [RequestCreateSpace](#dialog.RequestCreateSpace) | [ResponseSpace](#dialog.ResponseSpace) |  |
+| DeleteSpace | [RequestDeleteSpace](#dialog.RequestDeleteSpace) | [ResponseSpace](#dialog.ResponseSpace) |  |
+| SetTitle | [RequestSetTitle](#dialog.RequestSetTitle) | [ResponseSpace](#dialog.ResponseSpace) |  |
+| SetShortname | [RequestSetShortname](#dialog.RequestSetShortname) | [ResponseSpace](#dialog.ResponseSpace) |  |
+| SetAbout | [RequestSetAbout](#dialog.RequestSetAbout) | [ResponseSpace](#dialog.ResponseSpace) |  |
+| SetAvatar | [RequestSetAvatar](#dialog.RequestSetAvatar) | [ResponseSpace](#dialog.ResponseSpace) |  |
+| LoadSpaces | [RequestLoadSpaces](#dialog.RequestLoadSpaces) | [ResponseLoadSpaces](#dialog.ResponseLoadSpaces) |  |
+| LoadSpaceMembers | [RequestStreamSpaceMembers](#dialog.RequestStreamSpaceMembers) | [SpaceMemberWithPeer](#dialog.SpaceMemberWithPeer) stream |  |
+| Invite | [RequestSpaceInvite](#dialog.RequestSpaceInvite) | [ResponseSpaceMember](#dialog.ResponseSpaceMember) |  |
+| Kick | [RequestSpaceKick](#dialog.RequestSpaceKick) | [ResponseSpaceMember](#dialog.ResponseSpaceMember) |  |
+| Leave | [RequestSpaceLeave](#dialog.RequestSpaceLeave) | [ResponseSpaceMember](#dialog.ResponseSpaceMember) |  |
+| GetSpaceInviteUrl | [RequestGetSpaceInviteUrl](#dialog.RequestGetSpaceInviteUrl) | [ResponseSpaceInviteUrl](#dialog.ResponseSpaceInviteUrl) |  |
+| RevokeSpaceInviteUrl | [RequestRevokeSpaceInviteUrl](#dialog.RequestRevokeSpaceInviteUrl) | [ResponseSpaceInviteUrl](#dialog.ResponseSpaceInviteUrl) |  |
 
  
 
 
 
-<a name="stickers.proto"/>
+<a name="stickers.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## stickers.proto
 
 
 
-<a name="dialog.RequestAddStickerCollection"/>
+<a name="dialog.RequestAddStickerCollection"></a>
 
 ### RequestAddStickerCollection
 Adding sticker collection
@@ -8603,7 +9584,7 @@ Adding sticker collection
 
 
 
-<a name="dialog.RequestAddStickerPackReference"/>
+<a name="dialog.RequestAddStickerPackReference"></a>
 
 ### RequestAddStickerPackReference
 Add a reference to other user&#39;s sticker pack
@@ -8618,27 +9599,37 @@ Add a reference to other user&#39;s sticker pack
 
 
 
-<a name="dialog.RequestLoadAcesssibleStickers"/>
+<a name="dialog.RequestLoadAcesssibleStickers"></a>
 
 ### RequestLoadAcesssibleStickers
 Load accessible stickers
 
 
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| from_clock | [int64](#int64) |  |  |
 
 
 
 
-<a name="dialog.RequestLoadOwnStickers"/>
+
+
+<a name="dialog.RequestLoadOwnStickers"></a>
 
 ### RequestLoadOwnStickers
 Loading own stickers
 
 
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| from_clock | [int64](#int64) |  |  |
 
 
 
 
-<a name="dialog.RequestLoadStickerCollection"/>
+
+
+<a name="dialog.RequestLoadStickerCollection"></a>
 
 ### RequestLoadStickerCollection
 Loading stickers
@@ -8653,7 +9644,7 @@ Loading stickers
 
 
 
-<a name="dialog.RequestRemoveStickerCollection"/>
+<a name="dialog.RequestRemoveStickerCollection"></a>
 
 ### RequestRemoveStickerCollection
 Removing sticker collection
@@ -8668,7 +9659,7 @@ Removing sticker collection
 
 
 
-<a name="dialog.RequestRemoveStickerPackReference"/>
+<a name="dialog.RequestRemoveStickerPackReference"></a>
 
 ### RequestRemoveStickerPackReference
 Remove a reference to an other user&#39;s sticker pack
@@ -8683,7 +9674,7 @@ Remove a reference to an other user&#39;s sticker pack
 
 
 
-<a name="dialog.ResponseLoadAcesssibleStickers"/>
+<a name="dialog.ResponseLoadAcesssibleStickers"></a>
 
 ### ResponseLoadAcesssibleStickers
 
@@ -8692,13 +9683,16 @@ Remove a reference to an other user&#39;s sticker pack
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | accessible_stickers | [StickerCollection](#dialog.StickerCollection) | repeated |  |
+| removed_collections | [StickerCollection](#dialog.StickerCollection) | repeated |  |
+| clock | [int64](#int64) |  |  |
+| prev_clock | [int64](#int64) |  |  |
 
 
 
 
 
 
-<a name="dialog.ResponseLoadOwnStickers"/>
+<a name="dialog.ResponseLoadOwnStickers"></a>
 
 ### ResponseLoadOwnStickers
 
@@ -8707,13 +9701,16 @@ Remove a reference to an other user&#39;s sticker pack
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | own_stickers | [StickerCollection](#dialog.StickerCollection) | repeated |  |
+| removed_collections | [StickerCollection](#dialog.StickerCollection) | repeated |  |
+| clock | [int64](#int64) |  |  |
+| prev_clock | [int64](#int64) |  |  |
 
 
 
 
 
 
-<a name="dialog.ResponseLoadStickerCollection"/>
+<a name="dialog.ResponseLoadStickerCollection"></a>
 
 ### ResponseLoadStickerCollection
 
@@ -8728,7 +9725,7 @@ Remove a reference to an other user&#39;s sticker pack
 
 
 
-<a name="dialog.ResponseStickersResponse"/>
+<a name="dialog.ResponseStickersResponse"></a>
 
 ### ResponseStickersResponse
 Stickers response
@@ -8739,13 +9736,16 @@ Stickers response
 | collections | [StickerCollection](#dialog.StickerCollection) | repeated |  |
 | seq | [int32](#int32) |  | deprecated |
 | state | [bytes](#bytes) |  |  |
+| removed_collections | [StickerCollection](#dialog.StickerCollection) | repeated |  |
+| clock | [int64](#int64) |  |  |
+| prev_clock | [int64](#int64) |  |  |
 
 
 
 
 
 
-<a name="dialog.StickerCollection"/>
+<a name="dialog.StickerCollection"></a>
 
 ### StickerCollection
 Sticker collection
@@ -8757,13 +9757,14 @@ Sticker collection
 | title | [google.protobuf.StringValue](#google.protobuf.StringValue) |  | Sticker pack title |
 | stickers | [StickerDescriptor](#dialog.StickerDescriptor) | repeated |  |
 | owned_by_me | [google.protobuf.BoolValue](#google.protobuf.BoolValue) |  | does this pack belongs to current user |
+| clock | [int64](#int64) |  |  |
 
 
 
 
 
 
-<a name="dialog.StickerDescriptor"/>
+<a name="dialog.StickerDescriptor"></a>
 
 ### StickerDescriptor
 Descriptor of a Sticker
@@ -8782,7 +9783,7 @@ Descriptor of a Sticker
 
 
 
-<a name="dialog.UpdateStickerCollectionsChanged"/>
+<a name="dialog.UpdateStickerCollectionsChanged"></a>
 
 ### UpdateStickerCollectionsChanged
 Sticker collection changed
@@ -8797,7 +9798,7 @@ Sticker collection changed
 
 
 
-<a name="dialog.UpdateStickerPackAdded"/>
+<a name="dialog.UpdateStickerPackAdded"></a>
 
 ### UpdateStickerPackAdded
 Sticker pack was added
@@ -8812,7 +9813,7 @@ Sticker pack was added
 
 
 
-<a name="dialog.UpdateStickerPackRemoved"/>
+<a name="dialog.UpdateStickerPackRemoved"></a>
 
 ### UpdateStickerPackRemoved
 Sticker pack removed
@@ -8833,33 +9834,222 @@ Sticker pack removed
  
 
 
-<a name="dialog.Stickers"/>
+<a name="dialog.Stickers"></a>
 
 ### Stickers
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| LoadOwnStickers | [RequestLoadOwnStickers](#dialog.RequestLoadOwnStickers) | [ResponseLoadOwnStickers](#dialog.RequestLoadOwnStickers) |  |
-| LoadAcesssibleStickers | [RequestLoadAcesssibleStickers](#dialog.RequestLoadAcesssibleStickers) | [ResponseLoadAcesssibleStickers](#dialog.RequestLoadAcesssibleStickers) |  |
-| AddStickerPackReference | [RequestAddStickerPackReference](#dialog.RequestAddStickerPackReference) | [ResponseSeq](#dialog.RequestAddStickerPackReference) |  |
-| RemoveStickerPackReference | [RequestRemoveStickerPackReference](#dialog.RequestRemoveStickerPackReference) | [ResponseSeq](#dialog.RequestRemoveStickerPackReference) |  |
-| AddStickerCollection | [RequestAddStickerCollection](#dialog.RequestAddStickerCollection) | [ResponseSeq](#dialog.RequestAddStickerCollection) |  |
-| RemoveStickerCollection | [RequestRemoveStickerCollection](#dialog.RequestRemoveStickerCollection) | [ResponseSeq](#dialog.RequestRemoveStickerCollection) |  |
-| LoadStickerCollection | [RequestLoadStickerCollection](#dialog.RequestLoadStickerCollection) | [ResponseLoadStickerCollection](#dialog.RequestLoadStickerCollection) |  |
+| LoadOwnStickers | [RequestLoadOwnStickers](#dialog.RequestLoadOwnStickers) | [ResponseLoadOwnStickers](#dialog.ResponseLoadOwnStickers) |  |
+| LoadAcesssibleStickers | [RequestLoadAcesssibleStickers](#dialog.RequestLoadAcesssibleStickers) | [ResponseLoadAcesssibleStickers](#dialog.ResponseLoadAcesssibleStickers) |  |
+| AddStickerPackReference | [RequestAddStickerPackReference](#dialog.RequestAddStickerPackReference) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| RemoveStickerPackReference | [RequestRemoveStickerPackReference](#dialog.RequestRemoveStickerPackReference) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| AddStickerCollection | [RequestAddStickerCollection](#dialog.RequestAddStickerCollection) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| RemoveStickerCollection | [RequestRemoveStickerCollection](#dialog.RequestRemoveStickerCollection) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| LoadStickerCollection | [RequestLoadStickerCollection](#dialog.RequestLoadStickerCollection) | [ResponseLoadStickerCollection](#dialog.ResponseLoadStickerCollection) |  |
 
  
 
 
 
-<a name="typing_and_online.proto"/>
+<a name="threads.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## threads.proto
+
+
+
+<a name="dialog.RequestCreateThread"></a>
+
+### RequestCreateThread
+Create a threaded conversation inside a group
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| random_id | [int64](#int64) |  | random request id for query deduplication |
+| parent_group_peer | [GroupOutPeer](#dialog.GroupOutPeer) |  | parent group where thread is created |
+| start_message_id | [UUIDValue](#dialog.UUIDValue) |  | message from where thread starts |
+| title | [string](#string) |  | thread title |
+| join_policy | [RequestCreateThread.JoinPolicy](#dialog.RequestCreateThread.JoinPolicy) |  | thread join policy: for all group members or invite only |
+| members | [UserOutPeer](#dialog.UserOutPeer) | repeated | members |
+
+
+
+
+
+
+<a name="dialog.RequestJoinThread"></a>
+
+### RequestJoinThread
+Join public thread
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| parent_group_peer | [GroupOutPeer](#dialog.GroupOutPeer) |  | parent group where thread is created |
+| thread_group_peer | [GroupOutPeer](#dialog.GroupOutPeer) |  | group representing thread about to be joined |
+
+
+
+
+
+
+<a name="dialog.RequestLiftThread"></a>
+
+### RequestLiftThread
+Converts thread into a group
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| random_id | [int64](#int64) |  | Id for query deduplication |
+| parent_group_peer | [GroupOutPeer](#dialog.GroupOutPeer) |  | parent group where thread is created |
+| thread_group_peer | [GroupOutPeer](#dialog.GroupOutPeer) |  | group representing thread about to be lifted |
+| title | [google.protobuf.StringValue](#google.protobuf.StringValue) |  | lifted group title |
+
+
+
+
+
+
+<a name="dialog.RequestLoadGroupThreads"></a>
+
+### RequestLoadGroupThreads
+Load group threads available for user
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| group | [GroupOutPeer](#dialog.GroupOutPeer) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseCreateThread"></a>
+
+### ResponseCreateThread
+Thread creation response
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| thread_group | [Group](#dialog.Group) |  | group, representing thread internally |
+| users | [User](#dialog.User) | repeated | participants of created conversation. empty if dropped by optimizations |
+| user_peers | [UserOutPeer](#dialog.UserOutPeer) | repeated | corresponding user peers. empty if dropped by optimizations |
+
+
+
+
+
+
+<a name="dialog.ResponseLiftThread"></a>
+
+### ResponseLiftThread
+Thread lift response
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| group | [Group](#dialog.Group) |  | group, representing lifted group |
+| peer | [GroupOutPeer](#dialog.GroupOutPeer) |  | group peer |
+
+
+
+
+
+
+<a name="dialog.ResponseLoadGroupThreads"></a>
+
+### ResponseLoadGroupThreads
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| threads | [ThreadReference](#dialog.ThreadReference) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.ThreadReference"></a>
+
+### ThreadReference
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| message_id | [UUIDValue](#dialog.UUIDValue) |  |  |
+| peer | [OutPeer](#dialog.OutPeer) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="dialog.RequestCreateThread.JoinPolicy"></a>
+
+### RequestCreateThread.JoinPolicy
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| INVITE_ONLY | 0 |  |
+| THREAD_MEMBERS | 1 |  |
+
+
+ 
+
+ 
+
+
+<a name="dialog.Threads"></a>
+
+### Threads
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| CreateThread | [RequestCreateThread](#dialog.RequestCreateThread) | [ResponseCreateThread](#dialog.ResponseCreateThread) |  |
+| LiftThread | [RequestLiftThread](#dialog.RequestLiftThread) | [ResponseLiftThread](#dialog.ResponseLiftThread) |  |
+| LoadGroupThreads | [RequestLoadGroupThreads](#dialog.RequestLoadGroupThreads) | [ResponseLoadGroupThreads](#dialog.ResponseLoadGroupThreads) |  |
+| JoinThread | [RequestJoinThread](#dialog.RequestJoinThread) | [ResponseVoid](#dialog.ResponseVoid) |  |
+
+ 
+
+
+
+<a name="typing_and_online.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## typing_and_online.proto
 
 
 
-<a name="dialog.RequestPauseNotifications"/>
+<a name="dialog.RequestGetUserLastPresence"></a>
+
+### RequestGetUserLastPresence
+Request for last user online timestamp
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_out_peer | [UserOutPeer](#dialog.UserOutPeer) |  |  |
+
+
+
+
+
+
+<a name="dialog.RequestPauseNotifications"></a>
 
 ### RequestPauseNotifications
 Pause notifications
@@ -8874,7 +10064,7 @@ Pause notifications
 
 
 
-<a name="dialog.RequestRestoreNotifications"/>
+<a name="dialog.RequestRestoreNotifications"></a>
 
 ### RequestRestoreNotifications
 Restoring notifications
@@ -8884,7 +10074,7 @@ Restoring notifications
 
 
 
-<a name="dialog.RequestSetOnline"/>
+<a name="dialog.RequestSetOnline"></a>
 
 ### RequestSetOnline
 Sending online state
@@ -8902,7 +10092,7 @@ Sending online state
 
 
 
-<a name="dialog.RequestStopTyping"/>
+<a name="dialog.RequestStopTyping"></a>
 
 ### RequestStopTyping
 Stop typing
@@ -8918,7 +10108,7 @@ Stop typing
 
 
 
-<a name="dialog.RequestTyping"/>
+<a name="dialog.RequestTyping"></a>
 
 ### RequestTyping
 Sending typing notification
@@ -8934,7 +10124,33 @@ Sending typing notification
 
 
 
-<a name="dialog.UpdateGroupOnline"/>
+<a name="dialog.ResponseUserLastPresence"></a>
+
+### ResponseUserLastPresence
+Response for RequestGetUserLastPresence
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| last_online_at | [google.protobuf.Timestamp](#google.protobuf.Timestamp) |  |  |
+| not_found_error | [ResponseUserLastPresence.UserNotFoundError](#dialog.ResponseUserLastPresence.UserNotFoundError) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseUserLastPresence.UserNotFoundError"></a>
+
+### ResponseUserLastPresence.UserNotFoundError
+
+
+
+
+
+
+
+<a name="dialog.UpdateGroupOnline"></a>
 
 ### UpdateGroupOnline
 Update about group online change
@@ -8950,7 +10166,7 @@ Update about group online change
 
 
 
-<a name="dialog.UpdatePauseNotifications"/>
+<a name="dialog.UpdatePauseNotifications"></a>
 
 ### UpdatePauseNotifications
 Update about pausing notifications
@@ -8965,7 +10181,7 @@ Update about pausing notifications
 
 
 
-<a name="dialog.UpdateRestoreNotifications"/>
+<a name="dialog.UpdateRestoreNotifications"></a>
 
 ### UpdateRestoreNotifications
 Update about restoring notifications
@@ -8975,7 +10191,7 @@ Update about restoring notifications
 
 
 
-<a name="dialog.UpdateTyping"/>
+<a name="dialog.UpdateTyping"></a>
 
 ### UpdateTyping
 Update about user&#39;s typing
@@ -8992,7 +10208,7 @@ Update about user&#39;s typing
 
 
 
-<a name="dialog.UpdateTypingStop"/>
+<a name="dialog.UpdateTypingStop"></a>
 
 ### UpdateTypingStop
 Update about user&#39;s typing stop
@@ -9009,7 +10225,7 @@ Update about user&#39;s typing stop
 
 
 
-<a name="dialog.UpdateUserLastSeen"/>
+<a name="dialog.UpdateUserLastSeen"></a>
 
 ### UpdateUserLastSeen
 Update about user&#39;s last seen state
@@ -9027,7 +10243,7 @@ Update about user&#39;s last seen state
 
 
 
-<a name="dialog.UpdateUserOffline"/>
+<a name="dialog.UpdateUserOffline"></a>
 
 ### UpdateUserOffline
 Update about user became offline
@@ -9044,7 +10260,7 @@ Update about user became offline
 
 
 
-<a name="dialog.UpdateUserOnline"/>
+<a name="dialog.UpdateUserOnline"></a>
 
 ### UpdateUserOnline
 Update about user became online
@@ -9063,7 +10279,7 @@ Update about user became online
  
 
 
-<a name="dialog.DeviceType"/>
+<a name="dialog.DeviceType"></a>
 
 ### DeviceType
 
@@ -9082,7 +10298,7 @@ Update about user became online
 
 
 
-<a name="dialog.TypingType"/>
+<a name="dialog.TypingType"></a>
 
 ### TypingType
 
@@ -9098,31 +10314,32 @@ Update about user became online
  
 
 
-<a name="dialog.TypingAndOnline"/>
+<a name="dialog.TypingAndOnline"></a>
 
 ### TypingAndOnline
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| Typing | [RequestTyping](#dialog.RequestTyping) | [ResponseVoid](#dialog.RequestTyping) |  |
-| StopTyping | [RequestStopTyping](#dialog.RequestStopTyping) | [ResponseVoid](#dialog.RequestStopTyping) |  |
-| SetOnline | [RequestSetOnline](#dialog.RequestSetOnline) | [ResponseVoid](#dialog.RequestSetOnline) |  |
-| PauseNotifications | [RequestPauseNotifications](#dialog.RequestPauseNotifications) | [ResponseVoid](#dialog.RequestPauseNotifications) |  |
-| RestoreNotifications | [RequestRestoreNotifications](#dialog.RequestRestoreNotifications) | [ResponseVoid](#dialog.RequestRestoreNotifications) |  |
+| Typing | [RequestTyping](#dialog.RequestTyping) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| StopTyping | [RequestStopTyping](#dialog.RequestStopTyping) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| SetOnline | [RequestSetOnline](#dialog.RequestSetOnline) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| PauseNotifications | [RequestPauseNotifications](#dialog.RequestPauseNotifications) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| RestoreNotifications | [RequestRestoreNotifications](#dialog.RequestRestoreNotifications) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| GetUserLastPresence | [RequestGetUserLastPresence](#dialog.RequestGetUserLastPresence) | [ResponseUserLastPresence](#dialog.ResponseUserLastPresence) |  |
 
  
 
 
 
-<a name="users.proto"/>
+<a name="users.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## users.proto
 
 
 
-<a name="dialog.BotCommand"/>
+<a name="dialog.BotCommand"></a>
 
 ### BotCommand
 Available bot commands
@@ -9139,7 +10356,7 @@ Available bot commands
 
 
 
-<a name="dialog.ContactRecord"/>
+<a name="dialog.ContactRecord"></a>
 
 ### ContactRecord
 Contact information record
@@ -9159,7 +10376,7 @@ Contact information record
 
 
 
-<a name="dialog.FullUser"/>
+<a name="dialog.FullUser"></a>
 
 ### FullUser
 Full User representation - deprecated
@@ -9183,7 +10400,7 @@ Full User representation - deprecated
 
 
 
-<a name="dialog.RequestEditUserLocalName"/>
+<a name="dialog.RequestEditUserLocalName"></a>
 
 ### RequestEditUserLocalName
 Renaming of user&#39;s visible name
@@ -9200,7 +10417,7 @@ Renaming of user&#39;s visible name
 
 
 
-<a name="dialog.RequestLoadFullUsers"/>
+<a name="dialog.RequestLoadFullUsers"></a>
 
 ### RequestLoadFullUsers
 Loading Full User information
@@ -9215,7 +10432,39 @@ Loading Full User information
 
 
 
-<a name="dialog.ResponseLoadFullUsers"/>
+<a name="dialog.RequestLoadUserData"></a>
+
+### RequestLoadUserData
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| claims | [RequestLoadUserData.Claim](#dialog.RequestLoadUserData.Claim) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.RequestLoadUserData.Claim"></a>
+
+### RequestLoadUserData.Claim
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_peer | [Peer](#dialog.Peer) |  |  |
+| p2p | [bool](#bool) |  |  |
+| group_member | [Peer](#dialog.Peer) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseLoadFullUsers"></a>
 
 ### ResponseLoadFullUsers
 
@@ -9230,7 +10479,38 @@ Loading Full User information
 
 
 
-<a name="dialog.UpdateUserAboutChanged"/>
+<a name="dialog.ResponseLoadUserData"></a>
+
+### ResponseLoadUserData
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| users | [User](#dialog.User) | repeated |  |
+
+
+
+
+
+
+<a name="dialog.UpdateUser"></a>
+
+### UpdateUser
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+| data | [UserData](#dialog.UserData) |  |  |
+
+
+
+
+
+
+<a name="dialog.UpdateUserAboutChanged"></a>
 
 ### UpdateUserAboutChanged
 Update about user&#39;s about changed
@@ -9246,7 +10526,7 @@ Update about user&#39;s about changed
 
 
 
-<a name="dialog.UpdateUserAvatarChanged"/>
+<a name="dialog.UpdateUserAvatarChanged"></a>
 
 ### UpdateUserAvatarChanged
 Update about avatar changed
@@ -9262,7 +10542,7 @@ Update about avatar changed
 
 
 
-<a name="dialog.UpdateUserBotCommandsChanged"/>
+<a name="dialog.UpdateUserBotCommandsChanged"></a>
 
 ### UpdateUserBotCommandsChanged
 Update about bot commands changed
@@ -9278,7 +10558,7 @@ Update about bot commands changed
 
 
 
-<a name="dialog.UpdateUserContactsChanged"/>
+<a name="dialog.UpdateUserContactsChanged"></a>
 
 ### UpdateUserContactsChanged
 Update about contact information change
@@ -9294,7 +10574,7 @@ Update about contact information change
 
 
 
-<a name="dialog.UpdateUserCustomProfileChanged"/>
+<a name="dialog.UpdateUserCustomProfileChanged"></a>
 
 ### UpdateUserCustomProfileChanged
 Update about user custom profile changed
@@ -9310,7 +10590,7 @@ Update about user custom profile changed
 
 
 
-<a name="dialog.UpdateUserExtChanged"/>
+<a name="dialog.UpdateUserExtChanged"></a>
 
 ### UpdateUserExtChanged
 
@@ -9326,7 +10606,7 @@ Update about user custom profile changed
 
 
 
-<a name="dialog.UpdateUserFullExtChanged"/>
+<a name="dialog.UpdateUserFullExtChanged"></a>
 
 ### UpdateUserFullExtChanged
 
@@ -9342,7 +10622,7 @@ Update about user custom profile changed
 
 
 
-<a name="dialog.UpdateUserLocalNameChanged"/>
+<a name="dialog.UpdateUserLocalNameChanged"></a>
 
 ### UpdateUserLocalNameChanged
 Update about local name changed
@@ -9358,7 +10638,7 @@ Update about local name changed
 
 
 
-<a name="dialog.UpdateUserNameChanged"/>
+<a name="dialog.UpdateUserNameChanged"></a>
 
 ### UpdateUserNameChanged
 Update about name changed
@@ -9374,7 +10654,7 @@ Update about name changed
 
 
 
-<a name="dialog.UpdateUserNickChanged"/>
+<a name="dialog.UpdateUserNickChanged"></a>
 
 ### UpdateUserNickChanged
 Update about nick changed
@@ -9390,7 +10670,7 @@ Update about nick changed
 
 
 
-<a name="dialog.UpdateUserPreferredLanguagesChanged"/>
+<a name="dialog.UpdateUserPreferredLanguagesChanged"></a>
 
 ### UpdateUserPreferredLanguagesChanged
 Update about user&#39;s preferred languages
@@ -9406,7 +10686,7 @@ Update about user&#39;s preferred languages
 
 
 
-<a name="dialog.UpdateUserSexChanged"/>
+<a name="dialog.UpdateUserSexChanged"></a>
 
 ### UpdateUserSexChanged
 Update about user sex changed
@@ -9422,7 +10702,7 @@ Update about user sex changed
 
 
 
-<a name="dialog.UpdateUserStatusChanged"/>
+<a name="dialog.UpdateUserStatusChanged"></a>
 
 ### UpdateUserStatusChanged
 Update about user status change
@@ -9438,7 +10718,7 @@ Update about user status change
 
 
 
-<a name="dialog.UpdateUserTimeZoneChanged"/>
+<a name="dialog.UpdateUserTimeZoneChanged"></a>
 
 ### UpdateUserTimeZoneChanged
 User TimeZone changed
@@ -9454,29 +10734,88 @@ User TimeZone changed
 
 
 
-<a name="dialog.User"/>
+<a name="dialog.User"></a>
 
 ### User
-Main user object
+
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | User&#39;s id |
 | access_hash | [int64](#int64) |  |  |
+| data | [UserData](#dialog.UserData) |  | required |
+
+
+
+
+
+
+<a name="dialog.UserData"></a>
+
+### UserData
+Main user object
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
 | name | [string](#string) |  |  |
-| local_name | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
 | nick | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
 | sex | [Sex](#dialog.Sex) |  |  |
 | avatar | [Avatar](#dialog.Avatar) |  |  |
 | is_bot | [google.protobuf.BoolValue](#google.protobuf.BoolValue) |  |  |
+| status | [UserData.Lifecycle](#dialog.UserData.Lifecycle) |  |  |
+| user_status | [UserStatus](#dialog.UserStatus) |  |  |
+| time_zone | [string](#string) |  |  |
+| exts | [UserData.Ext](#dialog.UserData.Ext) | repeated |  |
+| clock | [DataClock](#dialog.DataClock) |  |  |
+| locales | [string](#string) | repeated |  |
 
 
 
 
 
 
-<a name="dialog.UserStatus"/>
+<a name="dialog.UserData.Ext"></a>
+
+### UserData.Ext
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| s | [string](#string) |  |  |
+| b | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="dialog.UserProfile"></a>
+
+### UserProfile
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#dialog.User) |  |  |
+| contact_info | [ContactRecord](#dialog.ContactRecord) | repeated |  |
+| about | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+| preferred_languages | [string](#string) | repeated |  |
+| time_zone | [google.protobuf.StringValue](#google.protobuf.StringValue) |  | Time Zone of user in TZ format |
+| bot_commands | [BotCommand](#dialog.BotCommand) | repeated |  |
+| custom_profile | [string](#string) |  | custom user profile info in JSON format |
+| integration_token | [google.protobuf.StringValue](#google.protobuf.StringValue) |  |  |
+
+
+
+
+
+
+<a name="dialog.UserStatus"></a>
 
 ### UserStatus
 User&#39;s status
@@ -9486,6 +10825,7 @@ User&#39;s status
 | ----- | ---- | ----- | ----------- |
 | type | [UserStatusType](#dialog.UserStatusType) |  |  |
 | text | [google.protobuf.StringValue](#google.protobuf.StringValue) |  | Text supplied by user |
+| clock | [int64](#int64) |  |  |
 
 
 
@@ -9494,7 +10834,7 @@ User&#39;s status
  
 
 
-<a name="dialog.ContactType"/>
+<a name="dialog.ContactType"></a>
 
 ### ContactType
 
@@ -9509,7 +10849,7 @@ User&#39;s status
 
 
 
-<a name="dialog.Sex"/>
+<a name="dialog.Sex"></a>
 
 ### Sex
 
@@ -9522,7 +10862,22 @@ User&#39;s status
 
 
 
-<a name="dialog.UserStatusType"/>
+<a name="dialog.UserData.Lifecycle"></a>
+
+### UserData.Lifecycle
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| MISSED | 0 |  |
+| ACTIVE | 1 |  |
+| DELETED | 2 |  |
+| BLOCKED | 3 |  |
+| BLOCKED_AND_DELETED | 4 |  |
+
+
+
+<a name="dialog.UserStatusType"></a>
 
 ### UserStatusType
 
@@ -9534,6 +10889,7 @@ User&#39;s status
 | USERSTATUSTYPE_AWAY | 2 |  |
 | USERSTATUSTYPE_DONOTDISTURB | 3 |  |
 | USERSTATUSTYPE_INVISIBLE | 4 |  |
+| USERSTATUSTYPE_BUSY | 5 |  |
 
 
  
@@ -9541,28 +10897,29 @@ User&#39;s status
  
 
 
-<a name="dialog.Users"/>
+<a name="dialog.Users"></a>
 
 ### Users
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| EditUserLocalName | [RequestEditUserLocalName](#dialog.RequestEditUserLocalName) | [ResponseSeq](#dialog.RequestEditUserLocalName) |  |
-| LoadFullUsers | [RequestLoadFullUsers](#dialog.RequestLoadFullUsers) | [ResponseLoadFullUsers](#dialog.RequestLoadFullUsers) | Deprecated |
+| EditUserLocalName | [RequestEditUserLocalName](#dialog.RequestEditUserLocalName) | [ResponseSeq](#dialog.ResponseSeq) |  |
+| LoadFullUsers | [RequestLoadFullUsers](#dialog.RequestLoadFullUsers) | [ResponseLoadFullUsers](#dialog.ResponseLoadFullUsers) | Deprecated |
+| LoadUserData | [RequestLoadUserData](#dialog.RequestLoadUserData) | [ResponseLoadUserData](#dialog.ResponseLoadUserData) |  |
 
  
 
 
 
-<a name="web_rtc.proto"/>
+<a name="web_rtc.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
 ## web_rtc.proto
 
 
 
-<a name="dialog.ActiveCall"/>
+<a name="dialog.ActiveCall"></a>
 
 ### ActiveCall
 Active Calls. Used in broadcasting states of current calls.
@@ -9579,7 +10936,7 @@ Active Calls. Used in broadcasting states of current calls.
 
 
 
-<a name="dialog.AdvertiseMaster"/>
+<a name="dialog.AdvertiseMaster"></a>
 
 ### AdvertiseMaster
 Sent by master
@@ -9596,7 +10953,7 @@ Sent by master
 
 
 
-<a name="dialog.AdvertisePeer"/>
+<a name="dialog.AdvertisePeer"></a>
 
 ### AdvertisePeer
 Peer advertisement
@@ -9613,7 +10970,7 @@ Peer advertisement
 
 
 
-<a name="dialog.AdvertiseSelf"/>
+<a name="dialog.AdvertiseSelf"></a>
 
 ### AdvertiseSelf
 Advertizing self to a master mode
@@ -9628,7 +10985,7 @@ Advertizing self to a master mode
 
 
 
-<a name="dialog.Answer"/>
+<a name="dialog.Answer"></a>
 
 ### Answer
 Answer signal
@@ -9644,7 +11001,7 @@ Answer signal
 
 
 
-<a name="dialog.CallLogEntry"/>
+<a name="dialog.CallLogEntry"></a>
 
 ### CallLogEntry
 This struct represents a call from the history
@@ -9667,7 +11024,7 @@ This struct represents a call from the history
 
 
 
-<a name="dialog.CallMember"/>
+<a name="dialog.CallMember"></a>
 
 ### CallMember
 Call Member
@@ -9683,7 +11040,7 @@ Call Member
 
 
 
-<a name="dialog.CallMemberStateHolder"/>
+<a name="dialog.CallMemberStateHolder"></a>
 
 ### CallMemberStateHolder
 Call Member state holder
@@ -9703,7 +11060,7 @@ Call Member state holder
 
 
 
-<a name="dialog.CallNameChanged"/>
+<a name="dialog.CallNameChanged"></a>
 
 ### CallNameChanged
 Used to notify participants about call name changes
@@ -9718,7 +11075,7 @@ Used to notify participants about call name changes
 
 
 
-<a name="dialog.CallStats"/>
+<a name="dialog.CallStats"></a>
 
 ### CallStats
 Used to send call statistics to the server
@@ -9734,7 +11091,7 @@ Used to send call statistics to the server
 
 
 
-<a name="dialog.Candidate"/>
+<a name="dialog.Candidate"></a>
 
 ### Candidate
 Candidate signal
@@ -9752,7 +11109,7 @@ Candidate signal
 
 
 
-<a name="dialog.CloseSession"/>
+<a name="dialog.CloseSession"></a>
 
 ### CloseSession
 Close this session and be ready to
@@ -9768,7 +11125,7 @@ Close this session and be ready to
 
 
 
-<a name="dialog.DTMF"/>
+<a name="dialog.DTMF"></a>
 
 ### DTMF
 Emulates DTMF key press
@@ -9784,7 +11141,7 @@ Emulates DTMF key press
 
 
 
-<a name="dialog.EnableConnection"/>
+<a name="dialog.EnableConnection"></a>
 
 ### EnableConnection
 Notification about enabling connection to peer
@@ -9800,7 +11157,7 @@ Notification about enabling connection to peer
 
 
 
-<a name="dialog.GotICECandidate"/>
+<a name="dialog.GotICECandidate"></a>
 
 ### GotICECandidate
 WebRTC IceCandidate add signal.
@@ -9817,7 +11174,7 @@ Used to let the other party know about new ICE candidate, usually from onIceCand
 
 
 
-<a name="dialog.ICECandidate"/>
+<a name="dialog.ICECandidate"></a>
 
 ### ICECandidate
 Structure representing an ICE candidate
@@ -9834,7 +11191,7 @@ Structure representing an ICE candidate
 
 
 
-<a name="dialog.ICEServer"/>
+<a name="dialog.ICEServer"></a>
 
 ### ICEServer
 ICE Server description
@@ -9851,7 +11208,7 @@ ICE Server description
 
 
 
-<a name="dialog.NeedDisconnect"/>
+<a name="dialog.NeedDisconnect"></a>
 
 ### NeedDisconnect
 Notification about requirement about required disconnection from peer
@@ -9866,7 +11223,7 @@ Notification about requirement about required disconnection from peer
 
 
 
-<a name="dialog.NeedOffer"/>
+<a name="dialog.NeedOffer"></a>
 
 ### NeedOffer
 Notification from master that offer is required
@@ -9883,7 +11240,7 @@ Notification from master that offer is required
 
 
 
-<a name="dialog.NegotinationSuccessful"/>
+<a name="dialog.NegotinationSuccessful"></a>
 
 ### NegotinationSuccessful
 Notification about on negotiation is successful
@@ -9899,7 +11256,7 @@ Notification about on negotiation is successful
 
 
 
-<a name="dialog.Offer"/>
+<a name="dialog.Offer"></a>
 
 ### Offer
 Offer signal
@@ -9916,7 +11273,7 @@ Offer signal
 
 
 
-<a name="dialog.OnRenegotiationNeeded"/>
+<a name="dialog.OnRenegotiationNeeded"></a>
 
 ### OnRenegotiationNeeded
 Need renegotiate session. For example when streams are changed.
@@ -9932,7 +11289,7 @@ Need renegotiate session. For example when streams are changed.
 
 
 
-<a name="dialog.PeerSettings"/>
+<a name="dialog.PeerSettings"></a>
 
 ### PeerSettings
 Peer Settings
@@ -9950,7 +11307,7 @@ Peer Settings
 
 
 
-<a name="dialog.RemovedICECandidates"/>
+<a name="dialog.RemovedICECandidates"></a>
 
 ### RemovedICECandidates
 WebRTC IceCandidate remove signal
@@ -9967,7 +11324,7 @@ Used to let the other party know about ICE candidate list change, usually from o
 
 
 
-<a name="dialog.RequestChangeCallDisplayName"/>
+<a name="dialog.RequestChangeCallDisplayName"></a>
 
 ### RequestChangeCallDisplayName
 Changes the call display name
@@ -9983,7 +11340,7 @@ Changes the call display name
 
 
 
-<a name="dialog.RequestDeleteCall"/>
+<a name="dialog.RequestDeleteCall"></a>
 
 ### RequestDeleteCall
 
@@ -9998,7 +11355,7 @@ Changes the call display name
 
 
 
-<a name="dialog.RequestDoCall"/>
+<a name="dialog.RequestDoCall"></a>
 
 ### RequestDoCall
 Do Call. Right after a call client need to start sending CallInProgress
@@ -10014,7 +11371,7 @@ Do Call. Right after a call client need to start sending CallInProgress
 
 
 
-<a name="dialog.RequestGetCallInfo"/>
+<a name="dialog.RequestGetCallInfo"></a>
 
 ### RequestGetCallInfo
 Getting Call Information
@@ -10029,7 +11386,7 @@ Getting Call Information
 
 
 
-<a name="dialog.RequestJoinCall"/>
+<a name="dialog.RequestJoinCall"></a>
 
 ### RequestJoinCall
 Joining Call
@@ -10044,7 +11401,7 @@ Joining Call
 
 
 
-<a name="dialog.RequestLoadCalls"/>
+<a name="dialog.RequestLoadCalls"></a>
 
 ### RequestLoadCalls
 Call this function to load call history
@@ -10060,7 +11417,7 @@ Call this function to load call history
 
 
 
-<a name="dialog.RequestRejectCall"/>
+<a name="dialog.RequestRejectCall"></a>
 
 ### RequestRejectCall
 Rejecting Call
@@ -10076,7 +11433,7 @@ Rejecting Call
 
 
 
-<a name="dialog.ResponseDoCall"/>
+<a name="dialog.ResponseDoCall"></a>
 
 ### ResponseDoCall
 
@@ -10093,7 +11450,7 @@ Rejecting Call
 
 
 
-<a name="dialog.ResponseGetCallInfo"/>
+<a name="dialog.ResponseGetCallInfo"></a>
 
 ### ResponseGetCallInfo
 
@@ -10112,7 +11469,7 @@ Rejecting Call
 
 
 
-<a name="dialog.ResponseLoadCalls"/>
+<a name="dialog.ResponseLoadCalls"></a>
 
 ### ResponseLoadCalls
 Calls &#43; related peers
@@ -10130,7 +11487,7 @@ Calls &#43; related peers
 
 
 
-<a name="dialog.UpdateCallDisposed"/>
+<a name="dialog.UpdateCallDisposed"></a>
 
 ### UpdateCallDisposed
 Update about the call ending (all participants have left)
@@ -10147,7 +11504,7 @@ Update about the call ending (all participants have left)
 
 
 
-<a name="dialog.UpdateCallHandled"/>
+<a name="dialog.UpdateCallHandled"></a>
 
 ### UpdateCallHandled
 Update about incoming call handled
@@ -10163,7 +11520,7 @@ Update about incoming call handled
 
 
 
-<a name="dialog.UpdateIncomingCall"/>
+<a name="dialog.UpdateIncomingCall"></a>
 
 ### UpdateIncomingCall
 A new update about incoming call
@@ -10184,7 +11541,7 @@ A new update about incoming call
 
 
 
-<a name="dialog.UpdateIncomingCallDeprecated"/>
+<a name="dialog.UpdateIncomingCallDeprecated"></a>
 
 ### UpdateIncomingCallDeprecated
 Update about incoming call (Sent every 10 seconds)
@@ -10200,7 +11557,7 @@ Update about incoming call (Sent every 10 seconds)
 
 
 
-<a name="dialog.WebRTCSignaling"/>
+<a name="dialog.WebRTCSignaling"></a>
 
 ### WebRTCSignaling
 
@@ -10233,7 +11590,7 @@ Update about incoming call (Sent every 10 seconds)
  
 
 
-<a name="dialog.CallDisposedReason"/>
+<a name="dialog.CallDisposedReason"></a>
 
 ### CallDisposedReason
 
@@ -10248,7 +11605,7 @@ Update about incoming call (Sent every 10 seconds)
 
 
 
-<a name="dialog.CallMemberState"/>
+<a name="dialog.CallMemberState"></a>
 
 ### CallMemberState
 
@@ -10264,7 +11621,7 @@ Update about incoming call (Sent every 10 seconds)
 
 
 
-<a name="dialog.CallStatsType"/>
+<a name="dialog.CallStatsType"></a>
 
 ### CallStatsType
 
@@ -10284,7 +11641,7 @@ Update about incoming call (Sent every 10 seconds)
 
 
 
-<a name="dialog.DTMFCode"/>
+<a name="dialog.DTMFCode"></a>
 
 ### DTMFCode
 
@@ -10311,7 +11668,7 @@ Update about incoming call (Sent every 10 seconds)
 
 
 
-<a name="dialog.RejectCallReason"/>
+<a name="dialog.RejectCallReason"></a>
 
 ### RejectCallReason
 
@@ -10328,20 +11685,20 @@ Update about incoming call (Sent every 10 seconds)
  
 
 
-<a name="dialog.WebRTC"/>
+<a name="dialog.WebRTC"></a>
 
 ### WebRTC
 
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetCallInfo | [RequestGetCallInfo](#dialog.RequestGetCallInfo) | [ResponseGetCallInfo](#dialog.RequestGetCallInfo) |  |
-| LoadCalls | [RequestLoadCalls](#dialog.RequestLoadCalls) | [ResponseLoadCalls](#dialog.RequestLoadCalls) |  |
-| DoCall | [RequestDoCall](#dialog.RequestDoCall) | [ResponseDoCall](#dialog.RequestDoCall) |  |
-| JoinCall | [RequestJoinCall](#dialog.RequestJoinCall) | [ResponseVoid](#dialog.RequestJoinCall) |  |
-| RejectCall | [RequestRejectCall](#dialog.RequestRejectCall) | [ResponseVoid](#dialog.RequestRejectCall) |  |
-| ChangeCallDisplayName | [RequestChangeCallDisplayName](#dialog.RequestChangeCallDisplayName) | [ResponseVoid](#dialog.RequestChangeCallDisplayName) |  |
-| DeleteCall | [RequestDeleteCall](#dialog.RequestDeleteCall) | [ResponseVoid](#dialog.RequestDeleteCall) |  |
+| GetCallInfo | [RequestGetCallInfo](#dialog.RequestGetCallInfo) | [ResponseGetCallInfo](#dialog.ResponseGetCallInfo) |  |
+| LoadCalls | [RequestLoadCalls](#dialog.RequestLoadCalls) | [ResponseLoadCalls](#dialog.ResponseLoadCalls) |  |
+| DoCall | [RequestDoCall](#dialog.RequestDoCall) | [ResponseDoCall](#dialog.ResponseDoCall) |  |
+| JoinCall | [RequestJoinCall](#dialog.RequestJoinCall) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| RejectCall | [RequestRejectCall](#dialog.RequestRejectCall) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| ChangeCallDisplayName | [RequestChangeCallDisplayName](#dialog.RequestChangeCallDisplayName) | [ResponseVoid](#dialog.ResponseVoid) |  |
+| DeleteCall | [RequestDeleteCall](#dialog.RequestDeleteCall) | [ResponseVoid](#dialog.ResponseVoid) |  |
 
  
 
