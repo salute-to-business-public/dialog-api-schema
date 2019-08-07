@@ -177,6 +177,7 @@
     - [RequestEditGroupBasePermissions](#dialog.RequestEditGroupBasePermissions)
     - [RequestEditGroupTitle](#dialog.RequestEditGroupTitle)
     - [RequestEditGroupTopic](#dialog.RequestEditGroupTopic)
+    - [RequestEditMemberPermissions](#dialog.RequestEditMemberPermissions)
     - [RequestGetGroupInviteUrl](#dialog.RequestGetGroupInviteUrl)
     - [RequestGetGroupInviteUrlBase](#dialog.RequestGetGroupInviteUrlBase)
     - [RequestGetGroupMemberPermissions](#dialog.RequestGetGroupMemberPermissions)
@@ -202,6 +203,7 @@
     - [ResponseLoadFullGroups](#dialog.ResponseLoadFullGroups)
     - [ResponseLoadMembers](#dialog.ResponseLoadMembers)
     - [ResponseMakeUserAdminObsolete](#dialog.ResponseMakeUserAdminObsolete)
+    - [ResponseMember](#dialog.ResponseMember)
     - [UpdateGroup](#dialog.UpdateGroup)
     - [UpdateGroupAboutChanged](#dialog.UpdateGroupAboutChanged)
     - [UpdateGroupAboutChangedObsolete](#dialog.UpdateGroupAboutChangedObsolete)
@@ -2843,6 +2845,24 @@ Edit group topic
 
 
 
+<a name="dialog.RequestEditMemberPermissions"></a>
+
+### RequestEditMemberPermissions
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| group_peer | [GroupOutPeer](#dialog.GroupOutPeer) |  |  |
+| user_peer | [UserOutPeer](#dialog.UserOutPeer) |  |  |
+| granted_permissions | [GroupAdminPermission](#dialog.GroupAdminPermission) | repeated |  |
+| revoked_permissions | [GroupAdminPermission](#dialog.GroupAdminPermission) | repeated |  |
+
+
+
+
+
+
 <a name="dialog.RequestGetGroupInviteUrl"></a>
 
 ### RequestGetGroupInviteUrl
@@ -3243,6 +3263,21 @@ Deprecated
 | members | [Member](#dialog.Member) | repeated |  |
 | seq | [int32](#int32) |  | deprecated |
 | state | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="dialog.ResponseMember"></a>
+
+### ResponseMember
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| member | [Member](#dialog.Member) |  |  |
 
 
 
@@ -3784,6 +3819,7 @@ Possible permissions on a group
 | KickUser | [RequestKickUser](#dialog.RequestKickUser) | [ResponseSeqDateMid](#dialog.ResponseSeqDateMid) |  |
 | MakeUserAdmin | [RequestMakeUserAdmin](#dialog.RequestMakeUserAdmin) | [ResponseSeqDate](#dialog.ResponseSeqDate) |  |
 | GetGroupMemberPermissions | [RequestGetGroupMemberPermissions](#dialog.RequestGetGroupMemberPermissions) | [ResponseGetGroupMemberPermissions](#dialog.ResponseGetGroupMemberPermissions) |  |
+| EditMemberPermissions | [RequestEditMemberPermissions](#dialog.RequestEditMemberPermissions) | [ResponseMember](#dialog.ResponseMember) |  |
 | TransferOwnership | [RequestTransferOwnership](#dialog.RequestTransferOwnership) | [ResponseSeqDate](#dialog.ResponseSeqDate) |  |
 | GetGroupInviteUrl | [RequestGetGroupInviteUrl](#dialog.RequestGetGroupInviteUrl) | [ResponseInviteUrl](#dialog.ResponseInviteUrl) |  |
 | GetGroupInviteUrlBase | [RequestGetGroupInviteUrlBase](#dialog.RequestGetGroupInviteUrlBase) | [ResponseGetGroupInviteUrlBase](#dialog.ResponseGetGroupInviteUrlBase) |  |

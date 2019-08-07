@@ -75,7 +75,7 @@ golang:
 	Mscalapb/scalapb.proto=github.com/gogo/protobuf/types,\
 	plugins=grpc:$(GOLANG_PATH) \
 	$(PROTO_PATH)/*.proto
-	
+
 	@PATH=$(PATH):$(CWD) protoc -I$(PROTO_PATH) \
 	-Iinclude \
 	-I$(GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
@@ -90,11 +90,4 @@ docs:
 	--plugin=protoc-gen-doc=$(GOPATH)/bin/protoc-gen-doc \
 	--doc_out=$(DOCS_PATH) \
 	--doc_opt=markdown,readme.md \
-	$(PROTO_PATH)/*.proto
-
-	@protoc -I$(PROTO_PATH) \
-	-Iinclude \
-	--plugin=protoc-gen-doc=$(GOPATH)/bin/protoc-gen-doc \
-	 --doc_out=$(DOCS_PATH) \
-	--doc_opt=html,index.html \
 	$(PROTO_PATH)/*.proto
