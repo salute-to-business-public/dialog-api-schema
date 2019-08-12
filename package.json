@@ -1,6 +1,6 @@
 {
   "name": "@dlghq/dialog-api",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "dialog messenger api",
   "main": "js/index.js",
   "files": [
