@@ -3,7 +3,8 @@
   "properties": {
     "isDiscoverActive": {
       "type": "boolean",
-      "title": "Activates discover tab"
+      "title": "Activates discover tab",
+      "default": false
     }
   }
 }
