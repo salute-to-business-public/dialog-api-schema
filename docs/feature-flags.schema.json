@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "isDiscoverActive": {
+      "type": "boolean",
+      "title": "Activates discover tab"
+    }
+  }
+}
