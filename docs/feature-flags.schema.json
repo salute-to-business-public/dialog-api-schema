@@ -6,194 +6,99 @@
       "title": "Activates discover tab",
       "default": true,
       "description": "if true = discover tab is enable for users"
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "isMultifactorauthActive": {
       "type": "boolean",
       "title": "Activates Multifactorauth",
       "default": false,
       "description": "if true = Multifactorauth is enable for users (factors are tuned on server's config file)"
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "userProfile.nameMinLength": {
       "type": "string",
       "title": "Minimum length of user's profile name",
       "default": 3
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "userProfile.nameMaxLength": {
       "type": "string",
       "title": "Maximum length of user's profile name",
       "default": 128
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "userProfile.nicknameMinLength": {
       "type": "string",
       "title": "Minimum length of user's profile nickname",
       "default": 3
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "userProfile.nicknameMaxLength": {
       "type": "string",
       "title": "Maximum length of user's profile nickname",
       "default": 32
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "userProfile.aboutMinLength": {
       "type": "string",
       "title": "Minimum length of user's profile about",
       "default": 0
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "userProfile.aboutMaxLength": {
       "type": "string",
       "title": "Maximum length of user's profile about",
       "default": 3000
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "userProfile.avatarFileMaxSize": {
       "type": "int32",
       "title": "Maximum size of user's profile avatar",
       "default": 1048576
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "groups.titleMinLength": {
       "type": "string",
       "title": "Minimum length of group's title",
       "default": 5
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "groups.titleMaxLength": {
       "type": "string",
       "title": "Maximum length of group's title",
       "default": 128
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "groups.aboutMaxLength": {
       "type": "string",
       "title": "Maximum length of group's about",
       "default": 3000
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "groups.shortNameMinLength": {
       "type": "string",
       "title": "Minimum length of group's shortname",
       "default": 1
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "groups.shortNameMaxLength": {
       "type": "string",
       "title": "Maximum length of group's shortname",
       "default": 32
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "groups.avatarFileMaxSize": {
       "type": "int32",
       "title": "Maximum size of group's avatar",
       "default": 1048576
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "spaces.isEnabled": {
       "type": "boolean",
       "title": "Activates Spaces",
       "default": true,
       "description": "true - for product app, false - in platform"
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "spaces.aboutMaxLength": {
       "type": "string",
       "title": "Maximum length of space's about",
       "default": 280
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "spaces.titleMaxLength": {
       "type": "string",
       "title": "Maximum length of space's title",
       "default": 64
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "spaces.shortnameMaxLength": {
       "type": "string",
       "title": "Maximum length of space's shortname",
       "default": 32
-    }
-  }
-},
-{
-  "type": "object",
-  "properties": {
+    },
     "chat.bubbles": {
       "type": "boolean",
       "title": "Activates bubbles in chat",
