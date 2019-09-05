@@ -758,10 +758,10 @@ message RequestLoadHistory {
 
 message ResponseLoadHistory {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    reserved 2, 5;
+
     repeated HistoryMessage history = 1;
-    repeated User users = 2;
     repeated UserOutPeer user_peers = 4;
-    repeated Group groups = 5;
     repeated GroupOutPeer group_peers = 6;
     /// counter of unread messages
     google.protobuf.Int32Value counter = 7;
@@ -837,8 +837,8 @@ message RequestLoadDialogs {
 /// Contains dialogs and related peers and entities
 message ResponseLoadDialogs {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    repeated Group groups = 1;
-    repeated User users = 2;
+    reserved 1, 2;
+
     repeated Dialog dialogs = 3;
     repeated UserOutPeer user_peers = 4;
     repeated GroupOutPeer group_peers = 5;
@@ -941,8 +941,8 @@ message RequestLoadArchived {
 /// deprecated
 message ResponseLoadArchived {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    repeated Group groups = 1;
-    repeated User users = 2;
+    reserved 1, 2;
+
     repeated Dialog dialogs = 3;
     repeated UserOutPeer user_peers = 5;
     repeated GroupOutPeer group_peers = 6;
@@ -958,9 +958,9 @@ message RequestLoadGroupedDialogs {
 /// deprecated
 message ResponseLoadGroupedDialogs {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    reserved 2, 3;
+
     repeated DialogGroup dialogs = 1;
-    repeated User users = 2;
-    repeated Group groups = 3;
     google.protobuf.BoolValue show_archived = 4;
     google.protobuf.BoolValue show_invite = 5;
     repeated UserOutPeer user_peers = 6;

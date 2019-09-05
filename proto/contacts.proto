@@ -56,8 +56,8 @@ message RequestImportContacts {
 
 message ResponseImportContacts {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    /// Registered contacts
-    repeated User users = 1;
+    reserved 1;
+
     int32 seq = 2; /// Deprecated
     /// Server state related to current client, used by server only
     bytes state = 3;
@@ -91,7 +91,8 @@ message RequestGetContacts {
 
 message ResponseGetContacts {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    repeated User users = 1;
+    reserved 1;
+
     bool is_not_changed = 2;
     repeated UserOutPeer user_peers = 3;
 }
@@ -119,7 +120,8 @@ message RequestSearchContacts {
 
 message ResponseSearchContacts {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    repeated User users = 1;
+    reserved 1;
+
     repeated UserOutPeer user_peers = 2;
 }
 
