@@ -57,10 +57,9 @@ message RequestLiftThread {
 // Thread lift response
 message ResponseLiftThread {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    reserved 2;
 
-    reserved 1;
-
-    GroupOutPeer peer = 2; // group peer
+    Group group = 1; // group, representing lifted group
 }
 
 // Load group threads available for user
