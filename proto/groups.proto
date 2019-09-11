@@ -152,10 +152,11 @@ message RequestCreateGroup {
 
 message ResponseCreateGroup {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    reserved 4;
+
     int32 seq = 1; /// deprecated
     bytes state = 2;
     Group group = 3; /// created group
-    repeated User users = 4; /// empty if dropped by optimizations
     repeated UserOutPeer user_peers = 5; /// empty if dropped by optimizations
 }
 
@@ -360,8 +361,9 @@ message RequestJoinGroup {
 
 message ResponseJoinGroup {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    reserved 5;
+
     Group group = 1;
-    repeated User users = 5; /// empty if dropped by optimizations
     repeated UserOutPeer user_peers = 7; /// empty if dropped by optimizations
     UUIDValue mid = 8; /// deprecated
     int32 seq = 2; /// deprecated

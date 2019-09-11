@@ -40,8 +40,8 @@ message RequestCreateThread {
 // Thread creation response
 message ResponseCreateThread {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    reserved 2;
     Group thread_group = 1; // group, representing thread internally
-    repeated User users = 2; // participants of created conversation. empty if dropped by optimizations
     repeated UserOutPeer user_peers = 3; // corresponding user peers. empty if dropped by optimizations
 }
 
@@ -57,8 +57,9 @@ message RequestLiftThread {
 // Thread lift response
 message ResponseLiftThread {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    reserved 2;
+
     Group group = 1; // group, representing lifted group
-    GroupOutPeer peer = 2; // group peer
 }
 
 // Load group threads available for user

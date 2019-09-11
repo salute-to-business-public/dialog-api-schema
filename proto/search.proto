@@ -145,9 +145,9 @@ message RequestPeerSearch {
 /// Response with related peers and entities
 message ResponsePeerSearch {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    reserved 2, 3;
+
     repeated PeerSearchResult search_results = 1;
-    repeated User users = 2;
-    repeated Group groups = 3;
     repeated UserOutPeer user_peers = 4;
     repeated GroupOutPeer group_peers = 5;
 }
@@ -180,9 +180,9 @@ message MessageSearchItem {
 // Search Result with related peers and entities
 message ResponseMessageSearchResponse {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    reserved 2, 3;
+
     repeated MessageSearchItem search_results = 1 [(dlg).log="visible"];
-    repeated User users = 2 [(dlg).log="visible"];
-    repeated Group groups = 3 [(dlg).log="visible"];
     google.protobuf.BytesValue load_more_state = 4 [(dlg).log="hidden"];
     repeated UserOutPeer user_out_peers = 5 [(dlg).log="visible"];
     repeated GroupOutPeer group_out_peers = 6 [(dlg).log="visible"];

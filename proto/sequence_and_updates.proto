@@ -209,10 +209,10 @@ message RequestGetDifference {
 /// Updates happens after requested seq number + related peers and entities
 message ResponseGetDifference {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    reserved 3, 6;
+
     int32 seq = 1; /// seq of the last loaded update
     bytes state = 2;
-    repeated User users = 3;
-    repeated Group groups = 6;
     repeated UpdateSeqUpdate updates = 4;
     repeated HistoryMessage messages = 7;
     bool need_more = 5; /// false if all updates returned
