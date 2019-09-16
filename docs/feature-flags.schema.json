@@ -33,11 +33,6 @@
       "title": "Maximum length of user's profile nickname",
       "default": 32
     },
-    "userProfile.aboutMinLength": {
-      "type": "string",
-      "title": "Minimum length of user's profile about",
-      "default": 0
-    },
     "userProfile.aboutMaxLength": {
       "type": "string",
       "title": "Maximum length of user's profile about",
@@ -151,6 +146,12 @@
       "type": "boolean",
       "title": "Defines the order for global search results. (If true -  users first)",
       "default": false
+    },
+    "isCertAuthActive": {
+      "type": "boolean",
+      "title": "Activates selecting a certificate for authorization",
+      "default": true,
+      "description": "if true = button for selecting a certificate is available on the authorization screen"
     }
   }
 }
