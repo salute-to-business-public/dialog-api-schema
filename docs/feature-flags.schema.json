@@ -47,7 +47,7 @@
       "type": "boolean",
       "title": "User can edit his profile or not",
       "default": true
-    },    
+    },
     "groups.titleMinLength": {
       "type": "string",
       "title": "Minimum length of group's title",
@@ -141,7 +141,7 @@
       "type": "int32",
       "title": "Determines amount of local search results",
       "default": 10
-    }, 
+    },
     "search.localSearchUsersFirst": {
       "type": "boolean",
       "title": "Defines the order for local search results. (If true -  users first)",
@@ -157,6 +157,24 @@
       "title": "Activates selecting a certificate for authorization",
       "default": true,
       "description": "if true = button for selecting a certificate is available on the authorization screen"
+    },
+    "notifications.web.newMessageAudioUrl": {
+      "type": "string",
+      "title": "URL to an audio file for a new message notification",
+      "default": null,
+      "description": "Overrides a default app's audio"
+    },
+    "notifications.web.newMessageIconUrl": {
+      "type": "string",
+      "title": "URL to icon image for a new message notification",
+      "default": null,
+      "description": "Overrides a default app's icon"
+    },
+    "notifications.web.newMessageVibrationPattern": {
+      "type": "string",
+      "title": "Vibration pattern a new message notification",
+      "default": null,
+      "description": "Overrides a default app's vibration pattern. Values are serialized as an array of strings in JSON format"
     }
   }
 }
