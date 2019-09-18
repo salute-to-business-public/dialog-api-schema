@@ -175,6 +175,21 @@
       "title": "Vibration pattern a new message notification",
       "default": null,
       "description": "Overrides a default app's vibration pattern. Values are serialized as an array of strings in JSON format"
+    },
+    "markdown.inChatEnabled": {
+      "type": "boolean",
+      "title": "Enabling markdown in chats",
+      "default": false
+    },
+    "markdown.inLastMessageEnabled": {
+      "type": "boolean",
+      "title": "Enabling markdown in last messages",
+      "default": false
+    },
+    "markdown.inProfileEnabled": {
+      "type": "boolean",
+      "title": "Enabling markdown in user profile",
+      "default": false
     }
   }
 }
