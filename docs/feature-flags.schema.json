@@ -176,12 +176,12 @@
       "default": null,
       "description": "Overrides a default app's vibration pattern. Values are serialized as an array of strings in JSON format"
     },
-    "markdown.inChatEnabled": {
+    "markdown.inChatsEnabled": {
       "type": "boolean",
       "title": "Enabling markdown in chats",
       "default": false
     },
-    "markdown.inLastMessageEnabled": {
+    "markdown.inLastMessagesEnabled": {
       "type": "boolean",
       "title": "Enabling markdown in last messages",
       "default": false
