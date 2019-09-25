@@ -33,11 +33,6 @@
       "title": "Maximum length of user's profile nickname",
       "default": 32
     },
-    "userProfile.aboutMinLength": {
-      "type": "string",
-      "title": "Minimum length of user's profile about",
-      "default": 0
-    },
     "userProfile.aboutMaxLength": {
       "type": "string",
       "title": "Maximum length of user's profile about",
@@ -47,6 +42,11 @@
       "type": "int32",
       "title": "Maximum size of user's profile avatar",
       "default": 1048576
+    },
+    "userProfile.isEnabledEditProfile": {
+      "type": "boolean",
+      "title": "User can edit his profile or not",
+      "default": true
     },
     "groups.titleMinLength": {
       "type": "string",
@@ -114,6 +114,11 @@
     "messaging.swipeToReply": {
       "type": "boolean",
       "title": "Activates swipe to reply on message",
+      "default": true
+    },
+    "isSwipeBackEnabled": {
+      "type": "boolean",
+      "title": "Activates swipe(left to right) between fragments which means back button click",
       "default": true,
       "description": "if true = swipe is enable for users"
     },
@@ -147,7 +152,7 @@
       "type": "int32",
       "title": "Determines amount of local search results",
       "default": 10
-    }, 
+    },
     "search.localSearchUsersFirst": {
       "type": "boolean",
       "title": "Defines the order for local search results. (If true -  users first)",
@@ -156,6 +161,45 @@
     "search.globalSearchUsersFirst": {
       "type": "boolean",
       "title": "Defines the order for global search results. (If true -  users first)",
+      "default": false
+    },
+    "isCertAuthActive": {
+      "type": "boolean",
+      "title": "Activates selecting a certificate for authorization",
+      "default": true,
+      "description": "if true = button for selecting a certificate is available on the authorization screen"
+    },
+    "notifications.web.newMessageAudioUrl": {
+      "type": "string",
+      "title": "URL to an audio file for a new message notification",
+      "default": null,
+      "description": "Overrides a default app's audio"
+    },
+    "notifications.web.newMessageIconUrl": {
+      "type": "string",
+      "title": "URL to icon image for a new message notification",
+      "default": null,
+      "description": "Overrides a default app's icon"
+    },
+    "notifications.web.newMessageVibrationPattern": {
+      "type": "string",
+      "title": "Vibration pattern a new message notification",
+      "default": null,
+      "description": "Overrides a default app's vibration pattern. Values are serialized as an array of strings in JSON format"
+    },
+    "markdown.inChatsEnabled": {
+      "type": "boolean",
+      "title": "Enabling markdown in chats",
+      "default": false
+    },
+    "markdown.inLastMessagesEnabled": {
+      "type": "boolean",
+      "title": "Enabling markdown in last messages",
+      "default": false
+    },
+    "markdown.inProfileEnabled": {
+      "type": "boolean",
+      "title": "Enabling markdown in user profile",
       "default": false
     }
   }
