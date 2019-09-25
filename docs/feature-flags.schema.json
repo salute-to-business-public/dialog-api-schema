@@ -105,6 +105,12 @@
       "default": false,
       "description": "if true = bubbles in chat are enable for users"
     },
+    "chat.stickersEnabled": {
+      "type": "boolean",
+      "title": "Activates stickers in chat",
+      "default": false,
+      "description": "Show or hide sending stickers feature"
+    },
     "badges.menu.dialogs": {
       "type": "boolean",
       "title": "Activates budges in chat",
