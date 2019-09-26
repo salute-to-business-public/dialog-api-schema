@@ -45,7 +45,7 @@ jobs:
       - run:
           name: Generate documentation
           command: |
-            mkdir docs
+            mkdir -p docs
             protoc -I./proto -I./include --plugin=protoc-gen-doc="$GOPATH/bin/protoc-gen-doc" --doc_out=./docs --doc_opt=markdown,readme.md ./proto/*.proto
       - persist_to_workspace:
           root: .
