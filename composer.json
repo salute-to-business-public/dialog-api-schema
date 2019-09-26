@@ -19,5 +19,6 @@
       "Dialog\\": "php/Dialog/",
       "GPBMetadata\\": "php/GPBMetadata/"
     }
-  }
+  },
+  "version": "0.11.1"
 }
