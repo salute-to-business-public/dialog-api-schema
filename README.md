@@ -1,15 +1,11 @@
 Dialog API Schema
 =================
 
+[![Build Status](https://img.shields.io/circleci/project/github/dialogs/api-schema/master.svg)
+
 Dialog gRPC API Schema.
 
-[Chat](https://dlg.im/@botsfordialog)
-
 [API documentation](https://dialogs.github.io/api-schema/)
-
-| Artifact        | Build Status                                                                                                                                            |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| java-api-schema | [![Build Status](https://img.shields.io/circleci/project/github/dialogs/api-schema/master.svg)](https://circleci.com/gh/dialogs/api-schema/tree/master) |
 
 Usage
 -----
