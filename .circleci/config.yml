@@ -11,6 +11,11 @@ git_config: &git_config
     git config user.email "$GITHUB_BOT_EMAIL"
     git remote set-url origin https://${GITHUB_BOT_TOKEN}@github.com/dialogs/api-schema.git
 
+npm_config: &npm_config
+  name: configure npm
+  command: |
+    npm config set git-tag-version false
+
 executors:
   java-executor:
     docker:
@@ -18,6 +23,16 @@ executors:
     working_directory: ~/code
 
 jobs:
+  git-version-publish:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run:
+          <<: *git_config
+      - run: npx standard-version
+      - run: git push --follow-tags origin master
+
   docs-build:
     docker:
       - image: circleci/golang
@@ -148,8 +163,38 @@ jobs:
           command: |
             python3 setup.py sdist bdist_wheel
             python3 -m twine upload ./dist/*
+  npm-build:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run prepare
+  npm-publish:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run:
+          <<: *npm_config
+      - run: npm ci
+      - run: npm version from-git
+      - run: npm publish
+  pods-build:
+    macos:
+      xcode: '8.3.3'
+    steps:
+      - checkout
+      - run: pod lib lint
+
 workflows:
   version: 2
+  git-version-publish:
+    jobs:
+      - git-version-publish:
+          filters:
+            branches:
+              only: master
   docs:
     jobs:
       - docs-build
@@ -170,7 +215,9 @@ workflows:
             - java-build
           filters:
             branches:
-              only: master
+              ignore: /.*/
+            tags:
+              only: /.+/
   python-build-publish:
     jobs:
       - python-build-publish:
@@ -178,4 +225,15 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /.+/
+  npm-build-publish:
+    jobs:
+      - npm-build
+      - npm-publish:
+          requires:
+            - npm-build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.+/
