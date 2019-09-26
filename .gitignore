@@ -12,3 +12,5 @@ build/
 /vendor/
 /js/
 node_modules/
+local.properties
+*.iml
