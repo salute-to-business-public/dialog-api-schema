@@ -12,13 +12,13 @@ git_config: &git_config
     git remote set-url origin https://${GITHUB_BOT_TOKEN}@github.com/dialogs/api-schema.git
 
 executors:
-  build-executor:
+  java-executor:
     docker:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/code
 
 jobs:
-  build-docs:
+  docs-build:
     docker:
       - image: circleci/golang
     steps:
@@ -37,7 +37,7 @@ jobs:
           root: .
           paths:
             - docs
-  publish-docs:
+  docs-publish:
     docker:
       - image: circleci/node:lts
     steps:
@@ -49,8 +49,8 @@ jobs:
       - run:
           name: Deploy gh-pages
           command: npx gh-pages@2.0.1 -d docs
-  dependencies:
-    executor: build-executor
+  java-install-dependencies:
+    executor: java-executor
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -64,8 +64,8 @@ jobs:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
-  build:
-    executor: build-executor
+  java-build:
+    executor: java-executor
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -82,8 +82,8 @@ jobs:
             curl --header "Content-Type: application/json" --request POST \
              --data '{"text":"❌ java-api-schema build failed: '${CIRCLE_BUILD_URL}'"}' \
               $DIALOG_HOOK_URL
-  release:
-    executor: build-executor
+  java-publish:
+    executor: java-executor
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -108,7 +108,7 @@ jobs:
             curl --header "Content-Type: application/json" --request POST \
              --data '{"text":"java-api-schema release successful! Check it here: '${ARTIFACT_URL}' "}' \
               $DIALOG_HOOK_URL
-  python_release:
+  python-build-publish:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -152,28 +152,28 @@ workflows:
   version: 2
   docs:
     jobs:
-      - build-docs:
+      - docs-build
+      - docs-publish:
+          requires:
+            - docs-build
           filters:
             branches:
               only: master
-      - publish-docs:
-          requires:
-            - build-docs
-  java-build-release:
+  java-build-publish:
     jobs:
-      - dependencies
-      - build:
+      - java-install-dependencies
+      - java-build:
           requires:
-            - dependencies
-      - release:
+            - java-install-dependencies
+      - java-publish:
           requires:
-            - build
+            - java-build
           filters:
             branches:
               only: master
-  python-build-release:
+  python-build-publish:
     jobs:
-      - python_release:
+      - python-build-publish:
           filters:
             branches:
               ignore: /.*/
