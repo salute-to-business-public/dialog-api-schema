@@ -30,6 +30,7 @@ jobs:
       - checkout
       - run:
           <<: *git_config
+      - run: npm ci
       - run: GH_TOKEN=$GITHUB_BOT_TOKEN NPM_TOKEN=$NPM_AUTH_TOKEN npx semantic-release -p @semantic-release/release-notes-generator,@semantic-release/github,@semantic-release/npm
 
   docs-build:
