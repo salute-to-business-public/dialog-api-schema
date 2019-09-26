@@ -197,7 +197,7 @@ workflows:
               only: master
             tags:
               ignore: /.*/
-  docs:
+  build-publish:
     jobs:
       - docs-build
       - docs-publish:
@@ -206,8 +206,6 @@ workflows:
           filters:
             branches:
               only: master
-  java-build-publish:
-    jobs:
       - java-install-dependencies
       - java-build:
           requires:
@@ -220,16 +218,12 @@ workflows:
               ignore: /.*/
             tags:
               only: /.+/
-  python-build-publish:
-    jobs:
       - python-build-publish:
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /.+/
-  npm-build-publish:
-    jobs:
       - npm-build
       - npm-publish:
           requires:
