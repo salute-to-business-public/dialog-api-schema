@@ -9,9 +9,7 @@
     "include"
   ],
   "scripts": {
-    "prepare": "node scripts/build.js",
-    "postversion": "npm publish",
-    "postpublish": "git push --follow-tags"
+    "prepare": "node scripts/build.js"
   },
   "repository": {
     "type": "git",
