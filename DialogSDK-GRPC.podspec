@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name     = "DialogSDK-GRPC"
-  s.version  = "0.0.32"
+  s.version  = "1.0.0"
   s.license  = "Apache License, Version 2.0"
-  s.authors  = { 'gRPC contributors' => 'grpc-io@googlegroups.com' }
-  s.homepage = "https://grpc.io/"
+  s.authors  = { 'Dialog Developers' => 'dev@dlg.im' }
+  s.homepage = "https://github.com/dialogs/api-schema"
   s.summary = "DialogSDK-GRPC"
-  s.source = { :git => 'https://github.com/grpc/grpc.git' }
+  s.source = { :git => 'https://github.com/dialogs/api-schema.git' }
 
   s.ios.deployment_target = "10.0"
 
