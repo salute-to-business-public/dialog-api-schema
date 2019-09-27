@@ -134,6 +134,7 @@ message UpdateSeqUpdate {
       UpdateThreadCreated updateThreadCreated = 96;
       UpdateThreadLifted updateThreadLifted = 97;
       UpdateGroup updateGroup = 98;
+      UpdateGroupMemberInvited updateGroupMemberInvited = 99;
     }
 }
 

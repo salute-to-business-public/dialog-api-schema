@@ -377,7 +377,18 @@ message RequestJoinGroupByPeer {
     GroupOutPeer peer = 1 [(dlg).log="visible"];
 }
 
-// Update about inviting current user to group
+/**
+ * Update notifies that some user got invited to the group
+ */
+ message UpdateGroupMemberInvited {
+    int32 group_id = 1 [(dlg).log="visible"];
+    Member member = 2;
+}
+
+/**
+ * Update notifies that current user got invited to the group
+ * @deprecated
+ */
 message UpdateGroupInviteObsolete {
     int32 group_id = 1 [(dlg).log="visible"];
     int64 rid = 9 [(dlg).log="visible"]; /// deprecated
@@ -386,7 +397,10 @@ message UpdateGroupInviteObsolete {
     int64 date = 8 [(dlg).log="visible"];
 }
 
-// Update about inviting user to group
+/**
+ * Update notifies that some user got invited to the group
+ * @deprecated
+ */
 message UpdateGroupUserInvitedObsolete {
     int32 group_id = 1 [(dlg).log="visible"];
     int64 rid = 5 [(dlg).log="visible"]; // / Id for deduplication
