@@ -28,6 +28,7 @@ executors:
   python-executor:
     docker:
       - image: circleci/python:3.7
+    working_directory: ~/code
 
 jobs:
   git-version-publish:
@@ -96,23 +97,32 @@ jobs:
           name: Release
           command: echo -ne '\n\n' | ./gradlew bintrayUpload
   python-build:
-    machine: true
+    executor: python-executor
     steps:
       - checkout
-      - run: make python3
+      - run:
+          name: build python
+          command: |
+            pip install grpcio grpcio-tools
+            python3 -m grpc_tools.protoc \
+                    -I~/code/proto \
+                    -I~/code/include \
+                    --python_out=/dialog_api \
+                    --grpc_python_out=/dialog_api \
+                    ~/code/proto/*.proto \
+                    ~/code/include/scalapb/scalapb.proto
+            sed -i 's/^\(import.*_pb2\)/from . \1/' /dialog_api/*.py
+            sed -i -e "s/from scalapb/from .scalapb/g" /dialog_api/*.py
       - persist_to_workspace:
           root: .
           paths:
-            - python3
+            - dialog_api
   python-publish:
     executor: python-executor
     steps:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-          name: rename dialog api
-          command: mv python3 dialog_api
       - run:
           name: configure pypi
           command: |
