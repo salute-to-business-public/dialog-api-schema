@@ -25,7 +25,6 @@ python3:
 	mkdir -p $(PYTHON3_PATH)
 	docker run --name py_grpc_builder -d -i -t \
 	-v $(PROJECT_PATH):/project \
-	-v $(GOPATH):/go \
 	-v $(PYTHON3_PATH):/out \
 	-w /project \
 	python:latest bash
