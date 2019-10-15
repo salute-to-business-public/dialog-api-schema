@@ -101,9 +101,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: build python
+          name: install dependencies
+          command: python3 -m pip install --user grpcio grpcio-tools
+      - run:
+          name: build proto
           command: |
-            pip3 install --user grpcio grpcio-tools
             mkdir -p dialog_api
             python3 -m grpc_tools.protoc \
                     -I`pwd`/proto \
@@ -134,9 +136,9 @@ jobs:
           name: install dependencies
           command: |
             python3 -m pip install --user twine
-            python3 -m pip install --upgrade setuptools wheel
+            python3 -m pip install --user --upgrade setuptools wheel
       - run:
-          name: bunlde
+          name: bundle dist
           command: python3 setup.py sdist bdist_wheel
       - run:
           name: publish
