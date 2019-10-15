@@ -17,6 +17,7 @@ python3 -m grpc_tools.protoc \
 --grpc_python_out=/out \
 /project/include/scalapb/scalapb.proto
 
+touch /out/__init__.py
 touch /out/scalapb/__init__.py
 
 sed -i 's/^\(import.*_pb2\)/from . \1/' /out/*.py

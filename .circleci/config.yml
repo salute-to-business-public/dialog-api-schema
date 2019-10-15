@@ -11,11 +11,6 @@ git_config: &git_config
     git config user.email "$GITHUB_BOT_EMAIL"
     git remote set-url origin https://${GITHUB_BOT_TOKEN}@github.com/dialogs/api-schema.git
 
-npm_config: &npm_config
-  name: configure npm
-  command: |
-    npm config set git-tag-version false
-
 executors:
   java-executor:
     docker:
@@ -30,6 +25,9 @@ executors:
       SBT_OPTS: -Xmx6g
       SCALA_VERSION: 2.13.1
     working_directory: ~/code/scala
+  python-executor:
+    docker:
+      - image: circleci/python:3.7
 
 jobs:
   git-version-publish:
@@ -97,46 +95,41 @@ jobs:
       - run:
           name: Release
           command: echo -ne '\n\n' | ./gradlew bintrayUpload
-  python-build-publish:
-    machine:
-      image: ubuntu-1604:201903-01
+  python-build:
+    machine: true
     steps:
       - checkout
+      - run: make python3
+      - persist_to_workspace:
+          root: .
+          paths:
+            - python3
+  python-publish:
+    executor: python-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
       - run:
-          name: Make Python 3 bindings
-          command: |
-            export GOPATH=$HOME/.go_project
-            pyenv global 3.7.0
-            make python3
+          name: rename dialog api
+          command: mv python3 dialog_api
       - run:
-          name: Rename folders
-          command: |
-            mv python3 dialog_api
-            touch ./dialog_api/__init__.py
-      - run:
-          name: Install envsubst
-          command: |
-            sudo apt-get update && sudo apt-get -y install gettext-base
-      - run:
-          name: init .pypirc
+          name: configure pypi
           command: |
             echo -e "[pypi]" >> ~/.pypirc
-            echo -e "username: dialog_llc" >> ~/.pypirc
-            echo -e "password: $PYPI_PASSWORD" >> ~/.pypirc
+            echo -e "username = __token__" >> ~/.pypirc
+            echo -e "password = $PYPI_TOKEN" >> ~/.pypirc
       - run:
-          name: Change setup.py
-          command: |
-            envsubst < setup_unfilled.py > setup.py
-      - run:
-          name: Install twine
+          name: install dependencies
           command: |
             python3 -m pip install --user twine
             python3 -m pip install --upgrade setuptools wheel
       - run:
-          name: Build & push package
-          command: |
-            python3 setup.py sdist bdist_wheel
-            python3 -m twine upload ./dist/*
+          name: bunlde
+          command: python3 setup.py sdist bdist_wheel
+      - run:
+          name: publish
+          command: python3 -m twine upload ./dist/*
   npm-build:
     docker:
       - image: circleci/node:lts
@@ -192,7 +185,10 @@ workflows:
               only: master
             tags:
               only: /.+/
-      - python-build-publish:
+      - python-build
+      - python-publish:
+          requires:
+            - python-build
           filters:
             branches:
               only: master

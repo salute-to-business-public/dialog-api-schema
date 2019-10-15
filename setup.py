@@ -1,15 +1,23 @@
+import os
 import setuptools
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+
+def readme():
+    with open('README.md') as f:
+        return f.read()
+
+
+def version():
+    return os.getenv('CIRCLE_TAG')
+
 
 setuptools.setup(
     name="dialog-api",
-    version="$CIRCLE_TAG",
+    version=version(),
     author="Dialog LLC",
     author_email="services@dlg.im",
     description="Dialog API for Python",
-    long_description=long_description,
+    long_description=readme(),
     long_description_content_type="text/markdown",
     url="https://github.com/dialogs/api-schema",
     packages=setuptools.find_packages(),
