@@ -218,14 +218,10 @@ workflows:
     jobs:
       - npm-build:
           filters:
-            tags:
-              only: /^v.+$/
             branches:
               ignore: master
       - sbt-build:
           filters:
-            tags:
-              only: /^v.+$/
             branches:
               ignore: master
       - sbt-publish:
@@ -238,8 +234,6 @@ workflows:
               ignore: /.*/
       - java-build:
           filters:
-            tags:
-              only: /^v.+$/
             branches:
               ignore: master
       - java-publish:
@@ -252,8 +246,6 @@ workflows:
               ignore: /.*/
       - python-build:
           filters:
-            tags:
-              only: /^v.+$/
             branches:
               ignore: master
       - python-publish:
@@ -266,8 +258,6 @@ workflows:
               ignore: /.*/
       - docs-build:
           filters:
-            tags:
-              only: /^v.+$/
             branches:
               ignore: master
       - docs-publish:
