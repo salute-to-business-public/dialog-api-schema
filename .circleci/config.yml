@@ -172,11 +172,36 @@ workflows:
   version: 2
   git-version-publish:
     jobs:
-      - npm-build
-      - sbt-build
-      - docs-build
-      - java-build
-      - python-build
+      - npm-build:
+          filters:
+            branches:
+              only: master
+            tags:
+              ignore: /.*/
+      - sbt-build:
+          filters:
+            branches:
+              only: master
+            tags:
+              ignore: /.*/
+      - docs-build:
+          filters:
+            branches:
+              only: master
+            tags:
+              ignore: /.*/
+      - java-build:
+          filters:
+            branches:
+              only: master
+            tags:
+              ignore: /.*/
+      - python-build:
+          filters:
+            branches:
+              only: master
+            tags:
+              ignore: /.*/
       - git-version-publish:
           requires:
             - npm-build
@@ -191,8 +216,18 @@ workflows:
               ignore: /.*/
   build-publish:
     jobs:
-      - npm-build
-      - sbt-build
+      - npm-build:
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: master
+      - sbt-build:
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: master
       - sbt-publish:
           requires:
             - sbt-build
@@ -201,7 +236,12 @@ workflows:
               only: /^v.+$/
             branches:
               ignore: /.*/
-      - java-build
+      - java-build:
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: master
       - java-publish:
           requires:
             - java-build
@@ -210,7 +250,12 @@ workflows:
               only: /^v.+$/
             branches:
               ignore: /.*/
-      - python-build
+      - python-build:
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: master
       - python-publish:
           requires:
             - python-build
@@ -219,7 +264,12 @@ workflows:
               only: /^v.+$/
             branches:
               ignore: /.*/
-      - docs-build
+      - docs-build:
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: master
       - docs-publish:
           requires:
             - docs-build
