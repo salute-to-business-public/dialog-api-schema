@@ -115,7 +115,12 @@
       "type": "integer",
       "title": "Max length of chat message",
       "default": 4096
-    },    
+    },
+    "chat.bubbleGroupingTimeGap": {
+      "type": "integer",
+      "title": "Time gap in milliseconds to break bubble message group",
+      "default": 300000
+    },
     "badges.menu.dialogs": {
       "type": "boolean",
       "title": "Activates budges in chat",
