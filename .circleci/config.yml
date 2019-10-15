@@ -104,6 +104,7 @@ jobs:
           name: build python
           command: |
             pip3 install --user grpcio grpcio-tools
+            mkdir -p dialog_api
             python3 -m grpc_tools.protoc \
                     -I`pwd`/proto \
                     -I`pwd`/include \
