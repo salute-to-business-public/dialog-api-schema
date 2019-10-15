@@ -103,16 +103,16 @@ jobs:
       - run:
           name: build python
           command: |
-            pip install grpcio grpcio-tools
+            pip3 install --user grpcio grpcio-tools
             python3 -m grpc_tools.protoc \
-                    -I~/code/proto \
-                    -I~/code/include \
-                    --python_out=/dialog_api \
-                    --grpc_python_out=/dialog_api \
-                    ~/code/proto/*.proto \
-                    ~/code/include/scalapb/scalapb.proto
-            sed -i 's/^\(import.*_pb2\)/from . \1/' /dialog_api/*.py
-            sed -i -e "s/from scalapb/from .scalapb/g" /dialog_api/*.py
+                    -I`pwd`/proto \
+                    -I`pwd`/include \
+                    --python_out=`pwd`/dialog_api \
+                    --grpc_python_out=`pwd`/dialog_api \
+                    `pwd`/proto/*.proto \
+                    `pwd`/include/scalapb/scalapb.proto
+            sed -i 's/^\(import.*_pb2\)/from . \1/' dialog_api/*.py
+            sed -i -e "s/from scalapb/from .scalapb/g" dialog_api/*.py
       - persist_to_workspace:
           root: .
           paths:
