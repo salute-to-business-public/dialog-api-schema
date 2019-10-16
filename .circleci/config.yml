@@ -49,6 +49,7 @@ jobs:
             export GIT_COMMITTER_NAME=$GITHUB_BOT_USERNAME
             export GIT_COMMITTER_EMAIL=$GITHUB_BOT_EMAIL
             npx semantic-release
+      - run: git push --follow-tags
 
   docs-build:
     docker:

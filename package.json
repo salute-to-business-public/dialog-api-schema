@@ -40,6 +40,14 @@
   "release": {
     "plugins": [
       [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "npx podspec-bump -w ${nextRelease.version}"
+        }
+      ],
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      [
         "@semantic-release/git",
         {
           "assets": [
@@ -50,14 +58,6 @@
           "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
         }
       ],
-      [
-        "@semantic-release/exec",
-        {
-          "prepareCmd": "npx podspec-bump -w ${nextRelease.version}"
-        }
-      ],
-      "@semantic-release/npm",
-      "@semantic-release/github",
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator"
     ]
