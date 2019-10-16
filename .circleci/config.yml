@@ -195,71 +195,54 @@ workflows:
             - java-build
             - python-build
           filters:
-            branches:
-              only: master
             tags:
               ignore: /.*/
+            branches:
+              only: master
+
   publish:
     jobs:
       - npm-build:
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.+$/
       - sbt-build:
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.+$/
       - sbt-publish:
           requires:
             - sbt-build
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.+$/
       - java-build:
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.+$/
       - java-publish:
           requires:
             - java-build
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.+$/
       - python-build:
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.+$/
       - python-publish:
           requires:
             - python-build
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.+$/
       - docs-build:
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.+$/
       - docs-publish:
           requires:
             - docs-build
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.+$/
