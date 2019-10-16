@@ -30,5 +30,17 @@
   },
   "devDependencies": {
     "mkdirp": "0.5.1"
+  },
+  "release": {
+    "plugins": [
+      ["@semantic-release/git", {
+        "assets": ["package.json", "package-lock.json"],
+        "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
+      }],
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator"
+    ]
   }
 }
