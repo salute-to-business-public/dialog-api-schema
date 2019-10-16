@@ -33,6 +33,11 @@
       "title": "Maximum length of user's profile nickname",
       "default": 32
     },
+    "userProfile.nicknameAllowedChars": {
+      "type": "string",
+      "title": "List of allowed chars in nickname",
+      "default": "abcdefghijklmnopqrstuvwxyz0123456789-_."
+    },
     "userProfile.aboutMaxLength": {
       "type": "integer",
       "title": "Maximum length of user's profile about",
