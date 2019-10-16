@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = "DialogSDK-GRPC"
-  s.version  = "1.8.11"
+  s.version  = "1.8.12"
   s.license  = "Apache License, Version 2.0"
   s.authors  = { 'Dialog Developers' => 'dev@dlg.im' }
   s.homepage = "https://github.com/dialogs/api-schema"
