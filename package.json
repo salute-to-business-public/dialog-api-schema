@@ -68,13 +68,13 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "git tag -a v${nextRelease.version} -m \"${nextRelease.notes}\""
+          "prepareCmd": "git tag -a v${nextRelease.version} -m \"v${nextRelease.version}\n\n${nextRelease.notes}\""
         }
       ],
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "git push --follow-tags"
+          "prepareCmd": "git push --tags"
         }
       ]
     ]

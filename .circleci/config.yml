@@ -49,7 +49,7 @@ jobs:
             export GIT_COMMITTER_NAME=$GITHUB_BOT_USERNAME
             export GIT_COMMITTER_EMAIL=$GITHUB_BOT_EMAIL
             npm config set git-tag-version false
-            npx semantic-release
+            npx semantic-release --dry-run
       - run: git push --follow-tags
 
   docs-build:
