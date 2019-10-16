@@ -189,6 +189,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
       - java-build
       - java-publish:
           requires:
@@ -196,6 +198,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
       - python-build
       - python-publish:
           requires:
@@ -203,6 +207,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
       - docs-build
       - docs-publish:
           requires:
@@ -210,6 +216,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
       - git-version-publish:
           requires:
             - npm-build
