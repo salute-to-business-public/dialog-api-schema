@@ -39,6 +39,14 @@
   },
   "release": {
     "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "npm version --no-git-tag ${nextRelease.version}"
+        }
+      ],
       [
         "@semantic-release/exec",
         {
@@ -63,9 +71,12 @@
           "prepareCmd": "git tag -a v${nextRelease.version} -m \"${nextRelease.notes}\""
         }
       ],
-      "@semantic-release/npm",
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator"
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "git push --follow-tags"
+        }
+      ]
     ]
   }
 }
