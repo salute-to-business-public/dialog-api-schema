@@ -126,6 +126,8 @@ jobs:
                     `pwd`/include/scalapb/scalapb.proto
             sed -i 's/^\(import.*_pb2\)/from . \1/' dialog_api/*.py
             sed -i -e "s/from scalapb/from .scalapb/g" dialog_api/*.py
+            touch dialog_api/__init__.py
+            touch dialog_api/scalapb/__init__.py
       - persist_to_workspace:
           root: .
           paths:
