@@ -197,67 +197,69 @@ workflows:
           filters:
             branches:
               only: master
+            tags:
+              ignore: /.*/
   publish:
     jobs:
       - npm-build:
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
-              only: /v.*/
+              only: /^v.+$/
       - sbt-build:
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
-              only: /v.*/
+              only: /^v.+$/
       - sbt-publish:
           requires:
             - sbt-build
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
-              only: /v.*/
+              only: /^v.+$/
       - java-build:
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
-              only: /v.*/
+              only: /^v.+$/
       - java-publish:
           requires:
             - java-build
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
-              only: /v.*/
+              only: /^v.+$/
       - python-build:
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
-              only: /v.*/
+              only: /^v.+$/
       - python-publish:
           requires:
             - python-build
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
-              only: /v.*/
+              only: /^v.+$/
       - docs-build:
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
-              only: /v.*/
+              only: /^v.+$/
       - docs-publish:
           requires:
             - docs-build
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
-              only: /v.*/
+              only: /^v.+$/
