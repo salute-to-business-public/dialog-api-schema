@@ -206,14 +206,14 @@ workflows:
           filters:
             tags:
               only: /^v.+$/
-          branches:
-            ignore: /.*/
+            branches:
+              ignore: /.*/
       - sbt-build:
           filters:
             tags:
               only: /^v.+$/
-          branches:
-            ignore: /.*/
+            branches:
+              ignore: /.*/
       - sbt-publish:
           requires:
             - sbt-build
