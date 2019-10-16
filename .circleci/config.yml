@@ -189,7 +189,7 @@ workflows:
             - sbt-build
           filters:
             tags:
-              only: /^v.*/
+              only: /.+/
             branches:
               ignore: /.*/
       - java-build
@@ -198,7 +198,7 @@ workflows:
             - java-build
           filters:
             tags:
-              only: /^v.*/
+              only: /.+/
             branches:
               ignore: /.*/
       - python-build
@@ -207,7 +207,7 @@ workflows:
             - python-build
           filters:
             tags:
-              only: /^v.*/
+              only: /.+/
             branches:
               ignore: /.*/
       - docs-build
@@ -216,7 +216,7 @@ workflows:
             - docs-build
           filters:
             tags:
-              only: /^v.*/
+              only: /.+/
             branches:
               ignore: /.*/
       - git-version-publish:
