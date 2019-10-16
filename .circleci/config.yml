@@ -220,36 +220,36 @@ workflows:
           filters:
             tags:
               only: /^v.+$/
-          branches:
-            ignore: /.*/
+            branches:
+              ignore: /.*/
       - java-build:
           filters:
             tags:
               only: /^v.+$/
-          branches:
-            ignore: /.*/
+            branches:
+              ignore: /.*/
       - java-publish:
           requires:
             - java-build
           filters:
             tags:
               only: /^v.+$/
-          branches:
-            ignore: /.*/
+            branches:
+              ignore: /.*/
       - python-build:
           filters:
             tags:
               only: /^v.+$/
-          branches:
-            ignore: /.*/
+            branches:
+              ignore: /.*/
       - python-publish:
           requires:
             - python-build
           filters:
             tags:
               only: /^v.+$/
-          branches:
-            ignore: /.*/
+            branches:
+              ignore: /.*/
       - docs-build:
           filters:
             tags:
