@@ -233,6 +233,21 @@
       "title": "Activates Calls",
       "default": false,
       "description": "if true = calls are enable for users"
+    },
+    "global.confidentialPolicy.required": {
+      "type": "boolean",
+      "title": "Is confidential policy required",
+      "default": false,
+    },
+    "global.confidentialPolicy.URL": {
+      "type": "string",
+      "title": "URL of confidential policy webpage",
+      "default": "",
+    },
+    "global.confidentialPolicy.version": {
+      "type": "string",
+      "title": "Vertion of confidential policy",
+      "default": "",
     }
   }
 }
