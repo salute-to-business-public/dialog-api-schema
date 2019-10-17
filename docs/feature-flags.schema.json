@@ -246,7 +246,7 @@
     },
     "global.confidentialPolicy.version": {
       "type": "string",
-      "title": "Vertion of confidential policy",
+      "title": "Version of confidential policy",
       "default": "",
     }
   }
