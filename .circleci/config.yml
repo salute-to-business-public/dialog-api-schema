@@ -178,7 +178,7 @@ jobs:
     steps:
       - checkout:
           path: ~/code
-      - run: sbt publish
+      - run: sbt +publish
 
 workflows:
   version: 2
