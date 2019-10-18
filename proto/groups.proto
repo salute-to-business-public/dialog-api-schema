@@ -38,9 +38,34 @@ enum GroupType {
 message Group {
     int32 id = 1 [(dlg).log="visible"]; /// group id
     int64 access_hash = 2 [(dlg).log="danger"]; /// Access hash of group
-    reserved 3 to 28;
     GroupData data = 29;
     Member self_member = 30;
+
+    // For old bot sdk compatibility
+    string title = 3 [(dlg).log="hidden"]; /// Title of group
+    reserved 4;
+    /// Number of members
+    reserved 24;
+    /// Is current user a member of a group. Default is true.
+    reserved 6;
+    /// Is group hidden (not showing it in recent list). Default is false.
+    reserved 20;
+    /// Group Type. Used only for displaying information. Default is GROUP.
+    GroupType group_type = 25 [(dlg).log="visible"];
+    /// Can user send messages. Default is equals isMember for Group and false for channels.
+    reserved 26;
+    reserved 16;
+    reserved 8;
+    reserved 9;
+    reserved 10;
+    /// Theme of group
+    reserved 17;
+    /// About of group
+    reserved 18;
+    /// Group short name
+    google.protobuf.StringValue shortname = 19 [(dlg).log="visible"];
+    /// Base permissions for invited members
+    reserved 28;
 }
 
 message GroupData {

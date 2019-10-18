@@ -120,7 +120,10 @@ message RequestSearchContacts {
 
 message ResponseSearchContacts {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    reserved 1;
+
+    /// Registered contacts (for old bot sdk compatibility)
+    repeated User users = 1;
+    /// ---------------------------------------------------
 
     repeated UserOutPeer user_peers = 2;
 }
