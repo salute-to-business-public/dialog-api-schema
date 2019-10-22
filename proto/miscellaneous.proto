@@ -160,9 +160,12 @@ message UpdateConfig {
 }
 
 enum UpdateOptimization {
-    reserved 1 to 8;
+    reserved 3 to 8;
 
     UPDATEOPTIMIZATION_UNKNOWN = 0;
+
+    // For old bot sdk compatibility
+    UPDATEOPTIMIZATION_STRIP_ENTITIES = 2;
 }
 
 message RecursiveMapValue {

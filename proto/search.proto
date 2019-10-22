@@ -147,7 +147,11 @@ message RequestPeerSearch {
 /// Response with related peers and entities
 message ResponsePeerSearch {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    reserved 2, 3;
+
+    // For old bot sdk compatibility
+    repeated User users = 2;
+    repeated Group groups = 3;
+    // -----------------------------
 
     repeated PeerSearchResult search_results = 1;
     repeated UserOutPeer user_peers = 4;
