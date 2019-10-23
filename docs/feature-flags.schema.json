@@ -237,12 +237,12 @@
     "global.confidentialPolicy.URL": {
       "type": "string",
       "title": "URL of confidential policy webpage",
-      "default": "",
+      "default": null,
     },
     "global.confidentialPolicy.version": {
       "type": "string",
       "title": "Version of confidential policy",
-      "default": "",
+      "default": null,
     }
   }
 }
