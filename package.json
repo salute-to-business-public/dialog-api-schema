@@ -1,6 +1,6 @@
 {
   "name": "@dlghq/dialog-api",
-  "version": "1.0.0",
+  "version": "1.8.13",
   "description": "dialog messenger api",
   "main": "js/index.js",
   "files": [
@@ -29,6 +29,21 @@
     "protobufjs": "^6.8.8"
   },
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "6.3.0",
+    "@semantic-release/exec": "3.3.7",
+    "@semantic-release/git": "7.0.16",
+    "@semantic-release/github": "5.5.3",
+    "@semantic-release/npm": "5.2.0",
+    "@semantic-release/release-notes-generator": "7.3.0",
     "mkdirp": "0.5.1"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/git",
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ]
   }
 }

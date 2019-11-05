@@ -1,11 +1,15 @@
 Dialog API Schema
 =================
 
-[![Build Status](https://img.shields.io/circleci/project/github/dialogs/api-schema/master.svg)
+[![Build Status](https://img.shields.io/circleci/project/github/dialogs/api-schema/master.svg)](https://circleci.com/gh/dialogs/api-schema)
+
+[![npm](https://img.shields.io/npm/v/@dlghq/dialog-api)](https://www.npmjs.com/package/@dlghq/dialog-api)
+[![Maven](https://img.shields.io/bintray/v/dialog/maven/java-api-schema?label=Maven)](https://bintray.com/dialog/maven/java-api-schema)
+[![PyPI](https://img.shields.io/pypi/v/dialog-api)](https://pypi.org/project/dialog-api/1.2.2)
 
 Dialog gRPC API Schema.
 
-[API documentation](https://dialogs.github.io/api-schema/)
+[API documentation](https://dialogs.github.io/api-schema)
 
 Usage
 -----

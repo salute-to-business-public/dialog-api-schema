@@ -11,15 +11,23 @@ git_config: &git_config
     git config user.email "$GITHUB_BOT_EMAIL"
     git remote set-url origin https://${GITHUB_BOT_TOKEN}@github.com/dialogs/api-schema.git
 
-npm_config: &npm_config
-  name: configure npm
-  command: |
-    npm config set git-tag-version false
-
 executors:
   java-executor:
     docker:
       - image: circleci/openjdk:8-jdk
+    environment:
+      JVM_OPTS: -Xmx3200m
+    working_directory: ~/code
+  sbt-executor:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    environment:
+      SBT_OPTS: -Xmx6g
+      SCALA_VERSION: 2.13.1
+    working_directory: ~/code/scala
+  python-executor:
+    docker:
+      - image: circleci/python:3.7
     working_directory: ~/code
 
 jobs:
@@ -31,7 +39,17 @@ jobs:
       - run:
           <<: *git_config
       - run: npm ci
-      - run: GH_TOKEN=$GITHUB_BOT_TOKEN NPM_TOKEN=$NPM_AUTH_TOKEN npx semantic-release -p @semantic-release/release-notes-generator,@semantic-release/github,@semantic-release/npm
+      - run:
+          name: semantic release
+          command: |
+            export GH_TOKEN=$GITHUB_BOT_TOKEN
+            export NPM_TOKEN=$NPM_AUTH_TOKEN
+            export GIT_AUTHOR_NAME=$GITHUB_BOT_USERNAME
+            export GIT_AUTHOR_EMAIL=$GITHUB_BOT_EMAIL
+            export GIT_COMMITTER_NAME=$GITHUB_BOT_USERNAME
+            export GIT_COMMITTER_EMAIL=$GITHUB_BOT_EMAIL
+            npx semantic-release
+      - run: git push --follow-tags
 
   docs-build:
     docker:
@@ -64,105 +82,79 @@ jobs:
       - run:
           name: Deploy gh-pages
           command: npx gh-pages@2.0.1 -d docs
-  java-install-dependencies:
-    executor: java-executor
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps:
-      - checkout
-      - restore_cache:
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-      - run:
-          name: Download Dependencies
-          command: ./gradlew dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
   java-build:
     executor: java-executor
-    environment:
-      JVM_OPTS: -Xmx3200m
     steps:
       - checkout
       - restore_cache:
-          key: v1-dependencies-{{ checksum "build.gradle" }}
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Build
           command: ./gradlew build
-      - run:
-          name: Report build failure
-          when: on_fail
-          command: |
-            curl --header "Content-Type: application/json" --request POST \
-             --data '{"text":"❌ java-api-schema build failed: '${CIRCLE_BUILD_URL}'"}' \
-              $DIALOG_HOOK_URL
+      - save_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+          paths:
+            - ~/.gradle
   java-publish:
     executor: java-executor
-    environment:
-      JVM_OPTS: -Xmx3200m
     steps:
       - checkout
       - run:
           <<: *git_config
       - restore_cache:
-          key: v1-dependencies-{{ checksum "build.gradle" }}
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Release
           command: echo -ne '\n\n' | ./gradlew bintrayUpload
-      - run:
-          name: Report build failure
-          when: on_fail
-          command: |
-            curl --header "Content-Type: application/json" --request POST \
-             --data '{"text":"❌ java-api-schema release failed: '${CIRCLE_BUILD_URL}'"}' \
-              $DIALOG_HOOK_URL
-      - run:
-          name: Report success
-          command: |
-            curl --header "Content-Type: application/json" --request POST \
-             --data '{"text":"java-api-schema release successful! Check it here: '${ARTIFACT_URL}' "}' \
-              $DIALOG_HOOK_URL
-  python-build-publish:
-    machine:
-      image: ubuntu-1604:201903-01
+  python-build:
+    executor: python-executor
     steps:
       - checkout
       - run:
-          name: Make Python 3 bindings
-          command: |
-            export GOPATH=$HOME/.go_project
-            pyenv global 3.7.0
-            make python3
+          name: install dependencies
+          command: python3 -m pip install --user grpcio grpcio-tools
       - run:
-          name: Rename folders
+          name: build proto
           command: |
-            mv python3 dialog_api
-            touch ./dialog_api/__init__.py
+            mkdir -p dialog_api
+            python3 -m grpc_tools.protoc \
+                    -I`pwd`/proto \
+                    -I`pwd`/include \
+                    --python_out=`pwd`/dialog_api \
+                    --grpc_python_out=`pwd`/dialog_api \
+                    `pwd`/proto/*.proto \
+                    `pwd`/include/scalapb/scalapb.proto
+            sed -i 's/^\(import.*_pb2\)/from . \1/' dialog_api/*.py
+            sed -i -e "s/from scalapb/from .scalapb/g" dialog_api/*.py
+            touch dialog_api/__init__.py
+            touch dialog_api/scalapb/__init__.py
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dialog_api
+  python-publish:
+    executor: python-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
       - run:
-          name: Install envsubst
-          command: |
-            sudo apt-get update && sudo apt-get -y install gettext-base
-      - run:
-          name: init .pypirc
+          name: configure pypi
           command: |
             echo -e "[pypi]" >> ~/.pypirc
-            echo -e "username: dialog_llc" >> ~/.pypirc
-            echo -e "password: $PYPI_PASSWORD" >> ~/.pypirc
+            echo -e "username = __token__" >> ~/.pypirc
+            echo -e "password = $PYPI_TOKEN" >> ~/.pypirc
       - run:
-          name: Change setup.py
-          command: |
-            envsubst < setup_unfilled.py > setup.py
-      - run:
-          name: Install twine
+          name: install dependencies
           command: |
             python3 -m pip install --user twine
-            python3 -m pip install --upgrade setuptools wheel
+            python3 -m pip install --user --upgrade setuptools wheel
       - run:
-          name: Build & push package
-          command: |
-            python3 setup.py sdist bdist_wheel
-            python3 -m twine upload ./dist/*
+          name: bundle dist
+          command: python3 setup.py sdist bdist_wheel
+      - run:
+          name: publish
+          command: python3 -m twine upload ./dist/*
   npm-build:
     docker:
       - image: circleci/node:lts
@@ -170,38 +162,107 @@ jobs:
       - checkout
       - run: npm ci
       - run: npm run prepare
+  sbt-build:
+    executor: sbt-executor
+    steps:
+      - checkout:
+          path: ~/code
+      - restore_cache:
+          key: v1-sbt-cache-{{ checksum "build.sbt" }}
+      - run: sbt compile
+      - save_cache:
+          key: v1-sbt-cache-{{ checksum "build.sbt" }}
+          paths: ['~/.sbt', '~/.ivy2/cache', '~/.m2']
+  sbt-publish:
+    executor: sbt-executor
+    steps:
+      - checkout:
+          path: ~/code
+      - run: sbt +publish
 
 workflows:
   version: 2
-  git-version-publish:
+  build:
     jobs:
+      - npm-build
+      - sbt-build
+      - docs-build
+      - java-build
+      - python-build
       - git-version-publish:
+          requires:
+            - npm-build
+            - sbt-build
+            - docs-build
+            - java-build
+            - python-build
           filters:
-            branches:
-              only: master
             tags:
               ignore: /.*/
-  build-publish:
+            branches:
+              only: master
+
+  publish:
     jobs:
-      - docs-build
-      - docs-publish:
-          requires:
-            - docs-build
+      - npm-build:
           filters:
             tags:
-              only: /.+/
-      - java-install-dependencies
-      - java-build:
+              only: /^v.+$/
+            branches:
+              ignore: /.*/
+      - sbt-build:
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: /.*/
+      - sbt-publish:
           requires:
-            - java-install-dependencies
+            - sbt-build
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: /.*/
+      - java-build:
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: /.*/
       - java-publish:
           requires:
             - java-build
           filters:
             tags:
-              only: /.+/
-      - python-build-publish:
+              only: /^v.+$/
+            branches:
+              ignore: /.*/
+      - python-build:
           filters:
             tags:
-              only: /.+/
-      - npm-build
+              only: /^v.+$/
+            branches:
+              ignore: /.*/
+      - python-publish:
+          requires:
+            - python-build
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: /.*/
+      - docs-build:
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: /.*/
+      - docs-publish:
+          requires:
+            - docs-build
+          filters:
+            tags:
+              only: /^v.+$/
+            branches:
+              ignore: /.*/
