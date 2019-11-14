@@ -108,7 +108,7 @@
     "spaces.isEnabled": {
       "type": "boolean",
       "title": "Activates Spaces",
-      "default": true,
+      "default": false,
       "description": "true - for product app, false - in platform"
     },
     "spaces.aboutMaxLength": {
@@ -129,13 +129,13 @@
     "chat.bubbles": {
       "type": "boolean",
       "title": "Activates bubbles in chat",
-      "default": false,
+      "default": true,
       "description": "if true = bubbles in chat are enable for users"
     },
     "chat.stickersEnabled": {
       "type": "boolean",
       "title": "Activates stickers in chat",
-      "default": false,
+      "default": true,
       "description": "Show or hide sending stickers feature"
     },
     "chat.messageMaxLength": {
