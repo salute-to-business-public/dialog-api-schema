@@ -67,6 +67,7 @@ jobs:
           command: |
             mkdir -p docs
             protoc -I./proto -I./include --plugin=protoc-gen-doc="$GOPATH/bin/protoc-gen-doc" --doc_out=./docs --doc_opt=markdown,readme.md ./proto/*.proto
+            protoc -I./proto -I./include --plugin=protoc-gen-doc="$GOPATH/bin/protoc-gen-doc" --doc_out=./docs --doc_opt=./proto/dlg_template.tmpl,index.html ./proto/*.proto
       - persist_to_workspace:
           root: .
           paths:
