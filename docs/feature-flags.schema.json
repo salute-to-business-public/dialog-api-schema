@@ -256,6 +256,12 @@
       "default": false,
       "description": "if true = calls are enable for users"
     },
+    "calls.isExtPhoneCallEnabled": {
+      "type": "boolean",
+      "title": "Activates external phone calls",
+      "default": false,
+      "description": "Enables external phone calls feature"
+    },
     "global.confidentialPolicy.URL": {
       "type": "string",
       "title": "URL of confidential policy webpage",
