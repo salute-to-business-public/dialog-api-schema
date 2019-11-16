@@ -180,7 +180,7 @@
       "type": "integer",
       "title": "Maximum file size (in bytes) for sending to server",
       "default": 2147483647
-    }
+    },
     "fileUploading.minimumChunkSize": {
       "type": "integer",
       "title": "Minimum size of Chunk (in bytes) for sending to server",
