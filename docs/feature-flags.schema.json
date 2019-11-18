@@ -261,6 +261,12 @@
       "default": false,
       "description": "if true = calls are enable for users"
     },
+    "calls.video.isEnabled": {
+      "type": "boolean",
+      "title": "Activates Video Calls",
+      "default": false,
+      "description": "if true = video calls are enable for users"
+    },
     "calls.isExtPhoneCallEnabled": {
       "type": "boolean",
       "title": "Activates external phone calls",
