@@ -1,9 +1,9 @@
 {
   "type": "object",
   "properties": {
-    "isDiscoverActive": {
+    "discover.isEnabled": {
       "type": "boolean",
-      "title": "Activates discover tab",
+      "title": "Activates discover",
       "default": true,
       "description": "if true = discover tab is enable for users"
     },
@@ -12,11 +12,11 @@
       "title": "Discover web-view URL",
       "default": null
     },
-    "tabs.isContactsActive": {
+    "contacts.isEnabled": {
       "type": "boolean",
-      "title": "Contacts tab",
+      "title": "Enable contacts",
       "default": true,
-      "description": "if true = contacts tab is enable for users"
+      "description": "if true = contacts will be available for users"
     },
     "isHidingContentInTaskManagerEnabled": {
       "type": "boolean",
@@ -287,12 +287,12 @@
     "global.confidentialPolicy.URL": {
       "type": "string",
       "title": "URL of confidential policy webpage",
-      "default": null,
+      "default": null
     },
     "global.confidentialPolicy.version": {
       "type": "string",
       "title": "Version of confidential policy",
-      "default": null,
+      "default": null
     }
   }
 }
