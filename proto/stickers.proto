@@ -26,6 +26,8 @@ message StickerDescriptor {
     ImageLocation image_512 = 4 [(dlg).log="visible"];
     /// Image of sticker 256x256 in WebP format
     ImageLocation image_256 = 5 [(dlg).log="visible"];
+    /// Animated sticker json payload
+    google.protobuf.StringValue animatedStickerJson = 6 [(dlg).log="visible"];
 }
 
 // Sticker collection
