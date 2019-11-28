@@ -80,6 +80,11 @@
       "title": "User can edit his profile or not",
       "default": true
     },
+    "groups.publicUrlPrefix": {
+      "type": "string",
+      "title": "Prefix for generate public's url",
+      "default": null
+    },
     "groups.titleMinLength": {
       "type": "integer",
       "title": "Minimum length of group's title",
@@ -287,12 +292,12 @@
     "global.confidentialPolicy.URL": {
       "type": "string",
       "title": "URL of confidential policy webpage",
-      "default": null,
+      "default": null
     },
     "global.confidentialPolicy.version": {
       "type": "string",
       "title": "Version of confidential policy",
-      "default": null,
+      "default": null
     }
   }
 }
