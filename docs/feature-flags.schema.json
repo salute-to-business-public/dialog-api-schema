@@ -142,6 +142,12 @@
       "default": true,
       "description": "if true = bubbles in chat are enable for users"
     },
+    "chat.documentPhotoEnabled": {
+      "type": "boolean",
+      "title": "Activates document photo extension support",
+      "default": true,
+      "description": "Show photo content instead of the document if possible"
+    },
     "chat.stickersEnabled": {
       "type": "boolean",
       "title": "Activates stickers in chat",
