@@ -432,7 +432,7 @@ message StickerMessage {
     /// Sticker emoji
     google.protobuf.StringValue emoji = 7 [(dlg).log="hidden"];
     /// Animated sticker json payload
-    google.protobuf.StringValue animatedStickerJson = 8 [(dlg).log="visible"];
+    google.protobuf.StringValue animatedStickerJson = 8 [(dlg).log="hidden"];
 }
 
 // Binary Message. Useful for implementing your own content types
