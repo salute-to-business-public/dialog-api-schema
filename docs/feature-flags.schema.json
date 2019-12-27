@@ -24,6 +24,11 @@
       "default": true,
       "description": "if true = app content will be hidden in task manager, disabled screenshot, video record program cant catch UI"
     },
+    "passcode.isEnabled": {
+      "type": "boolean",
+      "title": "User can or cann`t setup pass code in his profile",
+      "default": true
+    },
     "passcode.failedAttemptsTillBlocking": {
       "type": "integer",
       "title": "Wrong unlocks count before disabling pass code input",
@@ -102,7 +107,7 @@
     },
     "userProfile.isSecuritySettingsEnabled": {
       "type": "boolean",
-      "title": "User can or cann`t with security settings in his profile",
+      "title": "User can or cann`t work with security settings in his profile",
       "default": true
     },
     "userProfile.customProfile.isEnabled": {
