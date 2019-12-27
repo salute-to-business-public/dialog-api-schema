@@ -100,9 +100,9 @@
       "title": "User can edit global settings notification his profile or not",
       "default": true
     },
-    "userProfile.isPassCodeEnabled": {
+    "userProfile.isSecuritySettingsEnabled": {
       "type": "boolean",
-      "title": "User can or cann`t setup pass code in his profile",
+      "title": "User can or cann`t with security settings in his profile",
       "default": true
     },
     "userProfile.customProfile.isEnabled": {
