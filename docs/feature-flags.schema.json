@@ -156,6 +156,12 @@
       "title": "Maximum length of space's shortname",
       "default": 32
     },
+    "chat.mentionsInput.isEnabled": {
+      "type": "boolean",
+      "title": "Show or hide mentions in chat input bar",
+      "default": true,
+      "description": "if true = mentions in chat are enable for users"
+    },
     "chat.bubbles": {
       "type": "boolean",
       "title": "Activates bubbles in chat",
