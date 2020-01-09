@@ -24,6 +24,11 @@
       "default": true,
       "description": "if true = app content will be hidden in task manager, disabled screenshot, video record program cant catch UI"
     },
+    "passCode.isEnabled": {
+      "type": "boolean",
+      "title": "User can or cann`t setup pass code in his profile",
+      "default": true
+    },
     "passcode.failedAttemptsTillBlocking": {
       "type": "integer",
       "title": "Wrong unlocks count before disabling pass code input",
@@ -65,6 +70,11 @@
       "title": "List of allowed chars in nickname",
       "default": "abcdefghijklmnopqrstuvwxyz0123456789-_."
     },
+    "userProfile.aboutMinLength": {
+      "type": "integer",
+      "title": "Minimum length of user's profile about",
+      "default": 0
+    },
     "userProfile.aboutMaxLength": {
       "type": "integer",
       "title": "Maximum length of user's profile about",
@@ -80,14 +90,24 @@
       "title": "User can edit his profile or not",
       "default": true
     },
+    "userProfile.isShowProfilePhone": {
+      "type": "boolean",
+      "title": "User can show phone number",
+      "default": true
+    },
+    "userProfile.isUserNameEditable": {
+      "type": "boolean",
+      "title": "User can edit his name or not",
+      "default": true
+    },
     "userProfile.isGlobalSettingsNotificationEnabled": {
       "type": "boolean",
       "title": "User can edit global settings notification his profile or not",
       "default": true
     },
-    "userProfile.isPassCodeEnabled": {
+    "userProfile.isSecuritySettingsEnabled": {
       "type": "boolean",
-      "title": "User can or cann`t setup pass code in his profile",
+      "title": "User can or cann`t work with security settings in his profile",
       "default": true
     },
     "userProfile.customProfile.isEnabled": {
@@ -196,6 +216,11 @@
       "default": true,
       "description": "if true = budges in chat are enable for users"
     },
+    "messaging.isPickerEnabled": {
+      "type": "boolean",
+      "title": "Activates picker on message screen",
+      "default": true
+    },
     "messaging.swipeToReply": {
       "type": "boolean",
       "title": "Activates swipe to reply on message",
@@ -206,6 +231,18 @@
       "title": "Activates swipe(left to right) between fragments which means back button click",
       "default": true,
       "description": "if true = swipe is enable for users"
+    },
+    "isCertAuthActive": {
+      "type": "boolean",
+      "title": "Activates selecting a certificate for authorization",
+      "default": true,
+      "description": "if true = button for selecting a certificate is available on the authorization screen"
+    },
+    "isAutoDetectEndpointEnabled": {
+      "type": "boolean",
+      "title": "Enable auto detect endpoint at authentification process",
+      "default": true,
+      "description": "if true = auto detect endpoint enabled"
     },
     "fileUploading.perfectRatio": {
       "type": "number",
@@ -259,12 +296,6 @@
       "default": null,
       "description": "if installed, value from custom profile with the key will be displayed in search user cell"
     },
-    "isCertAuthActive": {
-      "type": "boolean",
-      "title": "Activates selecting a certificate for authorization",
-      "default": true,
-      "description": "if true = button for selecting a certificate is available on the authorization screen"
-    },
     "notifications.android.isEnable": {
       "type": "boolean",
       "title": "Toggle switch to enable / disable the display of push notifications",
@@ -302,6 +333,12 @@
       "type": "boolean",
       "title": "Enabling markdown in user profile",
       "default": false
+    },
+    "calls.isEnabled": {
+      "type": "boolean",
+      "title": "Enable calls",
+      "description": "if true = calls are enable for users",
+      "default": true
     },
     "calls.isAudioCallsEnabled": {
       "type": "boolean",
