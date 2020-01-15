@@ -95,9 +95,14 @@
       "title": "User can show phone number",
       "default": true
     },
-    "userProfile.isUserNameEditable": {
+    "userProfile.isFullNameEditable": {
       "type": "boolean",
-      "title": "User can edit his name or not",
+      "title": "User can edit his full name or not",
+      "default": true
+    },
+    "userProfile.isNickNameEditable": {
+      "type": "boolean",
+      "title": "User can edit his nick name or not",
       "default": true
     },
     "userProfile.isGlobalSettingsNotificationEnabled": {
