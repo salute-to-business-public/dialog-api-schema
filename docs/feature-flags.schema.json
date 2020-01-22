@@ -162,7 +162,7 @@
     },
     "groups.permissions.canLeaveEnabled": {
       "type": "boolean",
-      "title": "Activates CAN_NOT_LEAVE permission for groups",
+      "title": "Activates CAN_LEAVE permission for groups",
       "default": false
     },
     "spaces.isEnabled": {
