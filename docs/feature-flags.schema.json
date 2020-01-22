@@ -160,6 +160,11 @@
       "title": "Maximum size of group's avatar",
       "default": 1048576
     },
+    "groups.permissions.isCanNotLeaveEnabled": {
+      "type": "boolean",
+      "title": "Activates CAN_NOT_LEAVE permission for groups",
+      "default": false
+    },
     "spaces.isEnabled": {
       "type": "boolean",
       "title": "Activates Spaces",
