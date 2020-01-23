@@ -162,7 +162,7 @@
     },
     "groups.permissions.canLeaveEnabled": {
       "type": "boolean",
-      "title": "Activates CAN_LEAVE permission for groups",
+      "title": "false - user can leave from any Group/Channel even official, true - user can leave only if has LEAVE permission",
       "default": false
     },
     "spaces.isEnabled": {
