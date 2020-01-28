@@ -377,6 +377,17 @@
       "type": "string",
       "title": "Version of confidential policy",
       "default": null
+    },
+    "targeting.enabled" : {
+      "type": "boolean",
+      "title": "Enable ability of target messages",
+      "default": false
+    },
+    "targeting.schema" : {
+      "type": "string",
+      "title": "Schema of targeting form",
+      "description": "JSON with description of UI schema for targeting form",
+      "default": null
     }
   }
 }
