@@ -27,7 +27,7 @@
     "passCode.isEnabled": {
       "type": "boolean",
       "title": "User can or cann`t setup pass code in his profile",
-      "default": true
+      "default": false
     },
     "passcode.failedAttemptsTillBlocking": {
       "type": "integer",
@@ -88,7 +88,7 @@
     "userProfile.isEnabledEditProfile": {
       "type": "boolean",
       "title": "User can edit his profile or not",
-      "default": true
+      "default": false
     },
     "userProfile.isShowProfilePhone": {
       "type": "boolean",
@@ -98,12 +98,12 @@
     "userProfile.isFullNameEditable": {
       "type": "boolean",
       "title": "User can edit his full name or not",
-      "default": true
+      "default": false
     },
     "userProfile.isNickNameEditable": {
       "type": "boolean",
       "title": "User can edit his nick name or not",
-      "default": true
+      "default": false
     },
     "userProfile.isGlobalSettingsNotificationEnabled": {
       "type": "boolean",
@@ -332,17 +332,17 @@
     "markdown.inChatsEnabled": {
       "type": "boolean",
       "title": "Enabling markdown in chats",
-      "default": false
+      "default": true
     },
     "markdown.inLastMessagesEnabled": {
       "type": "boolean",
       "title": "Enabling markdown in last messages",
-      "default": false
+      "default": true
     },
     "markdown.inProfileEnabled": {
       "type": "boolean",
       "title": "Enabling markdown in user profile",
-      "default": false
+      "default": true
     },
     "calls.isEnabled": {
       "type": "boolean",
@@ -354,13 +354,13 @@
       "type": "boolean",
       "title": "Enable audio calls",
       "description": "if true = audio calls are enable for users",
-      "default": false
+      "default": true
     },
     "calls.isVideoCallsEnabled": {
       "type": "boolean",
       "title": "Enable video calls",
       "description": "if true = video calls are enable for users",
-      "default": false
+      "default": true
     },
     "calls.isExternalCallsEnabled": {
       "type": "boolean",
