@@ -197,6 +197,7 @@ jobs:
             export SDK_DIR=/tmp/sdk
             rm -rf $SDK_DIR
             git clone -b master https://github.com/dialogs/golang-bot-sdk $SDK_DIR
+            rm -fv $SDK_DIR/*.go
 
             protoc \
             -I=proto \
@@ -229,11 +230,16 @@ jobs:
       - run:
           name: publish SDK
           command: |
-            export SDK_DIR=/tmp/sdk
             export TAG=$(git describe --tags --exact-match head~1)
             export COMMIT=$(git log --pretty=format:"%s (source commit: %H)")
+            export TARGET=/tmp/new_sdk
 
-            cd $SDK_DIR
+            rm -rf $TARGET
+            git clone -b master https://github.com/dialogs/golang-bot-sdk $TARGET
+            rm -fv $TARGET/*.go
+            cp -v /tmp/sdk/*.go $TARGET/
+
+            cd $TARGET
             git config user.name "$GITHUB_BOT_USERNAME"
             git config user.email "$GITHUB_BOT_EMAIL"
             git remote set-url origin https://${GITHUB_BOT_TOKEN}@github.com/dialogs/golang-dialog-api.git
