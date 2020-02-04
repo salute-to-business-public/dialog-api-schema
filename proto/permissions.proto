@@ -14,7 +14,7 @@ option (scalapb.options) = {
 // Permissions definition
 enum Permission {
     PERMISSION_UNKNOWN = 0;
-    PERMISSION_SEARCH_GROUPS = 1;
+    PERMISSION_SEARCH = 1;
     PERMISSION_CREATE_GROUPS = 2;
 }
 
@@ -24,7 +24,8 @@ message RequestGetPermissions {
 
 message ResponseGetPermissions {
     repeated Permission permissions = 1 [(dlg).log="visible"];
-    int64 clock = 2 [(dlg).log="visible"];
+    repeated Permission all_known_permissions = 2 [(dlg).log="visible"];
+    int64 clock = 3 [(dlg).log="visible"];
 }
 
 message UpdatePermissionsChange {
