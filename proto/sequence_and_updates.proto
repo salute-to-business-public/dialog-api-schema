@@ -32,6 +32,7 @@ import "messaging.proto";
 import "users.proto";
 import "spaces.proto";
 import "reactions.proto";
+import "permissions.proto";
 import "scalapb/scalapb.proto";
 
 option go_package = "dialog";
@@ -137,6 +138,8 @@ message UpdateSeqUpdate {
       UpdateGroup updateGroup = 98;
       UpdateGroupMemberInvited updateGroupMemberInvited = 99;
       reactions.MessageReactionsUpdate messageReactionsUpdate = 100;
+
+      UpdatePermissionsChange updatePermissionsChange = 101;
     }
 }
 
