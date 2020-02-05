@@ -1,0 +1,4 @@
+-J-Xmx4G
+-J-XX:MaxMetaspaceSize=2G
+-Dfile.encoding=UTF8
+-Dsbt.log.noformat=true
