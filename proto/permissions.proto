@@ -18,9 +18,7 @@ enum Permission {
     PERMISSION_CREATE_GROUPS = 2;
 }
 
-message RequestGetPermissions {
-    int64 clock = 1 [(dlg).log="visible"];
-}
+message RequestGetPermissions {}
 
 message ResponseGetPermissions {
     repeated Permission permissions = 1 [(dlg).log="visible"];
