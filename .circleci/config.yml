@@ -186,7 +186,7 @@ jobs:
     steps:
       - checkout:
           path: ~/code
-      - run: sbt +publish
+      - run: bash builder.sh
   golang-build:
     executor: golang-executor
     steps:
