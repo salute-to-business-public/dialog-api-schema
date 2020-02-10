@@ -125,6 +125,11 @@
       "title": "Custom profile schema",
       "default": null
     },
+    "groups.isEnabledEditProfile": {
+      "type": "boolean",
+      "title": "User can edit group profile or not",
+      "default": true
+    },
     "groups.publicUrlPrefix": {
       "type": "string",
       "title": "Prefix for generate public's url",
