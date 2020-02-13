@@ -377,7 +377,7 @@
     "calls.history.isAvailable": {
       "type": "boolean",
       "title": "Enable calls history screen",
-      "description": "if true = the call history screen is enabled for users, otherwise еру placeholder will be shown",
+      "description": "if true = the call history screen is enabled for users, otherwise the placeholder will be shown",
       "default": true
     },
     "global.confidentialPolicy.URL": {
