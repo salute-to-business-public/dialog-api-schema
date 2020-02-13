@@ -368,6 +368,18 @@
       "description": "if true = external phone calls are enable for users",
       "default": false
     },
+    "calls.history.isFeatureEnabled": {
+      "type": "boolean",
+      "title": "Enable calls history feature",
+      "description": "if true = the call history feature is enabled for users, otherwise it is hidden at all",
+      "default": true
+    },
+    "calls.history.isAvailable": {
+      "type": "boolean",
+      "title": "Enable calls history screen",
+      "description": "if true = the call history screen is enabled for users, otherwise еру placeholder will be shown",
+      "default": true
+    },
     "global.confidentialPolicy.URL": {
       "type": "string",
       "title": "URL of confidential policy webpage",
