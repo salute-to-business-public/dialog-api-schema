@@ -218,7 +218,7 @@
     "chat.sharedMedia.isEnabled": {
       "type": "boolean",
       "title": "Activates shared media scene for chat",
-      "default": true
+      "default": false
     },
     "chat.messageMaxLength": {
       "type": "integer",
