@@ -215,6 +215,11 @@
       "default": true,
       "description": "Show or hide sending stickers feature"
     },
+    "chat.sharedMedia.isEnabled": {
+      "type": "boolean",
+      "title": "Activates shared media scene for chat",
+      "default": false
+    },
     "chat.messageMaxLength": {
       "type": "integer",
       "title": "Max length of chat message",
