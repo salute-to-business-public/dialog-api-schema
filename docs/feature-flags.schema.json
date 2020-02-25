@@ -285,6 +285,16 @@
       "title": "Minimum size of Chunk (in bytes) for sending to server",
       "default": 500000
     },
+    "fileUploading.image.resolution": {
+      "type": "integer",
+      "title": "Maximum image resolution ",
+      "default": 1280
+    },
+    "fileUploading.image.qualityPercents": {
+      "type": "integer",
+      "title": "Image quality in percents",
+      "default": 87
+    },
     "upload.uploadEnabled": {
       "type": "boolean",
       "title": "Determines whether the user can upload the file",
