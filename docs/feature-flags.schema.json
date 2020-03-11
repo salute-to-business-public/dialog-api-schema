@@ -454,12 +454,12 @@
     "chat.audioMessages.isEnabled": {
       "type": "boolean",
       "title": "Enable audio messages",
-      "default": true
+      "default": false
     },
     "chat.audioMessages.isTranscribingEnabled": {
       "type": "boolean",
       "title": "Enable transcribing",
-      "default": true
+      "default": false
     }
   }
 }
