@@ -450,6 +450,16 @@
       "type": "boolean",
       "title": "Enable SberDisk integration",
       "default": "false"
+    },    
+    "chat.audioMessages.isEnabled": {
+      "type": "boolean",
+      "title": "Enable audio messages",
+      "default": false
+    },
+    "chat.audioMessages.isTranscribingEnabled": {
+      "type": "boolean",
+      "title": "Enable transcribing",
+      "default": false
     }
   }
 }
