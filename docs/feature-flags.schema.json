@@ -170,6 +170,16 @@
       "title": "false - user can leave from any Group/Channel even official, true - user can leave only if has LEAVE permission",
       "default": false
     },
+    "groups.isInviteLinkEnabled": {
+      "type": "boolean",
+      "title": "Enables invite link in group profile",
+      "default": false
+    },
+    "groups.isIntegrationLinkEnabled": {
+      "type": "boolean",
+      "title": "Enables integration link in group profile",
+      "default": false
+    },
     "spaces.isEnabled": {
       "type": "boolean",
       "title": "Activates Spaces",
