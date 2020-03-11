@@ -445,6 +445,11 @@
       "type": "integer",
       "title": "Maximum count of characters in description of interactive media group",
       "default": 256
+    },
+    "sberdisk.isEnabled": {
+      "type": "boolean",
+      "title": "Enable SberDisk integration",
+      "default": "false"
     }
   }
 }
