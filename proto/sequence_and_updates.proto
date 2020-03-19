@@ -365,12 +365,18 @@ message WeakUpdateBox {
     }
 
     oneof updatebox {
-        UpdateTyping typing_start                         = 1;
-        UpdateTypingStop typing_stop                      = 2;
-        UpdateUserLastSeen user_last_seen                 = 3;
-        UpdateGroupOnline group_online                    = 4;
-        UpdateForceReloadState force_reload               = 5;
-        UpdatePermissionsChange update_permissions_change = 6;
+        UpdateTyping typing_start                                = 1;
+        UpdateTypingStop typing_stop                             = 2;
+        UpdateUserLastSeen user_last_seen                        = 3;
+        UpdateGroupOnline group_online                           = 4;
+        UpdateForceReloadState force_reload                      = 5;
+        UpdatePermissionsChange permissions_change               = 6;
+        UpdateUserStatusChanged user_status_change               = 7;
+        reactions.MessageReactionsUpdate message_reaction_update = 8;
+        UpdateMessage message                                    = 9;
+        UpdateMessageContentChanged message_content_change       = 10;
+        UpdateMessageRead message_read                           = 11;
+        UpdateMessageReceived message_received                   = 12;
     }
 }
 
