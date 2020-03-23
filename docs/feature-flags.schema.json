@@ -470,6 +470,11 @@
       "type": "boolean",
       "title": "Enable transcribing",
       "default": false
+    },
+    "chat.messages.delete.isEnabled": {
+      "type": "boolean",
+      "title": "Activates deletion for messages",
+      "default": false
     }
   }
 }
