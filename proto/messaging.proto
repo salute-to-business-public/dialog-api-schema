@@ -1075,17 +1075,10 @@ message ResponseGetUpdatedMessages {
     bool next_available = 3;
 }
 
-enum MessageStatusType {
-    MESSAGESTATUSTYPE_UNKNOWN = 0;
-    MESSAGESTATUSTYPE_READS = 1;
-    MESSAGESTATUSTYPE_RECEIVES = 2;
-}
-
 // The model describing when a user received or read a message
 message MessageStatus {
     int64 clock = 1 [(dlg).log="visible"]; // time when message was read or received
     int32 user_id = 2 [(dlg).log="visible"];
-    MessageStatusType type = 3 [(dlg).log="visible"];
 }
 
 // Load message statuses for every user in conversation reads
