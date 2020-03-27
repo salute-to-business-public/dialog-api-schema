@@ -13,6 +13,7 @@ import "media_and_files.proto";
 import "scalapb/scalapb.proto";
 
 option go_package = "dialog";
+option java_package = "im.dlg.grpc.services";
 option (scalapb.options) = {
     package_name: "im.dlg.grpc.services"
 };
