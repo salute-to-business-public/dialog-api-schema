@@ -10,9 +10,6 @@ import "scalapb/scalapb.proto";
 
 option go_package = "dialog";
 option java_package = "im.dlg.grpc.services";
-option (scalapb.options) = {
-    package_name: "im.dlg.grpc.services"
-};
 
 // Location of file on server
 message FileLocation {

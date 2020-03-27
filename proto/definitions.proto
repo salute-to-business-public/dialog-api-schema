@@ -7,9 +7,6 @@ import "google/protobuf/descriptor.proto";
 
 option go_package = "dialog";
 option java_package = "im.dlg.grpc.services";
-option (scalapb.options) = {
-    package_name: "im.dlg.grpc.services"
-};
 
 message UUIDValue {
   int64 msb = 1;

@@ -14,9 +14,6 @@ import "groups.proto";
 
 option go_package = "dialog";
 option java_package = "im.dlg.grpc.services";
-option (scalapb.options) = {
-    package_name: "im.dlg.grpc.services"
-};
 
 message ThreadReference {
     UUIDValue message_id = 1 [(dlg).log="visible"];
