@@ -170,6 +170,11 @@
       "title": "Maximum size of group's avatar",
       "default": 1048576
     },
+    "groups.isGroupPermissionsEditingEnabled": {
+      "type": "boolean",
+      "title": "Ability to edit group members permissions",
+      "default": false
+    },
     "groups.permissions.canLeaveEnabled": {
       "type": "boolean",
       "title": "false - user can leave from any Group/Channel even official, true - user can leave only if has LEAVE permission",
