@@ -495,7 +495,7 @@
     "search.users.secondaryInfo.customProfileKey": {
       "type": "string",
       "title": "Add additional info to second line of user in search result",
-      "default": "job_title"
+      "default": null
     },
     "chat.messages.delete.isEnabled": {
       "type": "boolean",
