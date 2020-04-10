@@ -15,6 +15,8 @@ libraryDependencies ++= Seq(
 PB.protoSources in Compile += baseDirectory.value / ".." / "include"
 PB.protoSources in Compile += baseDirectory.value / ".." / "proto"
 
+Compile / unmanagedResourceDirectories += baseDirectory.value / ".." / "proto"
+
 PB.targets in Compile := Seq(
   scalapb.gen(singleLineToProtoString = true) → (sourceManaged in Compile).value
 )
