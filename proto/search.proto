@@ -36,16 +36,24 @@ enum SearchContentType {
     SEARCHCONTENTTYPE_AUDIO = 6; // voice
 }
 
+enum SearchDirection {
+    SEARCHDIRECTION_UNKNOWN = 0;
+    SEARCHDIRECTION_FORWARD = 1; // gte
+    SEARCHDIRECTION_BACKWARD = 2; // lte
+}
+
 message SimpleContactSearchCondition {
     string text = 1;
 }
 
 message SimpleMessageSearchCondition {
-    Peer peer = 1; /// where to search
-    string text = 2; /// search term
+    Peer peer = 1; // where to search
+    string text = 2; // search term
     oneof content_type {
-        SearchContentType type = 3; /// content message type to search
+        SearchContentType type = 3; // content message type to search
     }
+    SearchDirection search_direction = 4; // search direction gte/lte
+    google.protobuf.Int64Value date = 5; // search message from
 }
 
 /// Search among contacts/groups/users
