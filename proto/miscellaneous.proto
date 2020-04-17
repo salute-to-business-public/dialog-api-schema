@@ -160,8 +160,6 @@ message UpdateConfig {
 }
 
 enum UpdateOptimization {
-    reserved 3 to 8;
-
     UPDATEOPTIMIZATION_UNKNOWN = 0;
 
     // For old bot sdk compatibility
