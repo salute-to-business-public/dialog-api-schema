@@ -496,6 +496,11 @@
       "type": "boolean",
       "title": "Activates deletion for messages",
       "default": false
+    },
+    "chat.messages.edit.isEnabled": {
+      "type": "boolean",
+      "title": "Activates editing for messages",
+      "default": false
     }
   }
 }
