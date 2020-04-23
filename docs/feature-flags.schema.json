@@ -498,6 +498,11 @@
       "title": "Enable transcribing",
       "default": false
     },
+    "search.users.secondaryInfo.customProfileKey": {
+      "type": "string",
+      "title": "Add additional info to second line of user in search result",
+      "default": null
+    },
     "chat.messages.delete.isEnabled": {
       "type": "boolean",
       "title": "Activates deletion for messages",
