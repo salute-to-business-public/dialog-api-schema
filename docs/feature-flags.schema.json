@@ -431,6 +431,12 @@
       "description": "if true = the call history screen is enabled for users, otherwise the placeholder will be shown",
       "default": true
     },
+    "calls.isScreenSharingEnabled": {
+      "type": "boolean",
+      "title": "Enable screen sharing in calls",
+      "description": "if true = user can show screen in modern browsers",
+      "default": true
+    },
     "global.confidentialPolicy.URL": {
       "type": "string",
       "title": "URL of confidential policy webpage",
