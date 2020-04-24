@@ -15,6 +15,7 @@ message UUIDValue {
 
 message DialogOptions {
   string log = 1;
+  bool required = 2;
 }
 
 extend google.protobuf.FieldOptions {

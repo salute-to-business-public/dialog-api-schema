@@ -760,7 +760,7 @@ enum ListLoadMode {
 // Loading history of chat
 message RequestLoadHistory {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
-    OutPeer peer = 1 [(dlg).log="visible"];
+    OutPeer peer = 1 [(dlg).log="visible", (dlg).required=true];
     int64 date = 3 [(dlg).log="visible"];
     /// forward, backward or both
     ListLoadMode load_mode = 5 [(dlg).log="visible"];
