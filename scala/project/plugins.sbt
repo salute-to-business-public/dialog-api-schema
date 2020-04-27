@@ -3,10 +3,10 @@ resolvers += Resolver.url(
   url("http://dl.bintray.com/dialog/sbt-plugins")
 )(Resolver.ivyStylePatterns)
 
-addSbtPlugin("com.thesamet" % "sbt-protoc" % "0.99.23")
+addSbtPlugin("com.thesamet" % "sbt-protoc" % "0.99.31")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "1.0.0")
 
 addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.5.4")
 
-libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.9.0"
+libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.10.2"
