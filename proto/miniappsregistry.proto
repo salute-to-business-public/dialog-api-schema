@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+package dialog;
+
+enum AppType {
+    UNKNOWN = 0;
+    WEB_VIEW = 1;
+}
+
+message MiniApp {
+    string id = 1;
+    AppType app_type = 2;
+    string name = 3;
+    string description = 4;
+    string version = 5;
+    string icon = 6;
+    string link = 7;
+    google.protobuf.StringValue json_content = 8;
+    google.protobuf.Timestamp created_at = 9;
+    google.protobuf.Timestamp modified_at = 10;
+    bool is_enabled = 11;
+}
+
+message GetAppsRequest {
+    int32 user_id = 1;
+}
+
+message GetAppsResponse {
+    repeated MiniApp apps = 1;
+}
+
+message FindAppRequest {
+    string app_id = 1;
+}
+
+message FindAppResponse {
+    MiniApp app = 1;
+}
+
+service ClientsMiniAppsRegistry {
+    rpc FindApp (FindAppRequest) returns (FindAppResponse);
+    rpc GetApps (GetAppsRequest) returns (GetAppsResponse);
+}
