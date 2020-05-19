@@ -200,6 +200,7 @@ message ResponseMessageSearchResponse {
     google.protobuf.BytesValue load_more_state = 4 [(dlg).log="hidden"];
     repeated UserOutPeer user_out_peers = 5 [(dlg).log="visible"];
     repeated GroupOutPeer group_out_peers = 6 [(dlg).log="visible"];
+    int64 total_count = 7 [(dlg).log="visible"];
 }
 
 // Performing message search
