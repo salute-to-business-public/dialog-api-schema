@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "definitions.proto";
+
+package dialog;
+
+// Defines the type of the app. Currently only WebView supported, but more types can be added in future.
+enum AppType {
+    UNKNOWN = 0;
+    // Url which can be opened inside WebView in dialog app
+    WEB_VIEW = 1;
+}
+
+message MiniApp {
+    // unique identifier of the app
+    UUIDValue id = 1;
+    // type of the app
+    AppType app_type = 2;
+    // name of the app
+    string name = 3;
+    // additional info, describing this app
+    string description = 4;
+    // version of app
+    string version = 5;
+    // icon name for this app
+    string icon = 6;
+    // link to this app
+    string link = 7;
+    // additional data stored in json format
+    google.protobuf.StringValue json_content = 8;
+    // creation date/time in millis
+    int64 created_at_ts = 9;
+    // update date/time in millis
+    int64 modified_at_ts = 10;
+    // specifies if this app enabled and user can use it, ot not
+    bool is_enabled = 11;
+}
+
+// Request to get list of mini-apps
+message GetAppsRequest {
+}
+
+// List of the mini-app
+message GetAppsResponse {
+    repeated MiniApp apps = 1;
+}
+
+// Findig mini-app by id
+message FindAppRequest {
+    string app_id = 1;
+}
+
+// App found by id (or empty)
+message FindAppResponse {
+    MiniApp app = 1;
+}
+
+service ClientsMiniAppsRegistry {
+    rpc FindApp (FindAppRequest) returns (FindAppResponse);
+    rpc GetApps (GetAppsRequest) returns (GetAppsResponse);
+}
