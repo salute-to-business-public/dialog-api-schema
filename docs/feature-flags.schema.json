@@ -277,6 +277,12 @@
       "title": "List of available reaction to set on message. Separated with ':'.",
       "default": "\uD83D\uDE0A:\uD83D\uDE41:\uD83D\uDE00:\uD83D\uDE21:\uD83D\uDC4C:\uD83D\uDC4D:\uD83D\uDC4E"
     },
+    "messaging.forwards.isReactionsEnabled": {
+      "type": "boolean",
+      "title": "Activates reactions visibility for Forwarded Messages",
+      "default": false,
+      "description": "if true = reaction in chat are visible/editable on Forwarded Messages. Reason: server can't return reactions for ReferencedMessages"
+    },
     "isSwipeBackEnabled": {
       "type": "boolean",
       "title": "Activates swipe(left to right) between fragments which means back button click",

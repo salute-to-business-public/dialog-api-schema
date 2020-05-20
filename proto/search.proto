@@ -50,7 +50,7 @@ message SimpleMessageSearchCondition {
     string text = 2; // search term
     SearchContentType type = 3; // content message type to search
     SearchDirection search_direction = 4; // search direction gt/lt
-    google.protobuf.Timestamp date_from = 5; // search message from
+    google.protobuf.Int64Value date_from = 5; // search message from
 }
 
 /// Search among contacts/groups/users
@@ -200,6 +200,7 @@ message ResponseMessageSearchResponse {
     google.protobuf.BytesValue load_more_state = 4 [(dlg).log="hidden"];
     repeated UserOutPeer user_out_peers = 5 [(dlg).log="visible"];
     repeated GroupOutPeer group_out_peers = 6 [(dlg).log="visible"];
+    int64 total_count = 7 [(dlg).log="visible"];
 }
 
 // Performing message search
