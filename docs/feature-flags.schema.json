@@ -518,6 +518,11 @@
       "type": "boolean",
       "title": "Activates editing for messages",
       "default": false
+    },
+    "releaseNotes.isEnabled": {
+      "type": "boolean",
+      "title": "Enable release notes",
+      "default": false
     }
   }
 }
