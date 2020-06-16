@@ -17,6 +17,7 @@ option java_package = "im.dlg.grpc.services";
 enum TypingType {
     TYPINGTYPE_UNKNOWN = 0;
     TYPINGTYPE_TEXT = 1;
+    TYPINGTYPE_VOICE = 2;
 }
 
 // Sending typing notification
