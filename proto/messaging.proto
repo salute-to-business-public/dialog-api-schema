@@ -198,12 +198,13 @@ message MessageContent {
 // Text message
 message TextMessage {
     string text = 1 [(dlg).log="hidden"];
-    /// Mentions in message
-    repeated Mention mentions = 2 [(dlg).log="visible"];
+    reserved 2;
     /// Optional bytes of extension
     TextMessageEx ext = 3 [(dlg).log="visible"];
     repeated MessageMedia media = 4 [(dlg).log="visible"];
     repeated Any extensions = 5 [(dlg).log="visible"];
+    /// Mentions in message
+    repeated Mention mentions = 6 [(dlg).log="visible"];
 }
 
 enum MentionType {
@@ -215,8 +216,7 @@ enum MentionType {
 
 message Mention {
     MentionType type = 1;
-    /// User or group id.
-    google.protobuf.Int32Value target_id = 2;
+    Peer peer = 2;
 }
 
 message TextMessageEx {
