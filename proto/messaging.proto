@@ -216,7 +216,7 @@ enum MentionType {
 
 message Mention {
     MentionType type = 1;
-    Peer peer = 2;
+    google.protobuf.Int32Value peer_id = 2;
 }
 
 message TextMessageEx {
