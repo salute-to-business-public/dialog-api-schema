@@ -207,16 +207,9 @@ message TextMessage {
     repeated Mention mentions = 6 [(dlg).log="visible"];
 }
 
-enum MentionType {
-    MENTIONTYPE_UNKNOWN = 0;
-    MENTIONTYPE_USER = 1;
-    MENTIONTYPE_GROUP = 2;
-    MENTIONTYPE_ALL_USERS = 3;
-}
-
 message Mention {
-    MentionType type = 1;
-    google.protobuf.Int32Value peer_id = 2;
+    Peer peer = 1;
+    bool all = 2;
 }
 
 message TextMessageEx {
