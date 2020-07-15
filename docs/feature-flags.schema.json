@@ -533,6 +533,11 @@
       "type": "boolean",
       "title": "Enable release notes",
       "default": false
+    },
+    "messaging.maxMentions": {
+      "type": "integer",
+      "title": "The maximum number of mentions per message",
+      "default": 5
     }
   }
 }
