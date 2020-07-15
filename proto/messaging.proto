@@ -198,12 +198,18 @@ message MessageContent {
 // Text message
 message TextMessage {
     string text = 1 [(dlg).log="hidden"];
-    /// User mentions in message
-    repeated int32 mentions = 2 [(dlg).log="visible"];
+    reserved 2;
     /// Optional bytes of extension
     TextMessageEx ext = 3 [(dlg).log="visible"];
     repeated MessageMedia media = 4 [(dlg).log="visible"];
     repeated Any extensions = 5 [(dlg).log="visible"];
+    /// Mentions in message
+    repeated Mention mentions = 6 [(dlg).log="visible"];
+}
+
+message Mention {
+    Peer peer = 1;
+    bool all = 2;
 }
 
 message TextMessageEx {
