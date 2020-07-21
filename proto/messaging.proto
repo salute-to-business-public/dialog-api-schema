@@ -528,6 +528,14 @@ message RequestDeleteMessageObsolete {
     repeated UUIDValue mids = 3 [(dlg).log="visible"]; /// Message ids
 }
 
+// Deleting message
+message RequestDeleteMessage {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    Peer peer = 1 [(dlg).log="visible"];
+    UUIDValue message_id = 2 [(dlg).log="visible"]; /// Message id
+    bool delete_for_user_only = 3;
+}
+
 // Clearing of conversation (without removing dialog from dialogs list)
 message RequestClearChat {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
@@ -1157,6 +1165,13 @@ service Messaging {
     rpc DeleteMessageObsolete (RequestDeleteMessageObsolete) returns (ResponseSeq) {
         option (google.api.http) = {
             post: "/v1/grpc/Messaging/DeleteMessageObsolete"
+            body: "*"
+        };
+    }
+
+    rpc DeleteMessage (RequestDeleteMessage) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Messaging/DeleteMessage"
             body: "*"
         };
     }
