@@ -425,6 +425,12 @@ message RequestDeleteGroup {
     int32 group_id = 1 [(dlg).log="visible"];
 }
 
+// get group info by invite token
+message RequestGetGroupPartialInfo {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string token = 1 [(dlg).log="visible"];
+}
+
 /**
  * Update notifies that some user got invited to the group
  */
@@ -636,6 +642,13 @@ service Groups {
     rpc DeleteGroup (RequestDeleteGroup) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             post: "/v1/grpc/Groups/DeleteGroup"
+            body: "*"
+        };
+    }
+
+    rpc GetGroupPartialInfo (RequestGetGroupPartialInfo) returns (GroupPartialInfo) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Groups/GetGrpoupPartialInfo"
             body: "*"
         };
     }
