@@ -190,6 +190,16 @@
       "title": "Enables integration link in group profile",
       "default": false
     },
+    "groups.membersCountLimit": {
+      "type": "integer",
+      "title": "Maximum number of members that can be joined/invited to a group",
+      "default": 10000
+    },
+    "channels.membersCountLimit": {
+      "type": "integer",
+      "title": "Maximum number of members that can be joined/invited to a channel",
+      "default": 1000000
+    },
     "spaces.isEnabled": {
       "type": "boolean",
       "title": "Activates Spaces",
@@ -282,6 +292,11 @@
       "title": "Activates reactions visibility for Forwarded Messages",
       "default": false,
       "description": "if true = reaction in chat are visible/editable on Forwarded Messages. Reason: server can't return reactions for ReferencedMessages"
+    },
+    "messaging.forwards.recipientsLimit": {
+      "type": "integer",
+      "title": "Max recipients for forwarding",
+      "default": 20
     },
     "isSwipeBackEnabled": {
       "type": "boolean",
@@ -523,6 +538,11 @@
       "type": "boolean",
       "title": "Enable release notes",
       "default": false
+    },
+    "messaging.maxMentions": {
+      "type": "integer",
+      "title": "The maximum number of mentions per message",
+      "default": 5
     }
   }
 }

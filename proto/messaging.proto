@@ -198,12 +198,18 @@ message MessageContent {
 // Text message
 message TextMessage {
     string text = 1 [(dlg).log="hidden"];
-    /// User mentions in message
-    repeated int32 mentions = 2 [(dlg).log="visible"];
+    reserved 2;
     /// Optional bytes of extension
     TextMessageEx ext = 3 [(dlg).log="visible"];
     repeated MessageMedia media = 4 [(dlg).log="visible"];
     repeated Any extensions = 5 [(dlg).log="visible"];
+    /// Mentions in message
+    repeated Mention mentions = 6 [(dlg).log="visible"];
+}
+
+message Mention {
+    Peer peer = 1;
+    bool all = 2;
 }
 
 message TextMessageEx {
@@ -520,6 +526,14 @@ message RequestMessageRead {
 message RequestDeleteMessageObsolete {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     repeated UUIDValue mids = 3 [(dlg).log="visible"]; /// Message ids
+}
+
+// Deleting message
+message RequestDeleteMessage {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    Peer peer = 1 [(dlg).log="visible"];
+    UUIDValue message_id = 2 [(dlg).log="visible"]; /// Message id
+    bool delete_for_user_only = 3;
 }
 
 // Clearing of conversation (without removing dialog from dialogs list)
@@ -1151,6 +1165,13 @@ service Messaging {
     rpc DeleteMessageObsolete (RequestDeleteMessageObsolete) returns (ResponseSeq) {
         option (google.api.http) = {
             post: "/v1/grpc/Messaging/DeleteMessageObsolete"
+            body: "*"
+        };
+    }
+
+    rpc DeleteMessage (RequestDeleteMessage) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Messaging/DeleteMessage"
             body: "*"
         };
     }

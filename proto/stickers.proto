@@ -20,7 +20,7 @@ message StickerDescriptor {
     /// Emoji code for sticker
     google.protobuf.StringValue emoji = 2 [(dlg).log="visible"];
     /// Image of sticker 128x128 in WebP format
-    ImageLocation image_128 = 3 [(dlg).log="visible"];
+    ImageLocation image_128 = 3 [(dlg).log="visible", (dlg).required=true];
     /// Image of sticker 512x512 in WebP format
     ImageLocation image_512 = 4 [(dlg).log="visible"];
     /// Image of sticker 256x256 in WebP format
