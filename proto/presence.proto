@@ -88,7 +88,7 @@ message UpdateUserOffline {
 // Update about user's last seen state
 message UpdateUserLastSeen {
     int32 uid = 1 [(dlg).log="visible"];
-    int64 time = 2 [(dlg).log="visible"];
+    int64 last_seen_at = 2 [(dlg).log="visible"];
     DeviceType device_type = 3;
     reserved 4;
     int64 current_time = 5 [(dlg).log="visible"];
