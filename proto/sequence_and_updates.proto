@@ -20,7 +20,7 @@ import "miscellaneous.proto";
 import "authentication.proto";
 import "groups.proto";
 import "stickers.proto";
-import "typing_and_online.proto";
+import "presence.proto";
 import "event_bus.proto";
 import "web_rtc.proto";
 import "config_sync.proto";
