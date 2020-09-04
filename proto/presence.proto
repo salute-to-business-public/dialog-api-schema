@@ -60,14 +60,14 @@ message RequestSetOnline {
 // Update about user's typing
 message UpdateTyping {
     Peer peer = 1 [(dlg).log="visible"];
-    int32 uid = 2 [(dlg).log="visible"];
+    int32 user_id = 2 [(dlg).log="visible"];
     TypingType typing_type = 3 [(dlg).log="visible"];
 }
 
 // Update about user's typing stop
 message UpdateTypingStop {
     Peer peer = 1 [(dlg).log="visible"];
-    int32 uid = 2 [(dlg).log="visible"];
+    int32 user_id = 2 [(dlg).log="visible"];
     TypingType typing_type = 3 [(dlg).log="hidden"];
 }
 
@@ -99,9 +99,18 @@ message UpdateGroupOnline {
     int32 group_id = 1 [(dlg).log="visible"];
     /// amount of online users.
     int32 count = 2 [(dlg).log="visible"];
-    /// online users id.
     /// The list of online users will only be sent if the flag was set during the subscription.
     repeated int32 users_id = 3 [(dlg).log="visible"];
+}
+
+message UpdateGroupTyping {
+    message UserTyping {
+        int32 user_id = 1 [(dlg).log="visible"];
+        TypingType typing_type = 2 [(dlg).log="visible"];
+    }
+
+    int32 group_id = 1 [(dlg).log="visible"];
+    repeated UserTyping users_typing = 2 [(dlg).log="visible"];
 }
 
 // Request for last user online timestamp

@@ -103,7 +103,7 @@ message UpdateSeqUpdate {
       UpdateStickerCollectionsChanged updateStickerCollectionsChanged = 66;
       UpdateStickerPackRemoved updateStickerPackRemoved = 67;
       UpdateStickerPackAdded updateStickerPackAdded = 68;
-      UpdateTypingStart updateTypingStart = 71;
+      UpdateTyping updateTyping = 71;
       UpdateTypingStop updateTypingStop = 72;
       UpdateUserOnline updateUserOnline = 73;
       UpdateUserOffline updateUserOffline = 74;
@@ -135,6 +135,7 @@ message UpdateSeqUpdate {
       UpdateGroupMemberInvited updateGroupMemberInvited = 99;
       reactions.MessageReactionsUpdate messageReactionsUpdate = 100;
       UpdatePermissionsChange updatePermissionsChange = 101;
+      UpdateGroupTyping updateGroupTyping = 102;
     }
 }
 
@@ -364,7 +365,7 @@ message WeakUpdateBox {
     }
 
     oneof updatebox {
-        UpdateTypingStart typing_start                           = 1;
+        UpdateTyping typing                                      = 1;
         UpdateTypingStop typing_stop                             = 2;
         UpdateUserLastSeen user_last_seen                        = 3;
         UpdateGroupOnline group_online                           = 4;
@@ -378,6 +379,7 @@ message WeakUpdateBox {
         UpdateMessageReceived message_received                   = 12;
         UpdateMessageReadByMe message_read_by_me                 = 13;
         UpdateUserOnline user_online                             = 14;
+        UpdateGroupTyping group_typing                           = 15;
     }
 }
 
