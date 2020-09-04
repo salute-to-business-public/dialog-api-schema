@@ -334,6 +334,11 @@ message WeakUpdateCommand {
         bool online = 1;
     }
 
+    message SubscribeToOnlines {
+        PeersList peers = 1;
+        bool send_users_id = 2;
+    }
+
     message ChangeMyTyping {
         Peer peer       = 1;
         TypingType type = 2;
@@ -342,7 +347,7 @@ message WeakUpdateCommand {
 
     oneof command {
         ChangeMyOnline change_my_online                    = 1;
-        PeersList subscribe_to_onlines                     = 2;
+        SubscribeToOnlines subscribe_to_onlines            = 2;
         PeersList unsubscribe_from_onlines                 = 3;
         google.protobuf.Empty unsubscribe_from_all_onlines = 4;
         ChangeMyTyping change_my_typing                    = 5;
