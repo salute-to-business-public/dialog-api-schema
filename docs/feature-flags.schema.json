@@ -550,10 +550,10 @@
       "default": true
     },
     "typing.timeout": {
-      "type": "boolean",
-      "title": "UpdateStopTypingTimeout",
+      "type": "integer",
+      "title": "UpdateStopTypingTimeout in MS",
       "description": "Timeout for StartTyping, after that time server send StopTyping",
-      "default": true
+      "default": 10000
     }
   }
 }
