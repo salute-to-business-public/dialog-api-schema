@@ -16,6 +16,7 @@ package dialog;
 // If on any step API return PHONE_CODE_EXPIRED than application MUST start
 // authorization process from begining.<br/>
 
+import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 import "google/api/annotations.proto";
 import "definitions.proto";
@@ -349,6 +350,12 @@ message RequestChangePassword {
     string new_password = 2 [(dlg).log = "danger"];
 }
 
+message ResponseGetSelf {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    /// Registered/authorized user
+    User user = 1 [(dlg).log="compact"];
+}
+
 service Authentication {
     /// Start authorization by phone
     rpc StartPhoneAuth (RequestStartPhoneAuth) returns (ResponseStartPhoneAuth) {
@@ -502,6 +509,13 @@ service Authentication {
     rpc ChangePassword (RequestChangePassword) returns (ResponseVoid) {
         option (google.api.http) = {
             post: "/v1/grpc/Authentication/ChangePassword"
+            body: "*"
+        };
+    }
+
+    rpc GetSelf(google.protobuf.Empty) returns (ResponseGetSelf) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Authentication/GetSelf"
             body: "*"
         };
     }
