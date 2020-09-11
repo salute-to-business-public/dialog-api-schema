@@ -549,10 +549,15 @@
       "title": "Activates processing/emitting typingStates",
       "default": true
     },
+    "userOnlineStatus.isEnabled": {
+      "type": "boolean",
+      "title": "Activates processing/emitting onlineStates",
+      "default": true
+    },
     "typing.timeout": {
       "type": "integer",
       "title": "UpdateStopTypingTimeout in MS",
-      "description": "Timeout for StartTyping, after that time server send StopTyping",
+      "description": "Timeout in milliseconds for StartTyping, after that time server send StopTyping",
       "default": 10000
     }
   }
