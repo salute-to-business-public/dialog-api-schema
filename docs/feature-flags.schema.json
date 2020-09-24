@@ -552,12 +552,12 @@
     "typing.isEnabled": {
       "type": "boolean",
       "title": "Activates processing/emitting typingStates",
-      "default": true
+      "default": false
     },
     "onlineStatus.isEnabled": {
       "type": "boolean",
       "title": "Activates processing/emitting onlineStates",
-      "default": true
+      "default": false
     },
     "typing.timeout": {
       "type": "integer",
@@ -569,7 +569,12 @@
       "type": "integer",
       "title": "UpdateUserLastSeen in MS",
       "description": "Timeout in milliseconds for UserLastSeen, after that time server send UpdateUserLastSeen",
-      "default": 60000
+      "default": 90000
+    },
+    "weakMessaging.isEnabled": {
+      "type": "boolean",
+      "title": "Activates processing weakMessaging",
+      "default": false
     }
   }
 }
