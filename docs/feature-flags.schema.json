@@ -534,6 +534,11 @@
       "title": "Activates editing for messages",
       "default": false
     },
+    "dialogs.favorite.isEnabled": {
+      "type": "boolean",
+      "title": "Activates send messages to yourself",
+      "default": false
+    },
     "releaseNotes.isEnabled": {
       "type": "boolean",
       "title": "Enable release notes",
