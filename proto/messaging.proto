@@ -624,6 +624,8 @@ message UpdateMessageContentChanged {
     MessageContent message = 3 [(dlg).log="visible"];
     int64 edited_at = 5 [(dlg).log="visible"];
     int64 prev_edit_in_peer_at = 6;
+    // Update on behalf of a system, should not be displayed as edited.
+    google.protobuf.BoolValue is_silent = 7;
 }
 
 // Update about message sent
