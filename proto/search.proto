@@ -283,6 +283,15 @@ message ResponseGetRecommendations {
     repeated OutPeer peers = 1;
 }
 
+message RequestGetPromotedPeers {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+}
+
+message ResponseGetPromotedPeers {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated UserOutPeer user_peers = 1;
+    repeated GroupOutPeer group_peers = 2;
+}
 
 service Search {
     /// Search among groups/users/contacts
@@ -352,4 +361,12 @@ service Search {
             body: "*"
         };
     }
+
+    rpc GetPromotedPeers (RequestGetPromotedPeers) returns (ResponseGetPromotedPeers) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Search/GetDiscovery"
+            body: "*"
+        };
+    }
+
 }
