@@ -39,11 +39,14 @@ message MiniApp {
 
 // Request to get list of mini-apps
 message GetAppsRequest {
+    // if present then return only apps created/modified since given clock
+    google.protobuf.Int64Value from_clock = 1;
 }
 
 // List of the mini-app
 message GetAppsResponse {
     repeated MiniApp apps = 1;
+    int64 clock = 2;
 }
 
 // Findig mini-app by id
