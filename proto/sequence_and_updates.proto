@@ -137,6 +137,7 @@ message UpdateSeqUpdate {
       UpdatePermissionsChange updatePermissionsChange = 101;
       UpdateGroupTyping updateGroupTyping = 102;
       UpdateDialogReadLaterChanged updateDialogReadLaterChanged = 103;
+      UpdateMiniApp updateMiniApp = 104;
     }
 }
 
@@ -388,6 +389,7 @@ message WeakUpdateBox {
         UpdateMessageReadByMe message_read_by_me                 = 13;
         UpdateUserOnline user_online                             = 14;
         UpdateGroupTyping group_typing                           = 15;
+        UpdateMiniApp mini_app                                   = 16;
     }
 }
 
