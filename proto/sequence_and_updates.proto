@@ -34,6 +34,7 @@ import "spaces.proto";
 import "reactions.proto";
 import "permissions.proto";
 import "scalapb/scalapb.proto";
+import "miniappsregistry.proto";
 
 option go_package = "dialog";
 option java_package = "im.dlg.grpc.services";
