@@ -137,7 +137,6 @@ message UpdateSeqUpdate {
       UpdatePermissionsChange updatePermissionsChange = 101;
       UpdateGroupTyping updateGroupTyping = 102;
       UpdateDialogReadLaterChanged updateDialogReadLaterChanged = 103;
-      UpdateMiniApp updateMiniApp = 104;
     }
 }
 
