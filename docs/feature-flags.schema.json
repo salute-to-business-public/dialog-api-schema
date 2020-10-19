@@ -383,7 +383,7 @@
       "title": "Toggle switch to enable / disable the display of push notifications",
       "default": true
     },
-    "notifications.history.isEnable": {
+    "notifications.history.isEnabled": {
       "type": "boolean",
       "title": "Activates notifications history list",
       "default": false
