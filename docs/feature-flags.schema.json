@@ -383,6 +383,11 @@
       "title": "Toggle switch to enable / disable the display of push notifications",
       "default": true
     },
+    "notifications.history.isEnabled": {
+      "type": "boolean",
+      "title": "Activates notifications history list",
+      "default": false
+    },
     "notifications.web.newMessageAudioUrl": {
       "type": "string",
       "title": "URL to an audio file for a new message notification",
