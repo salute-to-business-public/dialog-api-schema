@@ -9,11 +9,12 @@ option go_package = "dialog";
 option java_package = "im.dlg.grpc.services";
 
 enum AuthorizationMethod {
-    nothing = 0;
-    login_password = 1;
-    phone = 2;
-    email = 3;
-    certificate = 4;
+    NOTHING_AUTHORIZATION_METHOD = 0;
+    LOGIN_PASSWORD_AUTHORIZATION_METHOD = 1;
+    PHONE_AUTHORIZATION_METHOD = 2;
+    EMAIL_AUTHORIZATION_METHOD = 3;
+    CERTIFICATE_AUTHORIZATION_METHOD = 4;
+    OAUTH_AUTHORIZATION_METHOD = 5;
 }
 
 message RequestRegisterDevice {
