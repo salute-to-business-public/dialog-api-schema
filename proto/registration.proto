@@ -9,7 +9,7 @@ option go_package = "dialog";
 option java_package = "im.dlg.grpc.services";
 
 enum AuthorizationMethod {
-    AUTHORIZATION_METHOD_NOTHING =0;
+    AUTHORIZATION_METHOD_NOTHING = 0;
     AUTHORIZATION_METHOD_LOGIN_PASSWORD = 1;
     AUTHORIZATION_METHOD_PHONE = 2;
     AUTHORIZATION_METHOD_EMAIL = 3;
