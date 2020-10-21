@@ -82,7 +82,7 @@ golang:
 	docker run -it --rm \
 	-v "$(shell pwd):/go/src/github.com/dialogs/api-schema" \
 	-w "/go/src/github.com/dialogs/api-schema" \
-	dialogs/go-tools-protoc:1.0.1 \
+	dialogs/go-tools-protoc:1.0.4 \
 	protoc \
 	-I=proto \
 	-I=include/ \
