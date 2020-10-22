@@ -39,8 +39,8 @@ message MiniApp {
 
 // Request to get list of mini-apps
 message GetAppsRequest {
-    // if present then return only apps created/modified since given clock
-    google.protobuf.Int64Value from_clock = 1;
+    // return only apps created/modified since given clock
+    int64 from_clock = 1;
 }
 
 // List of the mini-app
@@ -59,7 +59,17 @@ message FindAppResponse {
     MiniApp app = 1;
 }
 
+// Issue JWT token for third-party applications
+message IssueAccessTokenRequest {
+    UUIDValue app_id = 1;
+}
+
+message AccessTokenResponse {
+    string access_token = 1;
+}
+
 service ClientsMiniAppsRegistry {
     rpc FindApp (FindAppRequest) returns (FindAppResponse);
     rpc GetApps (GetAppsRequest) returns (GetAppsResponse);
+    rpc IssueAccessToken (IssueAccessTokenRequest) returns (AccessTokenResponse);
 }
