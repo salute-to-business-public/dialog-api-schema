@@ -37,6 +37,19 @@ message MiniApp {
     bool is_enabled = 11;
 }
 
+// App update
+message UpdateMiniApp {
+    enum AppLifecycle {
+        APPLIFECYCLE_CREATED  = 0;
+        APPLIFECYCLE_UPDATED  = 1;
+        APPLIFECYCLE_ENABLED  = 2;
+        APPLIFECYCLE_DISABLED = 3;
+        APPLIFECYCLE_DELETED  = 4;
+    }
+    AppLifecycle app_lifecycle = 1;
+    dialog.MiniApp app_data = 2;
+}
+
 // Request to get list of mini-apps
 message GetAppsRequest {
     // return only apps created/modified since given clock
