@@ -578,12 +578,13 @@
     "typing.timeout": {
       "type": "integer",
       "title": "UpdateStopTypingTimeout in MS",
-      "description": "Timeout in milliseconds for StartTyping, after that time server send StopTyping",
+      "description": "Timeout in milliseconds: 1) server/client resend StartTyping with delay = 'typing.timeout' / 2, 2) server/client force set another StartTyping(Group/User) to StopTyping with delay 'typing.timeout', if new event StartTyping wouldn't receive",
       "default": 10000
     },
     "onlineStatus.timeout": {
       "type": "integer",
       "title": "UpdateUserLastSeen in MS",
+      "sad": "Timeout in milliseconds: 1) client resend ChangeMyOnline with delay = 'onlineStatus.timeout' / 2, 2) client set peer Offline with delay 'onlineStatus.timeout', if new event UserLastSeen wouldn't receive",
       "description": "Timeout in milliseconds for UserLastSeen, after that time server send UpdateUserLastSeen",
       "default": 90000
     },
