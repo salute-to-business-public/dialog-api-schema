@@ -578,7 +578,7 @@
     "typing.timeout": {
       "type": "integer",
       "title": "UpdateStopTypingTimeout in MS",
-      "description": "Timeout in milliseconds: 1) server/client resend StartTyping with delay = 'typing.timeout' / 2, 2) server/client force set another StartTyping(Group/User) to StopTyping with delay 'typing.timeout', if new event StartTyping wouldn't receive",
+      "description": "Timeout in milliseconds: client should resend StartTyping with delay = 'typing.timeout' / 2, to inform server that client is still typing",
       "default": 10000
     },
     "onlineStatus.timeout": {
