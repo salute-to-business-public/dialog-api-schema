@@ -14,7 +14,7 @@ enum AppType {
 }
 
 message MiniApp {
-    reserved 5, 8, 9;
+    reserved 8, 9;
 
     // unique identifier of the app
     UUIDValue id = 1;
@@ -24,6 +24,8 @@ message MiniApp {
     string name = 3;
     // additional info, describing this app
     string description = 4;
+    // version of app
+    string version = 5;
     // icon name for this app
     string icon = 6;
     // link to this app
