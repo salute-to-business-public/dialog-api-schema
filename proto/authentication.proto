@@ -164,20 +164,20 @@ message RequestValidatePassword {
     string password = 2 [(dlg).log="danger"];
 }
 
-// Loading OAuth2 Parameters - deprecated
+// Loading OAuth2 Parameters
 message RequestGetOAuth2Params {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     string transaction_hash = 1 [(dlg).log="danger"];
     string redirect_url = 2 [(dlg).log="visible"];
 }
 
-/// Deprecated
+/// Redirect url result
 message ResponseGetOAuth2Params {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
     string auth_url = 1;
 }
 
-// Complete OAuth2 Authentication - deprecated
+// Complete OAuth2 Authentication
 message RequestCompleteOAuth2 {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     string transaction_hash = 1 [(dlg).log="danger"];
@@ -428,14 +428,14 @@ service Authentication {
             body: "*"
         };
     }
-    /// Deprecated
+    /// Get redirect url
     rpc GetOAuth2Params (RequestGetOAuth2Params) returns (ResponseGetOAuth2Params) {
         option (google.api.http) = {
             post: "/v1/grpc/Authentication/GetOAuth2Params"
             body: "*"
         };
     }
-    /// Deprecated
+    /// Complete OAuth2 Authentication
     rpc CompleteOAuth2 (RequestCompleteOAuth2) returns (ResponseAuth) {
         option (google.api.http) = {
             post: "/v1/grpc/Authentication/CompleteOAuth2"
