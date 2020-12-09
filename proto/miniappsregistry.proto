@@ -35,7 +35,7 @@ message MiniApp {
     // specifies if this app enabled and user can use it, ot not
     bool is_enabled = 11;
     // supported locales
-    repeated string locales = 12;
+    map <string, string> locales = 12;
     // application-level permissions
     repeated string permissions = 13;
 }
