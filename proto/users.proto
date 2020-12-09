@@ -105,6 +105,7 @@ message UserData {
     }
     /// This parameter intended just to show in UI (client shouldn't base any logic on that)
     Hint hint = 17;
+    bool was_authorized = 18;
     int64 clock = 16;
 }
 message User {
