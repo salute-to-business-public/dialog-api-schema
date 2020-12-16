@@ -592,9 +592,9 @@
       "title": "Activates processing weakMessaging",
       "default": false
     },
-     "attachments.audioMessages.isEnabled": {
+     "attachments.voiceMessages.isEnabled": {
       "type": "boolean",
-      "title": "Activates audio messages in attachments",
+      "title": "Activates voice messages in attachments",
       "default": true
     },
     "links.preview.isEnabled": {
