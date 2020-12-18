@@ -595,12 +595,12 @@
      "attachments.voiceMessages.isEnabled": {
       "type": "boolean",
       "title": "Activates voice messages in attachments",
-      "default": true
+      "default": false
     },
     "links.preview.isEnabled": {
       "type": "boolean",
       "title": "Activates links preview",
-      "default": true
+      "default": false
     }
   }
 }
