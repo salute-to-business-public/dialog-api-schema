@@ -178,6 +178,7 @@ message RequestLoadUserData {
             bool p2p = 2 [(dlg).log="visible"];
             Peer group_member = 3 [(dlg).log="visible"];
             bool contact = 4 [(dlg).log="visible"];
+            UUIDValue message_sender = 5 [(dlg).log="visible"];
         }
     }
     repeated Claim claims = 1 [(dlg).log="visible"];
