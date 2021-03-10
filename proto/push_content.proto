@@ -24,6 +24,7 @@ message PushPeer {
     string str_id = 3;
 }
 
+
 enum PushEventType {
     CREATE = 0;
     UPDATE = 1;
