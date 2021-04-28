@@ -43,6 +43,12 @@ message EmailToImport {
     google.protobuf.StringValue name = 2 [(dlg).log="visible"];
 }
 
+message UserPhoneHashContact {
+    int32 user_id = 1;
+    string phone_hash = 2;
+    string name = 3;
+}
+
 // Importing phones and emails for building contact list
 // Maximum amount of items for import per method call equals to 100.
 message RequestImportContacts {
@@ -103,11 +109,11 @@ message RequestGetContacts {
 
 message ResponseGetContacts {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
-    reserved 1;
+    reserved 1, 4;
 
     bool is_not_changed = 2;
     repeated UserOutPeer user_peers = 3;
-    map<string, int32> users_by_phone = 4;
+    repeated UserPhoneHashContact phone_contacts = 5;
 }
 
 // Removing contact from contact list
@@ -151,13 +157,12 @@ message UpdateContactRegistered {
 
 // Update about contacts added
 message UpdateContactsAdded {
-    reserved 2, 3;
+    reserved 2, 3, 5;
     /// User ids of the registered contacts
     repeated int32 uids = 1 [(dlg).log="compact"];
     /// Id of the task that finished
     google.protobuf.StringValue task_id = 4 [(dlg).log="compact"];
-    // mapping phone hashes to id of users that are already present in the system
-    map<string, int32> users_by_phone = 5;
+    repeated UserPhoneHashContact phone_contacts = 6;
 }
 
 // Update about suspending task - normally it should be ignored
