@@ -231,6 +231,7 @@ message TextModernMessage {
     google.protobuf.StringValue text = 1 [(dlg).log="hidden"];
     google.protobuf.StringValue sender_name_override = 2 [(dlg).log="visible"];
     Avatar sender_photo_override = 3 [(dlg).log="visible"];
+    google.protobuf.StringValue sender_photo_url_override = 6;
     ParagraphStyle style = 4 [(dlg).log="visible"];
     repeated TextModernAttach attaches = 5 [(dlg).log="visible"];
 }
