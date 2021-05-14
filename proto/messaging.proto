@@ -295,6 +295,8 @@ message ServiceEx {
         ServiceExPhoneRejected phoneRejected = 13;
         ServiceExChatArchived chatArchived = 14;
         ServiceExChatRestored chatRestored = 15;
+        ServiceExConferenceCreated conferenceCreated = 17;
+        ServiceExConferenceDismissed conferenceDismissed = 18;
     }
 }
 
@@ -373,6 +375,15 @@ message ServiceExChatArchived {
 
 // Message about chat restored
 message ServiceExChatRestored {
+}
+
+// Message about conference call restored
+message ServiceExConferenceCreated {
+    string conferenceId = 1;
+}
+// Message about conference call dismissed
+message ServiceExConferenceDismissed {
+    string conferenceId = 1;
 }
 
 // File message
