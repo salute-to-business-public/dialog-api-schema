@@ -185,6 +185,8 @@ message RequestLoadUserData {
             // load data about group message sender by messageId
             // if this message is accessible for the client
             UUIDValue message_sender = 5 [(dlg).log="visible"];
+            // load data about bot
+            bool bot = 6 [(dlg).log="visible"];
         }
     }
     repeated Claim claims = 1 [(dlg).log="visible"];
