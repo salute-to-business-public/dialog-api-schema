@@ -392,6 +392,10 @@ message WeakUpdateBox {
         UpdateGroupTyping group_typing                           = 15;
         UpdateMiniApp mini_app                                   = 16;
         events.UpdateEvent event                                 = 17;
+        UpdateContactRegistered update_contact_registered                 = 18;
+        UpdateContactsAdded update_contacts_added                         = 19;
+        UpdateContactsAddTaskSuspended update_contacts_add_task_suspended = 20;
+        UpdateContactsRemoved update_contacts_removed                     = 21;
     }
 }
 
