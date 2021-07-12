@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package dialog;
+
+import "google/protobuf/empty.proto";
+import "definitions.proto";
+import "peers.proto";
+import "scalapb/scalapb.proto";
+
+option go_package = "dialog";
+option java_package = "im.dlg.grpc.services";
+
+message MessageSuggests {
+    UUIDValue message_id = 1;
+    string suggests_payload = 2;
+}
+
+message UpdateSuggests {
+    int64 clock = 1 [(dlg).log = "visible"];
+    int64 prev_clock = 2 [(dlg).log = "visible"];
+    Peer peer = 3;
+    MessageSuggests message_suggests = 4;
+}
+
+message RequestLoadSuggests {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 from_clock = 1;
+    Peer peer = 2 [(dlg).log = "visible", (dlg).required = true];
+}
+
+message ResponseLoadSuggests {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    int64 clock = 1 [(dlg).log = "visible"];
+    repeated MessageSuggests suggests = 2;
+    bool more_available = 3;
+}
+
+message RequestLoadMessageSuggests {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    Peer peer = 1 [(dlg).required = true];
+    repeated UUIDValue message_ids = 2;
+}
+
+message ResponseLoadMessageSuggests {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcResponse";
+    repeated MessageSuggests message_suggests = 1;
+}
+
+message RequestSendSuggestAction {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 request_id = 1;
+    string suggest_id = 2;
+    Peer peer = 3 [(dlg).required = true];
+    string payload = 4 [(dlg).log = "hidden"];
+}
+
+service Suggests {
+    rpc LoadSuggests (RequestLoadSuggests) returns (ResponseLoadSuggests);
+    rpc LoadMessageSuggests (RequestLoadMessageSuggests) returns (ResponseLoadMessageSuggests);
+    rpc SendSuggestAction (RequestSendSuggestAction) returns (google.protobuf.Empty);
+}
