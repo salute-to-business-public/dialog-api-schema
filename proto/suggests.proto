@@ -50,8 +50,9 @@ message RequestSendSuggestAction {
     option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
     int64 request_id = 1;
     string suggest_id = 2;
-    Peer peer = 3 [(dlg).required = true];
-    string payload = 4 [(dlg).log = "hidden"];
+    UUIDValue message_id = 3;
+    Peer peer = 4 [(dlg).required = true];
+    string payload = 5 [(dlg).log = "hidden"];
 }
 
 service Suggests {
