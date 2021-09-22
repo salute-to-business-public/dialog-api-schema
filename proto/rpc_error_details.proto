@@ -11,8 +11,7 @@ import "scalapb/scalapb.proto";
 
 option go_package = "dialog";
 option java_package = "im.dlg.grpc.services";
-
-swift_prefix = "rpc";
+option swift_prefix = "rpc";
 
 // The `Status` type defines a logical error model that is suitable for
 // different programming environments, including REST APIs and RPC APIs. It is
