@@ -9,6 +9,7 @@ option swift_prefix = "Rpc";
 option java_package = "im.dlg.grpc.services";
 
 // Describes why request have failed.
+// It is supposed that the ErroDetails stored in a CallResult metadata as a ErrorDetail's message binary data for the "error_details" key
 message ErrorDetails {
 
   // A message type used to describe a single rule violation.
