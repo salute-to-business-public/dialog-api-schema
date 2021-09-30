@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package dialog;
+
+import "google/api/annotations.proto";
+
+option go_package = "dialog";
+option swift_prefix = "Rpc";
+option java_package = "im.dlg.grpc.services";
+
+// Describes why request have failed.
+// It is supposed that the ErroDetails stored in a CallResult metadata as a ErrorDetail's message binary data for the "error_details" key
+message ErrorDetails {
+
+  // A message type used to describe a single rule violation.
+  message Violation {
+  
+     // What exactly rule has been violated
+     string tag = 1;
+
+     // Rule argument. The content depends on tag.
+     // Like if we violated the minimum length rule for a something this argument should contain min length value.
+     string argument = 2;
+
+     // Optional parameter to provide a server localized message if any.
+     string violationDescription = 3;
+  }
+
+  // Describes all rule violations.
+  repeated Violation violations = 1;
+}
