@@ -60,7 +60,7 @@ dependencies {
 ext {
     artifact = 'java-api-schema'
     libraryDescription = 'Dialog API Schema'
-    gitUrl = 'https://github.com/dialogs/api-schema'
+    gitUrl = 'https://github.com/salute-to-business-public/dialog-api-schema'
     libraryVersion = version
     bintrayUser = System.env.bintrayUser != null ? System.env.bintrayUser : ""
     bintrayPassword = System.env.bintrayPassword != null ? System.env.bintrayPassword : ""

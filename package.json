@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dialogs/api-schema.git"
+    "url": " https://github.com/salute-to-business-public/dialog-api-schema.git"
   },
   "author": "Nikita Gusakov <nkt@dlg.im>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/dialogs/api-schema/issues"
+    "url": " https://github.com/salute-to-business-public/dialog-api-schema/issues"
   },
   "homepage": "https://dialogs.github.io/api-schema",
   "peerDependencies": {

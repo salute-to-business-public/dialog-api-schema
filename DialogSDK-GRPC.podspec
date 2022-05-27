@@ -3,9 +3,9 @@ Pod::Spec.new do |s|
   s.version  = "1.8.13"
   s.license  = "Apache License, Version 2.0"
   s.authors  = { 'Dialog Developers' => 'dev@dlg.im' }
-  s.homepage = "https://github.com/dialogs/api-schema"
+  s.homepage = " https://github.com/salute-to-business-public/dialog-api-schema"
   s.summary = "DialogSDK-GRPC"
-  s.source = { :git => 'https://github.com/dialogs/api-schema.git' }
+  s.source = { :git => 'https://github.com/salute-to-business-public/dialog-api-schema.git' }
 
   s.ios.deployment_target = "10.0"
 

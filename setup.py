@@ -19,7 +19,7 @@ setuptools.setup(
     description="Dialog API for Python",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/dialogs/api-schema",
+    url=" https://github.com/salute-to-business-public/dialog-api-schema",
     packages=setuptools.find_packages(),
     license='Apache License 2.0',
     keywords='dialog messenger',

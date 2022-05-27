@@ -196,7 +196,7 @@ jobs:
           command: |
             export SDK_DIR=/tmp/sdk
             rm -rf $SDK_DIR
-            git clone -b master https://github.com/dialogs/golang-bot-sdk $SDK_DIR
+            git clone -b master  https://github.com/salute-to-business-public/golang-bot-sdk $SDK_DIR
             rm -fv $SDK_DIR/*.go
 
             protoc \
@@ -235,7 +235,7 @@ jobs:
             export TARGET=/tmp/new_sdk
 
             rm -rf $TARGET
-            git clone -b master https://github.com/dialogs/golang-bot-sdk $TARGET
+            git clone -b master  https://github.com/salute-to-business-public/golang-bot-sdk $TARGET
             rm -fv $TARGET/*.go
             cp -v /tmp/sdk/*.go $TARGET/
 

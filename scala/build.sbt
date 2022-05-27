@@ -21,7 +21,7 @@ PB.targets in Compile := Seq(
   scalapb.gen(singleLineToProtoString = true) → (sourceManaged in Compile).value
 )
 
-licenses += ("Apache-2.0", url("https://github.com/dialogs/api-schema/blob/master/LICENSE"))
+licenses += ("Apache-2.0", url("https://github.com/salute-to-business-public/dialog-api-schema/blob/master/LICENSE"))
 
 publishMavenStyle := true
 
