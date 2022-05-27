@@ -3,7 +3,7 @@ Dialog API Schema
 
 Dialog gRPC API Schema.
 
-[API documentation](https://github.com/salute-to-business-public/dialog-api-schema)
+[Bots SDK documentation](https://github.com/salute-to-business-public/dialog-bots-sdk-docs)
 
 Usage
 -----
