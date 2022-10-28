@@ -79,6 +79,17 @@ message RequestUnregisterAvroraPushToken {
     string token = 1 [(dlg).log="hidden"];
 }
 
+message RequestRegisterHuaweiPushToken {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    int64 project_id = 1 [(dlg).log="hidden"];
+    string token = 2 [(dlg).log="hidden"];
+}
+
+message RequestUnregisterHuaweiPushToken {
+    option (scalapb.message).extends = "im.dlg.grpc.GrpcRequest";
+    string token = 1 [(dlg).log="hidden"];
+}
+
 service Push {
     rpc RegisterGooglePush (RequestRegisterGooglePush) returns (ResponseVoid) {
         option (google.api.http) = {
@@ -137,6 +148,18 @@ service Push {
     rpc UnregisterAvroraPushToken (RequestUnregisterAvroraPushToken) returns (ResponseVoid) {
         option (google.api.http) = {
             post: "/v1/grpc/Push/UnregisterAvroraPushToken"
+            body: "*"
+        };
+    }
+    rpc RegisterHuaweiPushToken (RequestRegisterHuaweiPushToken) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Push/RegisterHuaweiPushToken"
+            body: "*"
+        };
+    }
+    rpc UnregisterHuaweiPushToken (RequestUnregisterHuaweiPushToken) returns (ResponseVoid) {
+        option (google.api.http) = {
+            post: "/v1/grpc/Push/UnregisterHuaweiPushToken"
             body: "*"
         };
     }
